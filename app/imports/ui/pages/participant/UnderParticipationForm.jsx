@@ -77,7 +77,7 @@ const UnderParticipationForm = () => {
   let fRef = null;
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
-      <Container fluid>
+      <Container fluid id={'under-participation'}>
         <Card style={darkerBlueStyle}>
           <Row>
             <Col>

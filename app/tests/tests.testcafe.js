@@ -4,6 +4,7 @@ import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
+import { underParticipationFormPage } from './underparticipationform.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -27,6 +28,13 @@ test('Test that age page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsB.username, credentialsB.password);
   await agePage.isDisplayed(testController);
+});
+
+test('Test that under participation page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await agePage.under18(testController);
+  await underParticipationFormPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
