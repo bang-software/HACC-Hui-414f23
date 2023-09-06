@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, Segment, Header } from 'semantic-ui-react';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-semantic';
+import { Container, Col, Card } from 'react-bootstrap';
+import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
@@ -19,13 +19,13 @@ const schema = new SimpleSchema({
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-class AddChallenge extends React.Component {
+const AddChallenge = () => {
 
   /** On submit, insert the data.
    * @param data {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
-  submit(data, formRef) {
+  const submit = (data, formRef) => {
     const { title, description, submissionDetail, pitch } = data;
     const definitionData = { title, description, submissionDetail, pitch };
     const collectionName = Challenges.getCollectionName();
@@ -41,32 +41,30 @@ class AddChallenge extends React.Component {
             // console.log('Success');
           }
         });
-  }
+  };
 
+  let fRef = null;
+  const formSchema = new SimpleSchema2Bridge(schema);
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    let fRef = null;
-    const formSchema = new SimpleSchema2Bridge(schema);
-    return (
-        <Grid container centered>
-          <Grid.Column>
-            <Header as="h2" textAlign="center">Add a challenge</Header>
-            <AutoForm ref={ref => {
-              fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
-              <Segment>
-                <TextField name='title' />
-                <TextField name='description' />
-                <TextField name='submissionDetail' />
-                <TextField name='pitch' />
-                <SubmitField value='Submit' />
-                <ErrorsField />
-              </Segment>
-            </AutoForm>
-          </Grid.Column>
-        </Grid>
-    );
-  }
-}
+  return (
+      <Container fluid id="addChallenge">
+        <Col>
+          <h2 style={{ textAlign: 'center' }}>Add a challenge</h2>
+          <AutoForm ref={ref => {
+            fRef = ref;
+          }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
+            <Card style={{ padding: '20px', marginBottom: '20px' }}>
+              <TextField id="addChallenge-title" name='title' />
+              <TextField id="addChallenge-description" name='description' />
+              <TextField id="addChallenge-submissionDetail" name='submissionDetail' />
+              <TextField id="addChallenge-pitch" name='pitch' />
+              <SubmitField id="addChallenge-submit" value='Submit' />
+              <ErrorsField />
+            </Card>
+          </AutoForm>
+        </Col>
+      </Container>
+  );
+};
 
 export default AddChallenge;

@@ -69,7 +69,7 @@ class Signin extends React.Component {
     }
     // Otherwise return the Login form.
     return (
-        <Container>
+        <Container id="signin-page">
           <Grid textAlign="center" verticalAlign="middle" centered columns={1}>
             <Grid.Column>
               <Header as="h2" textAlign="center">
@@ -78,6 +78,7 @@ class Signin extends React.Component {
               <Form onSubmit={this.submit}>
                 <Segment stacked>
                   <Form.Input
+                      id="signin-form-email"
                       label="Email"
                       icon="user"
                       iconPosition="left"
@@ -87,6 +88,7 @@ class Signin extends React.Component {
                       onChange={this.handleChange}
                   />
                   <Form.Input
+                      id="signin-form-password"
                       label="Password"
                       icon="lock"
                       iconPosition="left"
@@ -95,7 +97,7 @@ class Signin extends React.Component {
                       type="password"
                       onChange={this.handleChange}
                   />
-                  <Form.Button content="Submit" />
+                  <Form.Button id="signin-form-submit" content="Submit" />
                 </Segment>
               </Form>
               {this.state.error === '' ? (
