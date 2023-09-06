@@ -37,4 +37,3 @@ test('Test that Admin pages function', async (testController) => {
   await manageHaccWidgetComponents.gotoAddChallengePage(testController);
   await addChallengeAdminPage.addChallenge(testController, challenge);
 });
-
