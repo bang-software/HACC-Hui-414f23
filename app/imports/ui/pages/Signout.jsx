@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap';
 const Signout = () => {
     Meteor.logout();
     return (
-        <Container id={"signout-page"} className="text-center my-4">
+        <Container id={'signout-page'} className="text-center my-4">
             <h2>You are signed out.</h2>
         </Container>
     );
