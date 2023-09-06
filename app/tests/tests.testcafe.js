@@ -3,6 +3,7 @@ import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
+import { helpPage } from './help.Page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -19,6 +20,11 @@ fixture('meteor-application-template-react localhost test with default db')
 /** USER --------------------------------------------------------------------------------------------------*/
  test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
+});
+
+test('Test that the Help page shows up', async (testController) => {
+  await navBar.gotoHelpPage(testController);
+  await helpPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
