@@ -1,18 +1,14 @@
 import { Selector } from 'testcafe';
 
-class AgePage {
+class UnderParticipationForm {
   constructor() {
-    this.pageId = '#age';
+    this.pageId = '#under-participation';
     this.pageSelector = Selector(this.pageId);
   }
 
   async isDisplayed(testController) {
     await testController.wait(10000).expect(this.pageSelector.exists).ok();
   }
-
-  async under18(testController) {
-    await testController.click('#no-button');
-  }
 }
 
-export const agePage = new AgePage();
+export const underParticipationFormPage = new UnderParticipationForm();
