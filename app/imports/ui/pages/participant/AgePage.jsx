@@ -8,7 +8,7 @@ import { ROUTES } from '../../../startup/client/route-constants';
  * @memberOf ui/pages
  */
 const AgePage = () => (
-  <div style={{ backgroundColor: '#393B44' }}>
+  <div id={'age'} style={{ backgroundColor: '#393B44' }}>
     <div align={'center'} style={{ backgroundColor: '#24252B' }}>
       <h2 style={{ padding: '5rem 10rem 5rem 10rem', color: 'white' }}>
         Before we move onto making your profile, we need to verify your age.
