@@ -82,7 +82,8 @@ class NavBar extends React.Component {
           ) : ''}
           {isAdmin ? (
               [
-                <Menu.Item as={NavLink}
+                <Menu.Item id="configureHACC"
+                           as={NavLink}
                            activeClassName="active"
                            exact
                            to={ROUTES.CONFIGURE_HACC}
@@ -132,9 +133,10 @@ class NavBar extends React.Component {
                      key={ROUTES.HELP_PAGE}>Help</Menu.Item>
           <Menu.Item>
             {this.props.currentUser === '' ? (
-                <Dropdown text="Login" pointing="top right" icon={'user'}>
+                <Dropdown id="login-dropdown" text="Login" pointing="top right" icon={'user'}>
                   <Dropdown.Menu>
                     <Dropdown.Item
+                        id="login-dropdown-sign-in"
                         icon="user"
                         text="Sign In"
                         as={NavLink}

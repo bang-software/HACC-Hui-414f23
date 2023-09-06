@@ -47,18 +47,18 @@ const AddChallenge = () => {
   const formSchema = new SimpleSchema2Bridge(schema);
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   return (
-      <Container fluid>
+      <Container fluid id="addChallenge">
         <Col>
           <h2 style={{ textAlign: 'center' }}>Add a challenge</h2>
           <AutoForm ref={ref => {
             fRef = ref;
           }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
             <Card style={{ padding: '20px', marginBottom: '20px' }}>
-              <TextField name='title' />
-              <TextField name='description' />
-              <TextField name='submissionDetail' />
-              <TextField name='pitch' />
-              <SubmitField value='Submit' />
+              <TextField id="addChallenge-title" name='title' />
+              <TextField id="addChallenge-description" name='description' />
+              <TextField id="addChallenge-submissionDetail" name='submissionDetail' />
+              <TextField id="addChallenge-pitch" name='pitch' />
+              <SubmitField id="addChallenge-submit" value='Submit' />
               <ErrorsField />
             </Card>
           </AutoForm>
