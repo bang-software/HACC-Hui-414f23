@@ -2,7 +2,7 @@ import { landingPage } from './landing.page';
 import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
-import { manageHaccWidgetComponents, manageHaccWidgetComponents1 } from './manageHaccWidget.components';
+import { manageHaccWidgetComponents } from './manageHaccWidget.components';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -17,9 +17,9 @@ fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 
 /** USER --------------------------------------------------------------------------------------------------*/
-/* test('Test that landing page shows up', async (testController) => {
+ test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
-}); */
+});
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that Admin pages function', async (testController) => {
