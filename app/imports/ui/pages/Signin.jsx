@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { Redirect, useLocation } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
+import { Container, Form, Button, Row, Col, Alert, Card } from 'react-bootstrap';
 import { ROLE } from '../../api/role/Role';
 import { Participants } from '../../api/user/ParticipantCollection';
 import { ROUTES } from '../../startup/client/route-constants';
-import { Container, Form, Button, Row, Col, Alert, Card } from 'react-bootstrap';
+
 
 const Signin = () => {
   const [email, setEmail] = useState('');
@@ -86,7 +87,7 @@ const Signin = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Button style={{marginTop: '10px'}} id="signin-form-submit" type="submit">
+              <Button style={{ marginTop: '10px' }} id="signin-form-submit" type="submit">
                 Submit
               </Button>
             </Form>
