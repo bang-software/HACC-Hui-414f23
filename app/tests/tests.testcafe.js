@@ -3,6 +3,7 @@ import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
+import {signOutPage} from "./signoutPage.page";
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -28,4 +29,5 @@ test('Test that Admin pages function', async (testController) => {
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoAddChallengePage(testController);
   await addChallengeAdminPage.addChallenge(testController, challenge);
+  await signOutPage.signout(testController);
 });
