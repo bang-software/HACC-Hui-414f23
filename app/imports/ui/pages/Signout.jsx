@@ -12,6 +12,6 @@ const Signout = () => {
             <h2>You are signed out.</h2>
         </Container>
     );
-}
+};
 
 export default Signout;
