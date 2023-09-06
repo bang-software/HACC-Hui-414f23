@@ -5,6 +5,7 @@ import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
 import { underParticipationFormPage } from './underparticipationform.page';
+import { signOutPage } from './signoutPage.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -44,4 +45,12 @@ test('Test that Admin pages function', async (testController) => {
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoAddChallengePage(testController);
   await addChallengeAdminPage.addChallenge(testController, challenge);
+});
+
+test('Test that signin and signout work', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.isLoggedIn(testController, credentialsA.username);
+  await navBar.logout(testController);
+  await signOutPage.isDisplayed(testController);
 });
