@@ -2,7 +2,7 @@
   "name": "hacc-hui",
   "private": true,
   "dependencies": {
-    "@babel/runtime": "^7.22.11",
+    "@babel/runtime": "^7.22.15",
     "@faker-js/faker": "^7.6.0",
     "@slack/bolt": "^3.13.3",
     "bootstrap": "^5.3.1",
