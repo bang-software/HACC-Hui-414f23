@@ -16,3 +16,7 @@ export const footer = {
 export const greyStyle = {
   backgroundColor: '#C4C4C4',
 };
+
+export const whiteStyle = {
+  backgroundColor: '#FFFFFF',
+};

@@ -1,17 +1,18 @@
 import React from 'react';
-import { Form, Header, Message, Segment } from 'semantic-ui-react';
-import { Redirect } from 'react-router-dom';
+import { Container, Col, Card, Row } from 'react-bootstrap';
+import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
+
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
-import { AutoForm, SubmitField, TextField } from 'uniforms-semantic';
-import { ROUTES } from '../../../startup/client/route-constants';
-import { darkerBlueStyle } from '../../styles';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { USER_INTERACTIONS } from '../../../startup/client/user-interaction-constants';
 import { userInteractionDefineMethod } from '../../../api/user/UserInteractionCollection.methods';
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
 import { defineMethod, updateMethod } from '../../../api/base/BaseCollection.methods';
+import { darkerBlueStyle, whiteStyle, greyStyle } from '../../styles';
+// import { Redirect } from 'react-router-dom';
+// import { ROUTES } from '../../../startup/client/route-constants';
 
 const schema = new SimpleSchema({
   yourLastName: String,
@@ -25,14 +26,9 @@ const schema = new SimpleSchema({
  * A simple static component to render some text for the landing page.
  * @memberOf ui/pages
  */
-class UnderParticipationForm extends React.Component {
+const UnderParticipationForm = () => {
 
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
-
-  submit(formData) {
+  const submit = (formData) => {
     const { firstName, lastName, parentFirstName, parentLastName, parentEmail } = formData;
     const dev = Participants.findDoc({ userID: Meteor.userId() });
     const username = dev.username;
@@ -69,40 +65,65 @@ class UnderParticipationForm extends React.Component {
         console.error('Could not update minor status', error);
       }
     });
-    this.setState({ redirectToReferer: true });
-  }
+  };
 
-  render() {
-    const formSchema = new SimpleSchema2Bridge(schema);
-    if (this.state.redirectToReferer) {
-      const from = { pathname: ROUTES.CREATE_PROFILE };
-      return <Redirect to={from} />;
-    }
-    return (
-        <Segment style={darkerBlueStyle}>
-          <Header>HACC Registration</Header>
-          <AutoForm schema={formSchema} onSubmit={data => this.submit(data)}>
-            <Segment>
-              <Message>
-                Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
-                <br />
-                Then agree to the terms.
-              </Message>
-              <Form.Group widths="equal">
-                <TextField name='yourFirstName' />
-                <TextField name='yourLastName' />
-              </Form.Group>
-              <Form.Group widths="equal">
-                <TextField name='parentFirstName' label="Parent/Guardian First Name" />
-                <TextField name='parentLastName' label="Parent/Guardian Last Name" />
-                <TextField name='parentEmail' label="Parent/Guardian Email" />
-              </Form.Group>
-              <SubmitField />
-            </Segment>
-          </AutoForm>
-        </Segment>
-    );
+  /*
+  // Not sure how to do this without states so... yeah
+  if (this.state.redirectToReferer) {
+    const from = { pathname: ROUTES.CREATE_PROFILE };
+    return <Redirect to={from} />;
   }
-}
+   */
+  let fRef = null;
+  const formSchema = new SimpleSchema2Bridge(schema);
+  return (
+      <Container fluid id={'under-participation'}>
+        <Card style={darkerBlueStyle}>
+          <Row>
+            <Col>
+              <Card.Title>  HACC Registration</Card.Title>
+            </Col>
+          </Row>
+          <Card.Body>
+            <AutoForm ref={ref => { fRef = ref; }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
+              <Card.Body style={whiteStyle}>
+                <Row>
+                  <Col>
+                    <Card.Body style={greyStyle}>
+                      Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
+                      <br/>
+                      Then agree to the terms.
+                    </Card.Body>
+                  </Col>
+                </Row>
+                <br/>
+                <Row>
+                  <Col>
+                    <TextField name='yourFirstName'/>
+                  </Col>
+                  <Col>
+                    <TextField name='yourLastName'/>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <TextField name='parentFirstName' label="Parent/Guardian First Name"/>
+                  </Col>
+                  <Col>
+                    <TextField name='parentLastName' label="Parent/Guardian Last Name"/>
+                  </Col>
+                  <Col>
+                    <TextField name='parentEmail' label="Parent/Guardian Email"/>
+                  </Col>
+                </Row>
+                <SubmitField/>
+                <ErrorsField/>
+              </Card.Body>
+            </AutoForm>
+          </Card.Body>
+        </Card>
+      </Container>
+  );
+};
 
 export default UnderParticipationForm;
