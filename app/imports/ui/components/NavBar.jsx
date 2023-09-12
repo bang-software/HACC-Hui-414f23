@@ -127,6 +127,7 @@ class NavBar extends React.Component {
           ) : ''}
           <Menu.Item position="right"
                      as={NavLink}
+                     id="help-button"
                      activeClassName="active"
                      exact
                      to={ROUTES.HELP_PAGE}

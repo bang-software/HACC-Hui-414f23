@@ -6,6 +6,7 @@ import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
 import { underParticipationFormPage } from './underparticipationform.page';
 import { signOutPage } from './signoutPage.page';
+import { helpPage} from './help.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -23,6 +24,11 @@ fixture('meteor-application-template-react localhost test with default db')
 /** USER --------------------------------------------------------------------------------------------------*/
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
+});
+
+test('Test that help page shows up', async (testController) => {
+  await navBar.gotoHelpPage(testController);
+  await helpPage.isDisplayed(testController);
 });
 
 test('Test that age page renders', async (testController) => {
