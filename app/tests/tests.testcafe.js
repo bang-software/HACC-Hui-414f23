@@ -6,7 +6,7 @@ import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
 import { underParticipationFormPage } from './underparticipationform.page';
 import { signOutPage } from './signoutPage.page';
-import { helpPage} from './help.page';
+import { helpPage } from './help.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };

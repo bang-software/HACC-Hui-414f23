@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
+import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
 
 class UnderParticipationForm {
   constructor() {
-    this.pageId = '#under-participation';
+    this.pageId = `#${PAGE_IDS.UNDER_AGE_PARTICIPATION_FORM}`;
     this.pageSelector = Selector(this.pageId);
   }
 
