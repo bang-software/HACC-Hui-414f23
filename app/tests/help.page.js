@@ -1,8 +1,9 @@
 import { Selector } from 'testcafe';
+import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
 
 class HelpPage {
   constructor() {
-    this.pageId = '#help-page';
+    this.pageId = `#${PAGE_IDS.HELP_PAGE}`;
     this.pageSelector = Selector(this.pageId);
   }
 
