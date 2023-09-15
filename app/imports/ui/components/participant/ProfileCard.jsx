@@ -21,14 +21,14 @@ const ProfileCard = ({ model }) => (
 
   <Card>
     <Card.Body>
-      <Card.Header>
-        <h1>{model.firstName} {model.lastName}</h1>
-      </Card.Header>
+      <Card.Title>
+        <h3><b>{model.firstName} {model.lastName}</b></h3>
+      </Card.Title>
       <Card.Subtitle>{ model.username }<br/> { model.demographicLevel }
       </Card.Subtitle>
       <Container>
         <Col>
-          {/*<Image width='300px' src='/images/HACC_icon_2022.png' /><Icon name="github"/> GitHub:<br/>*/}
+          <Image width='30px' src='/images/github-mark.png' />{'GitHub: '}<br/>
           <a href={model.gitHub}>{model.gitHub}</a>
         </Col>
         <Col>
@@ -54,19 +54,19 @@ const ProfileCard = ({ model }) => (
       <Container>
         <Row>
           <Col>
-            <h4>Challenges</h4>
+            <h5><b>Challenges</b></h5>
             <ListGroup>
               {model.challenges.map((item) => <ListGroup.Item key={item}>{item}</ListGroup.Item>)}
             </ListGroup>
           </Col>
           <Col>
-            <h6>Skills</h6>
+            <h5><b>Skills</b></h5>
             <ListGroup>
               {model.skills.map((item) => <SkillItem item={item} key={item._id}/>)}
             </ListGroup>
           </Col>
           <Col>
-            <h6>Tools</h6>
+            <h5><b>Tools</b></h5>
             <ListGroup>
               {model.tools.map((item) => <ToolItem item={item} key={item._id}/>)}
             </ListGroup>
