@@ -1,12 +1,12 @@
 import React from 'react';
-import { Grid, Segment, Header } from 'semantic-ui-react';
+import { Container, Col, Card } from 'react-bootstrap';
 import {
   AutoForm,
   ErrorsField,
   SubmitField,
   TextField,
   LongTextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -28,18 +28,15 @@ const schema = new SimpleSchema({
   description: String,
 });
 
-class EditChallengeWidget extends React.Component {
+const EditChallengeWidget = ({ doc }) => {
 
   /** On submit, insert the data.
    * @param data {Object} the results from the form.
-   * @param formRef {FormRef} reference to the form.
    */
-  submit(data) {
+  const submit = (data) => {
 
-    const {
-      description, submissionDetail, pitch,
-    } = data;
-    const id = this.props.doc._id;
+    const { description, submissionDetail, pitch } = data;
+    const id = doc._id;
 
     const updateData = {
       id, description, submissionDetail, pitch,
@@ -54,52 +51,46 @@ class EditChallengeWidget extends React.Component {
             swal('Success', 'Item edited successfully', 'success');
           }
         });
-  }
+  };
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
     const formSchema = new SimpleSchema2Bridge(schema);
     return (
         <div style={{ paddingBottom: '50px' }}>
-          <Grid container centered>
-            <Grid.Column>
+          <Container>
+            <Col>
               <div style={{
                 backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
                 borderRadius: '2rem',
               }}>
-                <Header as="h2" textAlign="center">Edit Challenge</Header>
+                <h2 style={{ textAlign: 'center' }}>Edit Challenge</h2>
               </div>
-              <AutoForm schema={formSchema} onSubmit={data => this.submit(data)} model={this.props.doc}
+              <AutoForm schema={formSchema} onSubmit={data => submit(data)} model={doc}
                         style={{
                           paddingBottom: '4rem',
                         }}>
-                <Segment style={{
+                <Card style={{
                   borderRadius: '1rem',
                   backgroundColor: '#E5F0FE',
                 }} className={'teamCreate'}>
-                  <Grid container centered>
-                    <Grid.Column style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+                  <Container>
+                    <Col style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
                       <LongTextField name='description' required/>
                       <TextField name='submissionDetail' required/>
                       <TextField name='pitch' required/>
-                    </Grid.Column>
-                  </Grid>
-                  <div align='center'>
-                    <SubmitField value='Submit'
-                                 style={{
-                                   color: 'white', backgroundColor: '#DB2828',
-                                   margin: '2rem 0rem',
-                                 }}/>
+                    </Col>
+                  </Container>
+                  <div style={{ textAlign: 'center' }}>
+                    <SubmitField value='Submit'/>
                   </div>
                   <ErrorsField/>
-                </Segment>
+                </Card>
               </AutoForm>
-            </Grid.Column>
-          </Grid>
+            </Col>
+          </Container>
         </div>
     );
-  }
-}
+};
 
 EditChallengeWidget.propTypes = {
   doc: PropTypes.object,

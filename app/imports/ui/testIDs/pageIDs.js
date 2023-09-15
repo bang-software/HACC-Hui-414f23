@@ -7,4 +7,5 @@ export const PAGE_IDS = {
   SIGN_IN: 'sign-in',
   SIGN_OUT: 'sign-out',
   UNDER_AGE_PARTICIPATION_FORM: 'under-age-participation',
+  EDIT_CHALLENGE_PAGE: 'edit-challenge-page',
 };
