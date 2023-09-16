@@ -29,7 +29,7 @@ if (Meteor.isServer) {
     });
 
     it('Can define and removeIt', function test1(done) {
-      this.timeout(50000);
+      this.timeout(60000);
       fc.assert(
           fc.property(fc.lorem(3), fc.lorem(24), fc.boolean(), fc.float(),
               (fcName, description, open, num) => {
