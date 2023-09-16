@@ -31,7 +31,6 @@ const AddChallenge = () => {
     const { title, description, submissionDetail, pitch } = data;
     const definitionData = { title, description, submissionDetail, pitch };
     const collectionName = Challenges.getCollectionName();
-    console.log(collectionName);
     defineMethod.call({ collectionName: collectionName, definitionData: definitionData },
         (error) => {
           if (error) {

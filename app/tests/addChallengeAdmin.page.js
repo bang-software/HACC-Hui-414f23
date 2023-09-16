@@ -16,7 +16,7 @@ class AddChallengeAdminPage {
   async addChallenge(testController, challenge) {
     await this.isDisplayed(testController);
     await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_TITLE}`, challenge.title);
-    await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_SUBMISSION_DETAIL}`, challenge.description);
+    await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_DESCRIPTION}`, challenge.description);
     await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_SUBMISSION_DETAIL}`, challenge.submissionDetail);
     await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_PITCH}`, challenge.pitch);
     await testController.click(`#${COMPONENT_IDS.ADD_CHALLENGE_SUBMIT}`);

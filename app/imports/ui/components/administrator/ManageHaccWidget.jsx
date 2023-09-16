@@ -98,7 +98,7 @@ class ManageHaccWidget extends React.Component {
                   ))}
                   </Table.Body>
                 </Table>
-                <div align='center'>
+                <div style={{ textAlign: 'center' }}>
                   <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} style={{
                     color: 'white', backgroundColor: '#DB2828',
                     margin: '2rem 0rem',
@@ -118,7 +118,7 @@ class ManageHaccWidget extends React.Component {
                   <Table.Body>{this.props.skills.map((skills => <SkillsAdminWidget key={skills._id} skills={skills} />))}
                   </Table.Body>
                 </Table>
-                <div align='center'>
+                <div style={{ textAlign: 'center' }}>
                   <Button style={{
                     color: 'white', backgroundColor: '#DB2828',
                     margin: '2rem 0rem',
@@ -137,7 +137,7 @@ class ManageHaccWidget extends React.Component {
                   <Table.Body>{this.props.tools.map((tools => <ToolsAdminWidget key={tools._id} tools={tools} />))}
                   </Table.Body>
                 </Table>
-                <div align='center'>
+                <div style={{ textAlign: 'center' }}>
                   <Button style={{
                     color: 'white', backgroundColor: '#DB2828',
                     margin: '2rem 0rem',
