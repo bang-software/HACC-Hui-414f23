@@ -17,4 +17,9 @@ export const COMPONENT_IDS = {
   HELP_BUTTON: 'help-button',
   MY_PROFILE: 'my-profile',
   CONFIGURE_HACC: 'configure-hacc',
+  EDIT_CHALLENGE_BUTTON: 'edit-challenge-button',
+  EDIT_CHALLENGE_DESCRIPTION: 'edit-challenge-description',
+  EDIT_CHALLENGE_SUBMISSION_DETAIL: 'edit-challenge-submission-detail',
+  EDIT_CHALLENGE_PITCH: 'edit-challenge-pitch',
+  EDIT_CHALLENGE_SUBMIT: 'edit-challenge-submit',
 };

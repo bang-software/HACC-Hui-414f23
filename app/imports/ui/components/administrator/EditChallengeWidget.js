@@ -15,6 +15,7 @@ import SimpleSchema from 'simpl-schema';
 import { withRouter } from 'react-router';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /**
  * Renders the Page for adding stuff. **deprecated**
@@ -75,13 +76,13 @@ const EditChallengeWidget = ({ doc }) => {
                 }} className={'teamCreate'}>
                   <Container>
                     <Col style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
-                      <LongTextField name='description' required/>
-                      <TextField name='submissionDetail' required/>
-                      <TextField name='pitch' required/>
+                      <LongTextField name='description' id={COMPONENT_IDS.EDIT_CHALLENGE_DESCRIPTION} required/>
+                      <TextField name='submissionDetail' id={COMPONENT_IDS.EDIT_CHALLENGE_SUBMISSION_DETAIL} required/>
+                      <TextField name='pitch' id={COMPONENT_IDS.EDIT_CHALLENGE_PITCH} required/>
                     </Col>
                   </Container>
                   <div style={{ textAlign: 'center' }}>
-                    <SubmitField value='Submit'/>
+                    <SubmitField value='Submit' id={COMPONENT_IDS.EDIT_CHALLENGE_SUBMIT}/>
                   </div>
                   <ErrorsField/>
                 </Card>
