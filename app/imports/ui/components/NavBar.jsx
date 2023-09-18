@@ -42,7 +42,8 @@ class NavBar extends React.Component {
           </Menu.Item>
           {isParticipant ? (
               [
-                <Menu.Item as={NavLink}
+                <Menu.Item id='navbar-profile'
+                           as={NavLink}
                            activeClassName="active"
                            exact
                            to={ROUTES.YOUR_PROFILE}

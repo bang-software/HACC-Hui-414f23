@@ -6,7 +6,9 @@ import ProfileWidget from '../../components/participant/ProfileWidget';
 class ProfilePage extends React.Component {
   render() {
     return (
+      <div id={'profile-page'}>
         <ProfileWidget />
+      </div>
     );
   }
 }

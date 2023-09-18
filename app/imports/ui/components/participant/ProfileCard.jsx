@@ -5,7 +5,7 @@ import SkillItem from './SkillItem';
 import ToolItem from './ToolItem';
 
 const ProfileCard = ({ model }) => (
-  <Card>
+  <Card id={'profile-card'}>
     <Card.Body>
       <Card.Title>
         <h3><b>{model.firstName} {model.lastName}</b></h3>

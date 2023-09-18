@@ -3,6 +3,7 @@ import { agePage } from './age.page';
 import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
+import { profilePage } from './profilePage';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
 import { underParticipationFormPage } from './underparticipationform.page';
 import { signOutPage } from './signoutPage.page';
@@ -36,6 +37,15 @@ test('Test that under participation page renders', async (testController) => {
   await signinPage.signin(testController, credentialsB.username, credentialsB.password);
   await agePage.under18(testController);
   await underParticipationFormPage.isDisplayed(testController);
+});
+
+test('Test that profile page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await agePage.isDisplayed(testController);
+  await agePage.under18(testController);
+  await navBar.gotoProfilePage(testController);
+  await profilePage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
