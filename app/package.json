@@ -57,6 +57,11 @@
     "test-integration": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer MOCHA_TIMEOUT=150000 meteor test --exclude-archs web.browser.legacy,web.cordova --full-app --once --driver-package meteortesting:mocha --port 3500",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "move-docs": "cp -r ../docs/ ../../docusaurus/static/jsdoc/",
-    "deploy": "cross-env DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy hacchui.meteorapp.com --settings ../config/settings.production.json"
+    "deploy": "cross-env DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy hacchui.meteorapp.com --settings ../config/settings.production.json",
+    "test-acceptance-development": "testcafe edge tests/*.testcafe.js",
+    "test-acceptance-development-single": "testcafe chrome tests/*.testcafe.js -t \"Test that sign up and sign out work\"",
+    "test-acceptance-ci": "testcafe chrome:headless tests/*.testcafe.js -q --app \"meteor npm run start\"",
+    "unimported": "npx unimported",
+    "test-all": "meteor reset && meteor npm run lint && meteor npm run unimported && meteor npm run test-unit && meteor npm run test-integration && meteor npm run test-acceptance-ci"
   }
 }
