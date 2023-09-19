@@ -12,6 +12,11 @@ export const footer = {
   paddingTop: 15,
   paddingBottom: 15,
 };
+
 export const greyStyle = {
   backgroundColor: '#C4C4C4',
+};
+
+export const whiteStyle = {
+  backgroundColor: '#FFFFFF',
 };
