@@ -119,7 +119,7 @@ class ManageHaccWidget extends React.Component {
                   </Table.Body>
                 </Table>
                 <div style={{ textAlign: 'center' }}>
-                  <Button style={{
+                  <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON} style={{
                     color: 'white', backgroundColor: '#DB2828',
                     margin: '2rem 0rem',
                   }}><Link to={ROUTES.ADD_SKILL} style={{ color: 'white' }}>Add Skill</Link></Button>
