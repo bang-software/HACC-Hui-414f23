@@ -4,6 +4,7 @@ export const paleBlueStyle = {
 
 export const darkerBlueStyle = {
   backgroundColor: '#B6D5FC',
+  padding: '10px',
 };
 
 export const footer = {
