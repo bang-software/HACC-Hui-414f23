@@ -44,12 +44,9 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.NAVBAR_SIGN_OUT}`);
   }
 
-  async gotoMyProfilePage(testController) {
-    const visible = await Selector(`#${COMPONENT_IDS.MY_PROFILE}`).visible;
-    if (!visible) {
-      await testController.click('button.navbar-toggler');
-    }
-    await testController.click(`#${COMPONENT_IDS.MY_PROFILE}`);
+  async gotoProfilePage(testController) {
+    await testController.expect(Selector(`#${COMPONENT_IDS.PROFILE}`).exists).ok();
+    await testController.click(`#${COMPONENT_IDS.PROFILE}`);
   }
 
   /** Feeling Hungry Page */

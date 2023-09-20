@@ -13,6 +13,7 @@ import { editChallengePage } from './editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
+import { profilePage } from './profilePage';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -87,6 +88,15 @@ test('Test that suggest tool/skill renders', async (testController) => {
   await navBar.isLoggedIn(testController, credentialsB.username);
   await navBar.gotoSuggestToolSkill(testController);
   await suggestToolSkillPage.isDisplayed(testController);
+});
+
+test('Test that profile page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsC.username, credentialsC.password);
+  await agePage.isDisplayed(testController);
+  await agePage.under18(testController);
+  await navBar.gotoProfilePage(testController);
+  await profilePage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
