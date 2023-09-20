@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Col, Row, Container, Image, ListGroup } from 'react-bootstrap';
+import { Card, Col, Row, Container, ListGroup } from 'react-bootstrap';
+import { Github, Linkedin, Globe2, Slack } from 'react-bootstrap-icons';
 import SkillItem from './SkillItem';
 import ToolItem from './ToolItem';
 
@@ -15,20 +16,20 @@ const ProfileCard = ({ model }) => (
       <Container>
         <Row>
           <Col>
-            <Image width='20px' src='/images/github_icon.png' />{'  GitHub: '}<br/>
+            <Github color="royalblue" size={30}/>{'  GitHub: '}<br/>
             <a href={model.gitHub}>{model.gitHub}</a>
           </Col>
           <Col>
-            <Image width='20px' src='/images/linked_in_icon.png' />{'  Linked In: '}
+            <Linkedin color="royalblue" size={30}/>{'  Linked In: '}
             <br/>
             <a href={model.linkedIn}>{model.linkedIn}</a>
           </Col>
           <Col>
-            <Image width='20px' src='/images/website_icon.png' />{'  Website: '}<br/>
+            <Globe2 color="royalblue" size={30}/>{'  Website: '}<br/>
             <a href={model.website}>{model.website}</a>
           </Col>
           <Col>
-            <Image width='30px' src='/images/slack_icon.png' />{'  Slack: '}<br/>
+            <Slack color="royalblue" size={30}/>{'  Slack: '}<br/>
             <a href={model.slackUsername}>{model.slackUsername}</a>
           </Col>
         </Row>
