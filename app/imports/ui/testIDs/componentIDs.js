@@ -34,4 +34,9 @@ export const COMPONENT_IDS = {
   PARTICIPATION_FORM_LAST_NAME: 'participation-form-last-name',
   PARTICIPATION_FORM_AGREE_BUTTON: 'participation-form-agree-button',
   PARTICIPATION_FORM_SUBMIT: 'participation-form-submit',
+  SUGGEST_TOOL_SKILL_BUTTON: 'suggest-tool-skill-button',
+  SUGGEST_TOOL_SKILL_SELECT: 'suggest-tool-skill-select',
+  SUGGEST_TOOL_SKILL_NAME: 'suggest-tool-skill-name',
+  SUGGEST_TOOL_SKILL_DESCRIPTION: 'suggest-tool-skill-description',
+  SUGGEST_TOOL_SKILL_SUBMIT: 'suggest-tool-skill-submit',
 };
