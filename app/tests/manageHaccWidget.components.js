@@ -20,6 +20,10 @@ class ManageHaccWidgetComponents {
   async gotoAddSkillPage(testController) {
     await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON}`);
   }
+
+  async gotoAddToolPage(testController) {
+    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON}`);
+  }
 }
 
 export const manageHaccWidgetComponents = new ManageHaccWidgetComponents();

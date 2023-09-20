@@ -56,7 +56,7 @@ const AddTool = () => {
               <Card style={{ padding: '20px', marginBottom: '20px' }}>
                 <TextField id={COMPONENT_IDS.ADD_TOOL_NAME} name='name' />
                 <TextField id={COMPONENT_IDS.ADD_TOOL_DESCRIPTION} name='description' />
-                <SubmitField value='Submit' />
+                <SubmitField id={COMPONENT_IDS.ADD_TOOL_SUBMIT} value='Submit' />
                 <ErrorsField />
               </Card>
             </AutoForm>
