@@ -13,6 +13,7 @@ export const COMPONENT_IDS = {
   CONFIGURE_HACC: 'configure-hacc',
   HACC_WIDGET_ADD_CHALLENGE_BUTTON: 'add-challenge-button',
   HACC_WIDGET_ADD_SKILL_BUTTON: 'add-skill-button',
+  HACC_WIDGET_ADD_TOOL_BUTTON: 'add-tool-button',
   ADD_CHALLENGE_TITLE: 'add-challenge-title',
   ADD_CHALLENGE_DESCRIPTION: 'add-challenge-description',
   ADD_CHALLENGE_SUBMISSION_DETAIL: 'add-challenge-submission-detail',
