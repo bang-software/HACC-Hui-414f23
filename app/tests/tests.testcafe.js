@@ -12,7 +12,7 @@ import { addToolAdminPage } from './addToolAdmin.page';
 import { editChallengePage } from './editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
-import {viewTeamsPage} from "./viewTeamsPage.page";
+import {viewTeamsPage} from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 /* global fixture:false, test:false */
 
