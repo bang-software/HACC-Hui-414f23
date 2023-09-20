@@ -5,13 +5,13 @@ import moment from 'moment';
 import _ from 'lodash';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import { Container, Row, Col, Button, Form, Card, ListGroup } from 'react-bootstrap';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import { Teams } from '../../../api/team/TeamCollection';
 import ViewTeamExample from './ViewTeam';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const getTeamMembers = (team) => {
   const teamID = team._id;
@@ -74,7 +74,6 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
     setFilteredTeams(remainingTeams);
   };
 
-
   const handleDownload = () => {
     const zip = new ZipZap();
     const dir = 'hacchui-team-captains';
@@ -100,7 +99,13 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
           </Col>
         </Row>
         <Row className="mb-4">
-          <Button variant="primary" onClick={handleDownload}>Download Team Captain emails</Button>
+          <Button
+              variant="primary"
+              onClick={handleDownload}
+              id={COMPONENT_IDS.DOWNLOAD_TEAM_CAPTAIN_EMAIL}
+          >
+            Download Team Captain emails
+          </Button>
         </Row>
         <Row>
           <Col xs={4}>
@@ -111,16 +116,16 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
                     <Form.Label>Select a filter</Form.Label>
                     <Form.Check type="radio" name="checkboxRadioGroup" value="NonCompliant"
                                 checked={filterValue === 'NonCompliant'} onChange={handleChange}
-                                label="Non Compliant" />
+                                label="Non Compliant" id={COMPONENT_IDS.FILTER_NON_COMPLIANT} />
                     <Form.Check type="radio" name="checkboxRadioGroup" value="NoDevPost"
                                 checked={filterValue === 'NoDevPost'} onChange={handleChange}
-                                label="No devpost" />
+                                label="No devpost" id={COMPONENT_IDS.FILTER_NO_DEV_POST}/>
                     <Form.Check type="radio" name="checkboxRadioGroup" value="NoGitHub"
                                 checked={filterValue === 'NoGitHub'} onChange={handleChange}
-                                label="No GitHub" />
+                                label="No GitHub" id={COMPONENT_IDS.FILTER_NO_GITHUB}/>
                     <Form.Check type="radio" name="checkboxRadioGroup" value="None"
                                 checked={filterValue === 'None'} onChange={handleChange}
-                                label="None" />
+                                label="None" id={COMPONENT_IDS.FILTER_NONE}/>
                   </Form.Group>
                 </Form>
               </Card.Body>
