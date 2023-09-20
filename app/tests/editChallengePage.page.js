@@ -12,10 +12,6 @@ class EditChallengePage {
     await testController.wait(10000).expect(this.pageSelector.exists).ok();
   }
 
-  async gotoEditChallengePage(testController) {
-    await testController.click(`#${COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}`);
-  }
-
   async editChallenge(testController, editedChallenge) {
     await this.isDisplayed(testController);
     await testController.typeText(`#${COMPONENT_IDS.EDIT_CHALLENGE_DESCRIPTION}`, editedChallenge.description, { replace: true });

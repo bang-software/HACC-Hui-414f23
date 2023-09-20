@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Col, Card } from 'react-bootstrap';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-semantic';
+import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
@@ -48,12 +48,12 @@ const AddTool = () => {
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   return (
         <Container fluid id={PAGE_IDS.ADD_TOOL}>
-          <Col>
-            <h2 style={{ textAlign: 'center' }}>Add a Tool</h2>
+          <Col className="addFormContainer">
+            <h2 className='addFormHeader'>Add a Tool</h2>
             <AutoForm ref={ref => {
               fRef = ref;
             }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
-              <Card style={{ padding: '20px', marginBottom: '20px' }}>
+              <Card className='addFormCard'>
                 <TextField id={COMPONENT_IDS.ADD_TOOL_NAME} name='name' />
                 <TextField id={COMPONENT_IDS.ADD_TOOL_DESCRIPTION} name='description' />
                 <SubmitField id={COMPONENT_IDS.ADD_TOOL_SUBMIT} value='Submit' />
