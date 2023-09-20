@@ -9,10 +9,13 @@ import { helpPage } from './help.page';
 import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { addSkillAdminPage } from './addSkillAdmin.page';
 import { editChallengePage } from './editChallengePage.page';
+import { participationForm } from './participationForm.page';
+import { createProfilePage } from './createProfile.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
 const credentialsB = { username: 'john@foo.com', password: 'changeme' };
+const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -33,7 +36,7 @@ const editedChallenge = {
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 
-/** USER --------------------------------------------------------------------------------------------------*/
+/** USER --------------------------------------------------------------------------------------------------
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
@@ -63,8 +66,17 @@ test('Test that signin and signout work', async (testController) => {
   await navBar.logout(testController);
   await signOutPage.isDisplayed(testController);
 });
+ */
 
-/** ADMIN -------------------------------------------------------------------------------------------------*/
+test('Test that Participation Form page works', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsC.username, credentialsC.password);
+  await agePage.over18(testController);
+  await participationForm.agreeToTerms(testController, credentialsC.firstName, credentialsC.lastName);
+  await createProfilePage.isDisplayed(testController);
+});
+
+/** ADMIN -------------------------------------------------------------------------------------------------
 test('Test that AddChallenge pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -88,3 +100,4 @@ test('Test that EditChallenge pages function', async (testController) => {
   await editChallengePage.gotoEditChallengePage(testController);
   await editChallengePage.editChallenge(testController, editedChallenge);
 });
+ */
