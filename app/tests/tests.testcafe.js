@@ -10,10 +10,14 @@ import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { addSkillAdminPage } from './addSkillAdmin.page';
 import { addToolAdminPage } from './addToolAdmin.page';
 import { editChallengePage } from './editChallengePage.page';
+import { participationForm } from './participationForm.page';
+import { createProfilePage } from './createProfile.page';
+import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
 const credentialsB = { username: 'john@foo.com', password: 'changeme' };
+const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -67,6 +71,22 @@ test('Test that signin and signout work', async (testController) => {
   await navBar.isLoggedIn(testController, credentialsA.username);
   await navBar.logout(testController);
   await signOutPage.isDisplayed(testController);
+});
+
+test('Test that Participation Form page works', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsC.username, credentialsC.password);
+  await agePage.over18(testController);
+  await participationForm.agreeToTerms(testController, credentialsC.firstName, credentialsC.lastName);
+  await createProfilePage.isDisplayed(testController);
+});
+
+test('Test that suggest tool/skill renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await navBar.isLoggedIn(testController, credentialsB.username);
+  await navBar.gotoSuggestToolSkill(testController);
+  await suggestToolSkillPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
