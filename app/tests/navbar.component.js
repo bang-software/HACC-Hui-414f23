@@ -35,8 +35,9 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.NAVBAR_SIGN_OUT}`);
   }
 
-  async gotoMyProfilePage(testController) {
-    await testController.click(`#${COMPONENT_IDS.MY_PROFILE}`);
+  async gotoProfilePage(testController) {
+    await testController.expect(Selector('#navbar-profile').exists).ok();
+    await testController.click('#navbar-profile');
   }
 
   /** Feeling Hungry Page */
