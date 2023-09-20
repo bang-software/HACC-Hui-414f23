@@ -13,4 +13,5 @@ export const PAGE_IDS = {
   VIEW_TEAMS_PAGE: 'view-teams-page',
   PARTICIPATION_FORM: 'participation-form',
   CREATE_PROFILE: 'create-profile',
+  SUGGEST_TOOL_SKILL: 'suggest-tool-skill',
 };
