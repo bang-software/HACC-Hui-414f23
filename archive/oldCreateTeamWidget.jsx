@@ -1,14 +1,19 @@
 import React from 'react';
-// eslint-disable-next-line max-len
-import { AutoForm, ErrorsField, ListField, ListItemField, LongTextField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
+import { Modal, Grid, Segment, Header, Divider, Icon, Message, Button, List } from 'semantic-ui-react';
+import {
+  AutoForm,
+  ErrorsField,
+  SubmitField,
+  TextField,
+  LongTextField, ListItemField, ListField, SelectField,
+} from 'uniforms-semantic';
 import swal from 'sweetalert';
+import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { Card, Col, Container, Row } from 'react-bootstrap';
-import { HandThumbsDownFill } from 'react-bootstrap-icons';
-import { useTracker } from 'meteor/react-meteor-data';
 import MultiSelectField from '../../components/form-fields/MultiSelectField';
 import RadioField from '../../components/form-fields/RadioField';
 import { Teams } from '../../../api/team/TeamCollection';
@@ -21,29 +26,28 @@ import { Slugs } from '../../../api/slug/SlugCollection';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
 
-const CreateTeamWidget = () => {
+/**
+ * Renders the Page for adding stuff. **deprecated**
+ * @memberOf ui/pages
+ */
+class CreateTeamWidget extends React.Component {
 
-  const { participant, skillsCol, challenges, toolsCol, canCreateTeams } = useTracker(() => {
-    const sub1 = CanCreateTeams.subscribe();
-    const sub2 = Participants.subscribe();
-    const sub3 = Tools.subscribe();
-    const sub4 = Challenges.subscribe();
-    const sub5 = Skills.subscribe();
-    const rdy = sub1.ready() && sub2.ready() && sub3.ready() && sub4.ready() && sub5.ready();
+  constructor(props) {
+    super(props);
+    this.state = { redirectToReferer: false, errorModal: false, isRegistered: [], notRegistered: [] };
+  }
+
+  buildTheModel() {
     return {
-      ready: rdy,
-      participant: Participants.findDoc({ userID: Meteor.userId() }),
-      challenges: Challenges.find({}).fetch(),
-      skillsCol: Skills.find({}).fetch(),
-      toolsCol: Tools.find({}).fetch(),
-      canCreateTeams: CanCreateTeams.findOne().canCreateTeams,
+      skills: [],
+      tools: [],
     };
-  });
+  }
 
-  const buildTheFormSchema = () => {
-    const challengeNames = _.map(challenges, c => c.title);
-    const skillNames = _.map(skillsCol, s => s.name);
-    const toolNames = _.map(toolsCol, t => t.name);
+  buildTheFormSchema() {
+    const challengeNames = _.map(this.props.challenges, c => c.title);
+    const skillNames = _.map(this.props.skills, s => s.name);
+    const toolNames = _.map(this.props.tools, t => t.name);
     const schema = new SimpleSchema({
       open: {
         type: String,
@@ -77,14 +81,18 @@ const CreateTeamWidget = () => {
       },
     });
     return schema;
-  };
+  }
 
   /** On submit, insert the data.
    * @param formData {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
-  const submit = (formData, formRef) => {
-    const owner = participant.username;
+  // eslint-disable-next-line no-unused-vars
+  submit(formData, formRef) {
+    // console.log('create team submit', formData);
+    this.setState({ isRegistered: [] });
+    this.setState({ notRegistered: [] });
+    const owner = this.props.participant.username;
     const { name, description, challenge, skills, tools, participants } = formData;
     if (/^[a-zA-Z0-9-]*$/.test(name) === false) {
       swal('Error', 'Sorry, no special characters or space allowed in the Team name.', 'error');
@@ -99,20 +107,27 @@ const CreateTeamWidget = () => {
     const currPart = Participants.find({}).fetch();
     const isRegistered = [];
     const notRegistered = [];
+    // console.log(currPart, partArray);
     for (let i = 0; i < partArray.length; i++) {
       let registered = false;
       for (let j = 0; j < currPart.length; j++) {
         if (currPart[j].username === partArray[i].email) {
           registered = true;
+          this.setState({
+            isRegistered: this.state.isRegistered.concat([`-${partArray[i].email}`]),
+          });
           isRegistered.push(partArray[i].email);
         }
       }
       if (!registered) {
+        this.setState({
+          notRegistered: this.state.notRegistered.concat([`-${partArray[i].email}`]),
+        });
         notRegistered.push(partArray[i].email);
       }
     }
     if (notRegistered.length !== 0) {
-      // this.setState({ errorModal: true });
+      this.setState({ errorModal: true });
     }
 
     let { open } = formData;
@@ -123,7 +138,7 @@ const CreateTeamWidget = () => {
     }
 
     const skillsArr = _.map(skills, n => {
-      const doc = skills.findDoc({ name: n });
+      const doc = Skills.findDoc({ name: n });
       return Slugs.getNameFromID(doc.slugID);
     });
     const toolsArr = _.map(tools, t => {
@@ -156,8 +171,9 @@ const CreateTeamWidget = () => {
           if (error) {
             swal('Error', error.message, 'error');
           } else {
-            // if (!this.state.errorModal) {
+            if (!this.state.errorModal) {
               swal('Success', 'Team created successfully', 'success');
+            }
             formRef.reset();
           }
         },
@@ -179,70 +195,90 @@ const CreateTeamWidget = () => {
             }
           });
     }
+  }
+
+  closeModal = () => {
+    this.setState({ errorModal: false });
+    swal('Success', 'Team created successfully', 'success');
   };
 
-  let fRef = null;
-  const formSchema = new SimpleSchema2Bridge(buildTheFormSchema);
-  const model = { skills: [], tools: [] };
-  const disabled = !canCreateTeams;
-  return (!participant.isCompliant ? (
-          <Container align={'center'}>
-            <h2>
-              <HandThumbsDownFill/>
+  /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
+  render() {
+    if (!this.props.participant.isCompliant) {
+      return (
+          <div align={'center'}>
+            <Header as='h2' icon>
+              <Icon name='thumbs down outline' />
               You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
               &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
-            </h2>
-            <h3>
-              You cannot create a team until you do agree to the rules. Please check back later.
-            </h3>
-          </Container>
-      ) : (
-          <Card>
-            <Col>
-              <Card.Title style={{ backgroundColor: '#E5F0FE' }} className={'createTeam'}>
-                Create a Team
-              </Card.Title>
-              <Card.Body>
-                Team name and Devpost page ALL
-                have to use the same name. Team names cannot have spaces or special characters.
-              </Card.Body>
+              <Header.Subheader>
+                You cannot create a team until you do agree to the rules. Please check back later.
+              </Header.Subheader>
+            </Header>
+          </div>
+      );
+    }
+
+    let fRef = null;
+    const formSchema = new SimpleSchema2Bridge(this.buildTheFormSchema());
+    const model = this.buildTheModel();
+    const disabled = !this.props.canCreateTeams;
+    return (
+        <Grid container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+          <Grid.Column>
+            <Divider hidden />
+            <Segment
+                style={{
+                  // borderRadius: '10px',
+                  backgroundColor: '#E5F0FE',
+                }} className={'createTeam'}>
+              <Header as="h2" textAlign="center">Create a Team</Header>
+              {/* eslint-disable-next-line max-len */}
+              <Message>
+                <Header as="h4" textAlign="center">Team name and Devpost page ALL
+                  have to use the same name. Team names cannot have spaces or special characters.</Header>
+              </Message>
               <AutoForm
-                  ref={ref => { fRef = ref; }}
+                  ref={ref => {
+                    fRef = ref;
+                  }}
                   schema={formSchema}
                   model={model}
-                  onSubmit={data => submit(data, fRef)}
+                  onSubmit={data => this.submit(data, fRef)}
                   style={{
                     paddingBottom: '40px',
                   }}
               >
-                <Row style={{ paddingTop: '20px' }}>
-                  <Col style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <TextField name='name'/>
-                    <RadioField
-                        name='open'
-                        inline
-                    />
-                    <LongTextField name='description'/>
-                    <SelectField name='challenge'/>
-                    <Row>
-                      <Col><MultiSelectField name='skills'/></Col>
-                      <Col><MultiSelectField name='tools'/></Col>
-                    </Row>
-                    <TextField name="devpostPage"/>
-                    <TextField name="affiliation"/>
+                <Grid columns={1} style={{ paddingTop: '20px' }}>
+                  <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+                    <Grid className='doubleLine'>
+                      <TextField name='name' />
+                      <RadioField
+                          name='open'
+                          inline
+                      />
+                    </Grid>
+                    <LongTextField name='description' />
+                    <SelectField name='challenge' />
+                    <Grid columns={2}>
+                      <Grid.Column><MultiSelectField name='skills' /></Grid.Column>
+                      <Grid.Column><MultiSelectField name='tools' /></Grid.Column>
+                    </Grid>
+                    <TextField name="devpostPage" />
+                    <TextField name="affiliation" />
 
                     <ListField name="participants" label={'Enter each participant\'s email'}>
                       <ListItemField name="$">
                         <TextField showInlineError
                                    iconLeft='mail'
                                    name="email"
-                                   label={'Email'}/>
+                                   label={'Email'} />
                       </ListItemField>
                     </ListField>
 
-                  </Col>
-                </Row>
-                <Container align='center'>
+                  </Grid.Column>
+                </Grid>
+                <div align='center'>
                   <SubmitField value='Submit'
                                style={{
                                  color: 'white', backgroundColor: '#dd000a',
@@ -250,13 +286,54 @@ const CreateTeamWidget = () => {
                                }}
                                disabled={disabled}
                   />
-                </Container>
-                <ErrorsField/>
+                </div>
+                <ErrorsField />
               </AutoForm>
-            </Col>
-          </Card>
-      )
-  );
+            </Segment>
+            <Modal
+                onClose={this.close}
+                open={this.state.errorModal}
+            >
+              <Modal.Header>Member Warning</Modal.Header>
+              <Modal.Content scrolling>
+                <Modal.Description>
+                  <Header>Some Members you are trying to invite have not registered with SlackBot.</Header>
+                  <b>Registered Members:</b>
+                  <List items={this.state.isRegistered} />
+                  <b>Not Registered Members:</b>
+                  <List items={this.state.notRegistered} />
+                </Modal.Description>
+              </Modal.Content>
+              <Modal.Actions>
+                <b floated="left">Slackbot will only send invites to registered members, please confirm.</b>
+                <Button
+                    content="I Understand"
+                    labelPosition='right'
+                    icon='checkmark'
+                    onClick={() => this.closeModal()}
+                    positive
+                />
+              </Modal.Actions>
+            </Modal>
+          </Grid.Column>
+        </Grid>
+
+    );
+  }
+}
+
+CreateTeamWidget.propTypes = {
+  participant: PropTypes.object.isRequired,
+  skills: PropTypes.arrayOf(PropTypes.object).isRequired,
+  challenges: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tools: PropTypes.arrayOf(PropTypes.object).isRequired,
+  canCreateTeams: PropTypes.bool,
 };
 
-export default CreateTeamWidget;
+export default withTracker(() => ({
+  participant: Participants.findDoc({ userID: Meteor.userId() }),
+  challenges: Challenges.find({}).fetch(),
+  skills: Skills.find({}).fetch(),
+  tools: Tools.find({}).fetch(),
+  canCreateTeams: CanCreateTeams.findOne().canCreateTeams,
+}))(CreateTeamWidget);
