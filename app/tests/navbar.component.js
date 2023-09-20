@@ -14,11 +14,20 @@ class NavBar {
 
   async gotoSigninPage(testController) {
     // await this.ensureLogout(testController);
+    const visible = await Selector(`#${COMPONENT_IDS.LOGIN_DROPDOWN}`).visible;
+    if (!visible) {
+      // TODO: make that ID an import
+      await testController.click('button.navbar-toggler');
+    }
     await testController.click(`#${COMPONENT_IDS.LOGIN_DROPDOWN}`);
     await testController.click(`#${COMPONENT_IDS.LOGIN_DROPDOWN_SIGN_IN}`);
   }
 
   async gotoHelpPage(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.HELP_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click('button.navbar-toggler');
+    }
     await testController.click(`#${COMPONENT_IDS.HELP_BUTTON}`);
   }
 
@@ -36,16 +45,28 @@ class NavBar {
   }
 
   async gotoMyProfilePage(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.MY_PROFILE}`).visible;
+    if (!visible) {
+      await testController.click('button.navbar-toggler');
+    }
     await testController.click(`#${COMPONENT_IDS.MY_PROFILE}`);
   }
 
   /** Feeling Hungry Page */
   async gotoConfigueHACC(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.CONFIGURE_HACC}`).visible;
+    if (!visible) {
+      await testController.click('button.navbar-toggler');
+    }
     await testController.click(`#${COMPONENT_IDS.CONFIGURE_HACC}`);
   }
 
   /** Go to suggest/tool skill */
   async gotoSuggestToolSkill(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click('button.navbar-toggler');
+    }
     await testController.click(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`);
   }
 }
