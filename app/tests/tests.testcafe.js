@@ -91,7 +91,7 @@ test('Test that AddTool pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoAddToolPage(testController);
-  await addSkillAdminPage.addSkill(testController, tool);
+  await addToolAdminPage.addTool(testController, tool);
 });
 
 test('Test that EditChallenge pages function', async (testController) => {
