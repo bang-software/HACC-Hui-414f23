@@ -16,6 +16,18 @@ class ManageHaccWidgetComponents {
   async gotoAddChallengePage(testController) {
     await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON}`);
   }
+
+  async gotoEditChallengePage(testController) {
+    await testController.click(`#${COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}`);
+  }
+
+  async gotoAddSkillPage(testController) {
+    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON}`);
+  }
+
+  async gotoAddToolPage(testController) {
+    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_TOOL_BUTTON}`);
+  }
 }
 
 export const manageHaccWidgetComponents = new ManageHaccWidgetComponents();

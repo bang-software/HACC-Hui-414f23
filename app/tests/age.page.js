@@ -15,6 +15,10 @@ class AgePage {
   async under18(testController) {
     await testController.click(`#${COMPONENT_IDS.AGE_PAGE_NO_BUTTON}`);
   }
+
+  async over18(testController) {
+    await testController.click(`#${COMPONENT_IDS.AGE_PAGE_YES_BUTTON}`);
+  }
 }
 
 export const agePage = new AgePage();
