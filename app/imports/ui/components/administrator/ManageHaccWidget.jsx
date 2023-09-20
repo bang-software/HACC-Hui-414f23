@@ -13,6 +13,8 @@ import ToolsAdminWidget from './ToolsAdminWidget';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
 import { CanChangeChallenges } from '../../../api/team/CanChangeChallengeCollection';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /**
  * Renders the Page for Managing HACC. **deprecated**
@@ -58,7 +60,7 @@ class ManageHaccWidget extends React.Component {
   render() {
     // console.log(this.state);
     return (
-        <div id="HaccWidget" style={{ paddingBottom: '50px' }}>
+        <div id={PAGE_IDS.MANAGE_HACC_WIDGET_COMPONENT} style={{ paddingBottom: '50px' }}>
           <Grid container centered>
             <Grid.Column>
               <div style={{
@@ -96,8 +98,8 @@ class ManageHaccWidget extends React.Component {
                   ))}
                   </Table.Body>
                 </Table>
-                <div align='center'>
-                  <Button id="addChallengeButton" style={{
+                <div style={{ textAlign: 'center' }}>
+                  <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} style={{
                     color: 'white', backgroundColor: '#DB2828',
                     margin: '2rem 0rem',
                   }}><Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>
@@ -116,8 +118,8 @@ class ManageHaccWidget extends React.Component {
                   <Table.Body>{this.props.skills.map((skills => <SkillsAdminWidget key={skills._id} skills={skills} />))}
                   </Table.Body>
                 </Table>
-                <div align='center'>
-                  <Button style={{
+                <div style={{ textAlign: 'center' }}>
+                  <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON} style={{
                     color: 'white', backgroundColor: '#DB2828',
                     margin: '2rem 0rem',
                   }}><Link to={ROUTES.ADD_SKILL} style={{ color: 'white' }}>Add Skill</Link></Button>
@@ -135,7 +137,7 @@ class ManageHaccWidget extends React.Component {
                   <Table.Body>{this.props.tools.map((tools => <ToolsAdminWidget key={tools._id} tools={tools} />))}
                   </Table.Body>
                 </Table>
-                <div align='center'>
+                <div style={{ textAlign: 'center' }}>
                   <Button style={{
                     color: 'white', backgroundColor: '#DB2828',
                     margin: '2rem 0rem',

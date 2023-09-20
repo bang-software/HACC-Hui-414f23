@@ -1,11 +1,13 @@
 import React from 'react';
-import { Grid, Segment, Header } from 'semantic-ui-react';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-semantic';
+import { Container, Col, Card } from 'react-bootstrap';
+import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Skills } from '../../../api/skill/SkillCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -17,13 +19,13 @@ const schema = new SimpleSchema({
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-class AddSkill extends React.Component {
+const AddSkill = () => {
 
   /** On submit, insert the data.
    * @param data {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
-  submit(data, formRef) {
+  const submit = (data, formRef) => {
     const { name, description } = data;
     const definitionData = { name, description };
     const collectionName = Skills.getCollectionName();
@@ -39,30 +41,28 @@ class AddSkill extends React.Component {
             // console.log('Success');
           }
         });
-  }
+  };
 
+  let fRef = null;
+  const formSchema = new SimpleSchema2Bridge(schema);
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    let fRef = null;
-    const formSchema = new SimpleSchema2Bridge(schema);
-    return (
-        <Grid container centered>
-          <Grid.Column>
-            <Header as="h2" textAlign="center">Add a skill</Header>
-            <AutoForm ref={ref => {
-              fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
-              <Segment>
-                <TextField name='name' />
-                <TextField name='description' />
-                <SubmitField value='Submit' />
-                <ErrorsField />
-              </Segment>
+  return (
+      <Container fluid id={PAGE_IDS.ADD_SKILL}>
+        <Col>
+          <h2 style={{ textAlign: 'center' }}>Add a skill</h2>
+          <AutoForm ref={ref => {
+            fRef = ref;
+          }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
+            <Card style={{ padding: '20px', marginBottom: '20px' }}>
+              <TextField id={COMPONENT_IDS.ADD_SKILL_NAME} name='name'/>
+              <TextField id={COMPONENT_IDS.ADD_SKILL_DESCRIPTION} name='description' />
+              <SubmitField id={COMPONENT_IDS.ADD_CHALLENGE_SUBMIT} value='Submit' />
+              <ErrorsField />
+              </Card>
             </AutoForm>
-          </Grid.Column>
-        </Grid>
+          </Col>
+      </Container>
     );
-  }
-}
+};
 
 export default AddSkill;

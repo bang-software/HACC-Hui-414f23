@@ -11,6 +11,7 @@ import { userInteractionDefineMethod } from '../../../api/user/UserInteractionCo
 import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
 import { defineMethod, updateMethod } from '../../../api/base/BaseCollection.methods';
 import { darkerBlueStyle, whiteStyle, greyStyle } from '../../styles';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 // import { Redirect } from 'react-router-dom';
 // import { ROUTES } from '../../../startup/client/route-constants';
 
@@ -77,7 +78,7 @@ const UnderParticipationForm = () => {
   let fRef = null;
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
-      <Container fluid id={'under-participation'}>
+      <Container fluid id={PAGE_IDS.UNDER_AGE_PARTICIPATION_FORM}>
         <Card style={darkerBlueStyle}>
           <Row>
             <Col>

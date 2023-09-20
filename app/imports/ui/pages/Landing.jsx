@@ -1,12 +1,13 @@
 import React from 'react';
 import { Container, Row, Col, Image } from 'react-bootstrap';
+import { PAGE_IDS } from '../testIDs/pageIDs';
 
 /**
  * A simple static component to render some text for the landing page.
  * @memberOf ui/pages
  */
 const Landing = () => (
-      <Container id={'landing'} fluid>
+      <Container id={PAGE_IDS.LANDING} fluid>
         <Row style={{ margin: 50 }}>
           <Col
             width={8}

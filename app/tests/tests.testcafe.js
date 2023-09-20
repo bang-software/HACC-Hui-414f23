@@ -1,12 +1,14 @@
 import { landingPage } from './landing.page';
 import { agePage } from './age.page';
-import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
 import { underParticipationFormPage } from './underparticipationform.page';
 import { signOutPage } from './signoutPage.page';
-import { helpPage} from './help.page';
+import { helpPage } from './help.page';
+import { addChallengeAdminPage } from './addChallengeAdmin.page';
+import { addSkillAdminPage } from './addSkillAdmin.page';
+import { editChallengePage } from './editChallengePage.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -16,6 +18,16 @@ const challenge = {
   description: 'The description of the test challenge',
   submissionDetail: 'Submission details of the test challenge',
   pitch: 'this is my pitch for the test challenge',
+};
+const skill = {
+  name: 'Test skill',
+  description: 'The description of the test skill',
+};
+
+const editedChallenge = {
+  description: 'The description of the edit challenge',
+  submissionDetail: 'Submission details of the edit challenge',
+  pitch: 'this is my pitch for the edit challenge',
 };
 
 fixture('meteor-application-template-react localhost test with default db')
@@ -44,8 +56,16 @@ test('Test that under participation page renders', async (testController) => {
   await underParticipationFormPage.isDisplayed(testController);
 });
 
+test('Test that signin and signout work', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.isLoggedIn(testController, credentialsA.username);
+  await navBar.logout(testController);
+  await signOutPage.isDisplayed(testController);
+});
+
 /** ADMIN -------------------------------------------------------------------------------------------------*/
-test('Test that Admin pages function', async (testController) => {
+test('Test that AddChallenge pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
@@ -53,10 +73,18 @@ test('Test that Admin pages function', async (testController) => {
   await addChallengeAdminPage.addChallenge(testController, challenge);
 });
 
-test('Test that signin and signout work', async (testController) => {
+test('Test that AddSkill pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.isLoggedIn(testController, credentialsA.username);
-  await navBar.logout(testController);
-  await signOutPage.isDisplayed(testController);
+  await navBar.gotoConfigueHACC(testController);
+  await manageHaccWidgetComponents.gotoAddSkillPage(testController);
+  await addSkillAdminPage.addSkill(testController, skill);
+});
+
+test('Test that EditChallenge pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  await editChallengePage.gotoEditChallengePage(testController);
+  await editChallengePage.editChallenge(testController, editedChallenge);
 });

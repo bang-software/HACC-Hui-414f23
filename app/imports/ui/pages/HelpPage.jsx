@@ -1,9 +1,10 @@
 import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { PAGE_IDS } from '../testIDs/pageIDs';
 
 const HelpPage = () => (
-    <div id='help-page'>
+    <div id={PAGE_IDS.HELP_PAGE}>
         <Card style = {{ margin: '30px', backgroundColor: '#E5F0FE' }}>
         <Row style={{ textAlign: 'center' }}>
         <p
