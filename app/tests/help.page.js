@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
 import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
 
-class UnderParticipationForm {
+class HelpPage {
   constructor() {
-    this.pageId = `#${PAGE_IDS.UNDER_AGE_PARTICIPATION_FORM}`;
+    this.pageId = `#${PAGE_IDS.HELP_PAGE}`;
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -12,4 +12,4 @@ class UnderParticipationForm {
   }
 }
 
-export const underParticipationFormPage = new UnderParticipationForm();
+export const helpPage = new HelpPage();

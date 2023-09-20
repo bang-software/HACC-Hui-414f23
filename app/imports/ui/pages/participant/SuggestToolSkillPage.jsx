@@ -1,14 +1,12 @@
 import React from 'react';
-
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import SuggestToolSkillWidget from '../../components/participant/SuggestToolSkillWidget';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
-class SuggestToolSkillPage extends React.Component {
-  render() {
-    return (
+const SuggestToolSkillPage = () => (
+    <div id={PAGE_IDS.SUGGEST_TOOL_SKILL}>
         <SuggestToolSkillWidget />
-    );
-  }
-}
+    </div>
+);
 
 export default withAllSubscriptions(SuggestToolSkillPage);

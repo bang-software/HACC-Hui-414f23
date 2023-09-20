@@ -12,6 +12,7 @@ import { Participants } from '../../api/user/ParticipantCollection';
 import { Teams } from '../../api/team/TeamCollection';
 import { Suggestions } from '../../api/suggestions/SuggestionCollection';
 import { CanCreateTeams } from '../../api/team/CanCreateTeamCollection';
+import { COMPONENT_IDS } from '../testIDs/componentIDs';
 // import { MinorParticipants } from '../../api/user/MinorParticipantCollection';
 
 /**
@@ -69,7 +70,8 @@ class NavBar extends React.Component {
                            activeClassName="active"
                            exact to={ROUTES.LIST_PARTICIPANTS}
                            key='list-participants'>List Participants ({numParticipants})</Menu.Item>,
-                <Menu.Item as={NavLink}
+                <Menu.Item id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}
+                           as={NavLink}
                            activeClassName="active"
                            exact
                            to={ROUTES.SUGGEST_TOOL_SKILL}
@@ -83,7 +85,7 @@ class NavBar extends React.Component {
           ) : ''}
           {isAdmin ? (
               [
-                <Menu.Item id="configureHACC"
+                <Menu.Item id={COMPONENT_IDS.CONFIGURE_HACC}
                            as={NavLink}
                            activeClassName="active"
                            exact
@@ -128,16 +130,17 @@ class NavBar extends React.Component {
           ) : ''}
           <Menu.Item position="right"
                      as={NavLink}
+                     id={COMPONENT_IDS.HELP_BUTTON}
                      activeClassName="active"
                      exact
                      to={ROUTES.HELP_PAGE}
                      key={ROUTES.HELP_PAGE}>Help</Menu.Item>
           <Menu.Item>
             {this.props.currentUser === '' ? (
-                <Dropdown id="login-dropdown" text="Login" pointing="top right" icon={'user'}>
+                <Dropdown id={COMPONENT_IDS.LOGIN_DROPDOWN} text="Login" pointing="top right" icon={'user'}>
                   <Dropdown.Menu>
                     <Dropdown.Item
-                        id="login-dropdown-sign-in"
+                        id={COMPONENT_IDS.LOGIN_DROPDOWN_SIGN_IN}
                         icon="user"
                         text="Sign In"
                         as={NavLink}
@@ -145,10 +148,10 @@ class NavBar extends React.Component {
                   </Dropdown.Menu>
                 </Dropdown>
             ) : (
-                <Dropdown id="navbar-current-user" text={this.props.currentUser} pointing="top right" icon={'user'}>
+                <Dropdown id={COMPONENT_IDS.NAVBAR_CURRENT_USER} text={this.props.currentUser} pointing="top right" icon={'user'}>
                   <Dropdown.Menu>
                     <Dropdown.Item
-                        id="navbar-sign-out"
+                        id={COMPONENT_IDS.NAVBAR_SIGN_OUT}
                         icon="sign out"
                         text="Sign Out"
                         as={NavLink}

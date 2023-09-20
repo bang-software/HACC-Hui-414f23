@@ -6,6 +6,8 @@ import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -29,7 +31,6 @@ const AddChallenge = () => {
     const { title, description, submissionDetail, pitch } = data;
     const definitionData = { title, description, submissionDetail, pitch };
     const collectionName = Challenges.getCollectionName();
-    console.log(collectionName);
     defineMethod.call({ collectionName: collectionName, definitionData: definitionData },
         (error) => {
           if (error) {
@@ -47,18 +48,18 @@ const AddChallenge = () => {
   const formSchema = new SimpleSchema2Bridge(schema);
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   return (
-      <Container fluid id="addChallenge">
-        <Col>
-          <h2 style={{ textAlign: 'center' }}>Add a challenge</h2>
+      <Container fluid id={PAGE_IDS.ADD_CHALLENGE}>
+        <Col className="addFormContainer">
+          <h2 className='addFormHeader'>Add a challenge</h2>
           <AutoForm ref={ref => {
             fRef = ref;
           }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
-            <Card style={{ padding: '20px', marginBottom: '20px' }}>
-              <TextField id="addChallenge-title" name='title' />
-              <TextField id="addChallenge-description" name='description' />
-              <TextField id="addChallenge-submissionDetail" name='submissionDetail' />
-              <TextField id="addChallenge-pitch" name='pitch' />
-              <SubmitField id="addChallenge-submit" value='Submit' />
+            <Card className='addFormCard'>
+              <TextField id={COMPONENT_IDS.ADD_CHALLENGE_TITLE} name='title' />
+              <TextField id={COMPONENT_IDS.ADD_CHALLENGE_DESCRIPTION} name='description' />
+              <TextField id={COMPONENT_IDS.ADD_CHALLENGE_SUBMISSION_DETAIL} name='submissionDetail' />
+              <TextField id={COMPONENT_IDS.ADD_CHALLENGE_PITCH} name='pitch' />
+              <SubmitField id={COMPONENT_IDS.ADD_CHALLENGE_SUBMIT} value='Submit' />
               <ErrorsField />
             </Card>
           </AutoForm>

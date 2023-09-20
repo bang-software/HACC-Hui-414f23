@@ -5,9 +5,9 @@
     "@babel/runtime": "^7.22.15",
     "@faker-js/faker": "^7.6.0",
     "@slack/bolt": "^3.13.3",
-    "bootstrap": "^5.3.1",
+    "bootstrap": "^5.3.2",
     "classnames": "^2.3.2",
-    "core-js": "^3.32.1",
+    "core-js": "^3.32.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "graphql": "^15.6.1",
@@ -62,10 +62,12 @@
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "move-docs": "cp -r ../docs/ ../../docusaurus/static/jsdoc/",
     "deploy": "cross-env DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy hacchui.meteorapp.com --settings ../config/settings.production.json",
-    "testcafe": "testcafe chrome tests/*.testcafe.js",
-    "testcafe-single": "testcafe chrome tests/*.testcafe.js -t \"Test that signin and signout work\"",
-    "testcafe-ci": "testcafe chrome:headless tests/*.testcafe.js -q --app \"meteor npm run start\"",
-    "testcafe-development": "testcafe chrome tests/*.testcafe.js",
-    "test-all": "meteor reset && meteor npm run lint && meteor npm run unimported && meteor npm run testcafe-ci"
+    "test-acceptance-development-edge": "testcafe edge tests/*.testcafe.js",
+    "test-acceptance-development": "testcafe chrome tests/*.testcafe.js",
+    "test-acceptance-development-single": "testcafe chrome tests/*.testcafe.js -t \"Test that sign up and sign out work\"",
+    "test-acceptance-development-single-edge": "testcafe edge tests/*.testcafe.js -t \"Test that EditChallenge pages function\"",
+    "test-acceptance-ci": "testcafe chrome:headless tests/*.testcafe.js -q --app \"meteor npm run start\"",
+    "unimported": "npx unimported",
+    "test-all": "meteor reset && meteor npm run lint && meteor npm run unimported && meteor npm run test-unit && meteor npm run test-integration && meteor npm run test-acceptance-ci"
   }
 }

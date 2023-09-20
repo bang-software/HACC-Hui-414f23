@@ -7,7 +7,8 @@ import { Container, Form, Button, Row, Col, Alert, Card } from 'react-bootstrap'
 import { ROLE } from '../../api/role/Role';
 import { Participants } from '../../api/user/ParticipantCollection';
 import { ROUTES } from '../../startup/client/route-constants';
-
+import { COMPONENT_IDS } from '../testIDs/componentIDs';
+import { PAGE_IDS } from '../testIDs/pageIDs';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
@@ -61,7 +62,7 @@ const Signin = () => {
   }
 
   return (
-    <Container id="signin-page">
+    <Container id={PAGE_IDS.SIGN_IN}>
       <Row className="justify-content-md-center align-items-center">
         <Col>
           <h2 className="text-center">Login to your account</h2>
@@ -70,7 +71,7 @@ const Signin = () => {
               <Form.Group>
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  id="signin-form-email"
+                  id={COMPONENT_IDS.SIGN_IN_FORM_EMAIL}
                   name="email"
                   type="email"
                   placeholder="E-mail address"
@@ -80,14 +81,14 @@ const Signin = () => {
               <Form.Group>
                 <Form.Label>Password</Form.Label>
                 <Form.Control
-                  id="signin-form-password"
+                  id={COMPONENT_IDS.SIGN_IN_FORM_PASSWORD}
                   name="password"
                   type="password"
                   placeholder="Password"
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Button style={{ marginTop: '10px' }} id="signin-form-submit" type="submit">
+              <Button style={{ marginTop: '10px' }} id={COMPONENT_IDS.SIGN_IN_FORM_SUBMIT} type="submit">
                 Submit
               </Button>
             </Form>

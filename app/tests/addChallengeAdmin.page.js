@@ -1,8 +1,10 @@
 import { Selector } from 'testcafe';
+import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
+import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
 
 class AddChallengeAdminPage {
   constructor() {
-    this.pageId = '#addChallenge';
+    this.pageId = `#${PAGE_IDS.ADD_CHALLENGE}`;
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -13,11 +15,11 @@ class AddChallengeAdminPage {
 
   async addChallenge(testController, challenge) {
     await this.isDisplayed(testController);
-    await testController.typeText('#addChallenge-title', challenge.title);
-    await testController.typeText('#addChallenge-description', challenge.description);
-    await testController.typeText('#addChallenge-submissionDetail', challenge.submissionDetail);
-    await testController.typeText('#addChallenge-pitch', challenge.pitch);
-    await testController.click('#addChallenge-submit');
+    await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_TITLE}`, challenge.title);
+    await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_DESCRIPTION}`, challenge.description);
+    await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_SUBMISSION_DETAIL}`, challenge.submissionDetail);
+    await testController.typeText(`#${COMPONENT_IDS.ADD_CHALLENGE_PITCH}`, challenge.pitch);
+    await testController.click(`#${COMPONENT_IDS.ADD_CHALLENGE_SUBMIT}`);
   }
 
 }
