@@ -120,7 +120,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.LIST_PARTICIPANTS_ADMIN}
                               key='list-participants-admin'>List Participants ({numParticipants})</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.HACC_WIDGET_VIEW_TEAMS_BUTTON}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.VIEW_TEAMS}
                               key={ROUTES.VIEW_TEAMS}>View Teams ({teamCount})</Nav.Link>,
