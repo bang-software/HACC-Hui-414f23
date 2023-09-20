@@ -127,6 +127,6 @@ test('Test that ViewTeams pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
-  await manageHaccWidgetComponents.gotoEditChallengePage(testController);
+  await manageHaccWidgetComponents.gotoViewTeamsPage(testController);
   await viewTeamsPage.clickFilter(testController);
 });

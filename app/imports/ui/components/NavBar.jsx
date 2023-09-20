@@ -104,7 +104,8 @@ class NavBar extends React.Component {
                            activeClassName="active"
                            exact to={ROUTES.LIST_PARTICIPANTS_ADMIN}
                            key='list-participants-admin'>List Participants ({numParticipants})</Menu.Item>,
-                <Menu.Item as={NavLink}
+                <Menu.Item id={COMPONENT_IDS.HACC_WIDGET_VIEW_TEAMS_BUTTON}
+                           as={NavLink}
                            activeClassName="active"
                            exact
                            to={ROUTES.VIEW_TEAMS}

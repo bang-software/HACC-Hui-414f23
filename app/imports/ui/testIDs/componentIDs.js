@@ -14,6 +14,7 @@ export const COMPONENT_IDS = {
   HACC_WIDGET_ADD_CHALLENGE_BUTTON: 'add-challenge-button',
   HACC_WIDGET_ADD_SKILL_BUTTON: 'add-skill-button',
   HACC_WIDGET_ADD_TOOL_BUTTON: 'add-tool-button',
+  HACC_WIDGET_VIEW_TEAMS_BUTTON: 'view-teams-button',
   ADD_CHALLENGE_TITLE: 'add-challenge-title',
   ADD_CHALLENGE_DESCRIPTION: 'add-challenge-description',
   ADD_CHALLENGE_SUBMISSION_DETAIL: 'add-challenge-submission-detail',
