@@ -48,12 +48,12 @@ const AddSkill = () => {
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   return (
       <Container fluid id={PAGE_IDS.ADD_SKILL}>
-        <Col>
-          <h2 style={{ textAlign: 'center' }}>Add a skill</h2>
+        <Col className="addFormContainer">
+          <h2 className='addFormHeader'>Add a skill</h2>
           <AutoForm ref={ref => {
             fRef = ref;
           }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
-            <Card style={{ padding: '20px', marginBottom: '20px' }}>
+            <Card className='addFormCard'>
               <TextField id={COMPONENT_IDS.ADD_SKILL_NAME} name='name'/>
               <TextField id={COMPONENT_IDS.ADD_SKILL_DESCRIPTION} name='description' />
               <SubmitField id={COMPONENT_IDS.ADD_CHALLENGE_SUBMIT} value='Submit' />

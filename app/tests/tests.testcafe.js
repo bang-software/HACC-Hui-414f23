@@ -8,6 +8,7 @@ import { signOutPage } from './signoutPage.page';
 import { helpPage } from './help.page';
 import { addChallengeAdminPage } from './addChallengeAdmin.page';
 import { addSkillAdminPage } from './addSkillAdmin.page';
+import { addToolAdminPage } from './addToolAdmin.page';
 import { editChallengePage } from './editChallengePage.page';
 /* global fixture:false, test:false */
 
@@ -22,6 +23,10 @@ const challenge = {
 const skill = {
   name: 'Test skill',
   description: 'The description of the test skill',
+};
+const tool = {
+  name: 'Test tool',
+  description: 'The description of the test tool',
 };
 
 const editedChallenge = {
@@ -81,10 +86,18 @@ test('Test that AddSkill pages function', async (testController) => {
   await addSkillAdminPage.addSkill(testController, skill);
 });
 
+test('Test that AddTool pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  await manageHaccWidgetComponents.gotoAddToolPage(testController);
+  await addToolAdminPage.addTool(testController, tool);
+});
+
 test('Test that EditChallenge pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
-  await editChallengePage.gotoEditChallengePage(testController);
+  await manageHaccWidgetComponents.gotoEditChallengePage(testController);
   await editChallengePage.editChallenge(testController, editedChallenge);
 });

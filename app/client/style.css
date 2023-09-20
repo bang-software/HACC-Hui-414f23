@@ -14,6 +14,21 @@
   padding-top: 6rem !important;
 }
 
+.addFormContainer {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.addFormHeader {
+  text-align: center;
+}
+
+.addFormCard {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+
 
 @media screen and (max-width: 750px) {
   .navBar {
