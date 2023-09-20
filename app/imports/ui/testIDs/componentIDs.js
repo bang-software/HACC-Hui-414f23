@@ -34,4 +34,9 @@ export const COMPONENT_IDS = {
   PARTICIPATION_FORM_LAST_NAME: 'participation-form-last-name',
   PARTICIPATION_FORM_AGREE_BUTTON: 'participation-form-agree-button',
   PARTICIPATION_FORM_SUBMIT: 'participation-form-submit',
+  FILTER_NON_COMPLIANT: 'filter-non-compliant',
+  FILTER_NO_DEV_POST: 'filter-no-dev-post',
+  FILTER_NO_GITHUB: 'filter_no_github',
+  FILTER_NONE: 'filter-none',
+  DOWNLOAD_TEAM_CAPTAIN_EMAILS: 'download-team-captain-emails',
 };

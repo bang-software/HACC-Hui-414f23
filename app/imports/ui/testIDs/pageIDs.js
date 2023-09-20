@@ -10,6 +10,7 @@ export const PAGE_IDS = {
   ADD_SKILL: 'add-skill',
   ADD_TOOL: 'add-tool',
   EDIT_CHALLENGE_PAGE: 'edit-challenge-page',
+  VIEW_TEAMS_PAGE: 'view-teams-page',
   PARTICIPATION_FORM: 'participation-form',
   CREATE_PROFILE: 'create-profile',
 };
