@@ -43,6 +43,11 @@ class NavBar {
   async gotoConfigueHACC(testController) {
     await testController.click(`#${COMPONENT_IDS.CONFIGURE_HACC}`);
   }
+
+  /** Go to suggest/tool skill */
+  async gotoSuggestToolSkill(testController) {
+    await testController.click(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`);
+  }
 }
 
 export const navBar = new NavBar();

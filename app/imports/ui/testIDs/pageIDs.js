@@ -12,4 +12,5 @@ export const PAGE_IDS = {
   EDIT_CHALLENGE_PAGE: 'edit-challenge-page',
   PARTICIPATION_FORM: 'participation-form',
   CREATE_PROFILE: 'create-profile',
+  SUGGEST_TOOL_SKILL: 'suggest-tool-skill',
 };

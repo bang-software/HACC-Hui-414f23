@@ -16,6 +16,7 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import { paleBlueStyle } from '../../styles';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const schema = new SimpleSchema({
   type: { type: String, allowedValues: ['Tool', 'Skill'], optional: false },
@@ -62,14 +63,14 @@ class SuggestToolSkillWidget extends React.Component {
           }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
             <Form.Group widths="equal" style={{ paddingRight: '10px', paddingLeft: '10px',
               paddingTop: '10px', paddingBottom: '10px' }}>
-              <SelectField name="type" />
-              <TextField name="name" />
-              <TextField name="description" />
+              <SelectField name="type" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_SELECT}/>
+              <TextField name="name" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_NAME}/>
+              <TextField name="description" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_DESCRIPTION}/>
             </Form.Group>
             <SubmitField style={{
   display: 'block',
   marginLeft: '10px', marginRight: 'auto', marginBottom: '10px',
-}}/>
+}} id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_SUBMIT}/>
           </AutoForm>
           </Card>
         </Card>

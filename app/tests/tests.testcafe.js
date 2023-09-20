@@ -12,6 +12,7 @@ import { addToolAdminPage } from './addToolAdmin.page';
 import { editChallengePage } from './editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
+import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -78,6 +79,14 @@ test('Test that Participation Form page works', async (testController) => {
   await agePage.over18(testController);
   await participationForm.agreeToTerms(testController, credentialsC.firstName, credentialsC.lastName);
   await createProfilePage.isDisplayed(testController);
+});
+
+test('Test that suggest tool/skill renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await navBar.isLoggedIn(testController, credentialsB.username);
+  await navBar.gotoSuggestToolSkill(testController);
+  await suggestToolSkillPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/

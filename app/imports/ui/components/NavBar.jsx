@@ -69,7 +69,8 @@ class NavBar extends React.Component {
                            activeClassName="active"
                            exact to={ROUTES.LIST_PARTICIPANTS}
                            key='list-participants'>List Participants ({numParticipants})</Menu.Item>,
-                <Menu.Item as={NavLink}
+                <Menu.Item id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}
+                           as={NavLink}
                            activeClassName="active"
                            exact
                            to={ROUTES.SUGGEST_TOOL_SKILL}
