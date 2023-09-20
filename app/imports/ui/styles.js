@@ -1,5 +1,6 @@
 export const paleBlueStyle = {
   backgroundColor: '#E5F0FE',
+  padding: '20px',
 };
 
 export const darkerBlueStyle = {

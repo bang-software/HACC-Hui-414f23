@@ -1,12 +1,12 @@
 import React from 'react';
-import { Header, Segment, Form, Container, Card } from 'semantic-ui-react';
+import { Form, Container, Card } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm,
   SelectField,
   SubmitField,
   TextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
@@ -17,21 +17,13 @@ import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import { paleBlueStyle } from '../../styles';
 
+const schema = new SimpleSchema({
+  type: { type: String, allowedValues: ['Tool', 'Skill'], optional: false },
+  name: String,
+  description: String,
+});
+
 class SuggestToolSkillWidget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
-
-  buildTheFormSchema() {
-    const schema = new SimpleSchema({
-      type: { type: String, allowedValues: ['Tool', 'Skill'], optional: false },
-      name: String,
-      description: String,
-    });
-    return schema;
-  }
-
   submit(data, formRef) {
     // console.log('CreateProfileWidget.submit', data);
     const collectionName = Suggestions.getCollectionName();
@@ -41,7 +33,6 @@ class SuggestToolSkillWidget extends React.Component {
     newData.name = data.name;
     newData.type = data.type;
     newData.description = data.description;
-    console.log(newData);
 
     defineMethod.call({ collectionName: collectionName, definitionData: newData },
         (error) => {
@@ -57,15 +48,14 @@ class SuggestToolSkillWidget extends React.Component {
   render() {
     let fRef = null;
     const model = this.props.participant;
-    const schema = this.buildTheFormSchema();
     const formSchema = new SimpleSchema2Bridge(schema);
     const firstname = model.firstName;
     return (
         <Container style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-        <Segment style = { paleBlueStyle }>
+        <Card style = { paleBlueStyle }>
           {/* eslint-disable-next-line max-len */}
-          <Header as="h2" textAlign="center">Hello {firstname}, please fill out the form to
-            suggest a new tool or skill. </Header>
+          <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>Hello {firstname}, please fill out the form to
+            suggest a new tool or skill. </h2>
           <Card fluid>
           <AutoForm ref={ref => {
             fRef = ref;
@@ -78,11 +68,11 @@ class SuggestToolSkillWidget extends React.Component {
             </Form.Group>
             <SubmitField style={{
   display: 'block',
-  marginLeft: 'auto', marginRight: 'auto', marginBottom: '10px',
+  marginLeft: '10px', marginRight: 'auto', marginBottom: '10px',
 }}/>
           </AutoForm>
           </Card>
-        </Segment>
+        </Card>
         </Container>
     );
   }
