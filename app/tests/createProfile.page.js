@@ -3,7 +3,7 @@ import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
 
 class CreateProfilePage {
   constructor() {
-    this.pageId = `#${PAGE_IDS.CREATE_PROFILE}}`;
+    this.pageId = `#${PAGE_IDS.CREATE_PROFILE}`;
     this.pageSelector = Selector(this.pageId);
   }
 

@@ -36,7 +36,7 @@ const editedChallenge = {
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 
-/** USER --------------------------------------------------------------------------------------------------
+/** USER --------------------------------------------------------------------------------------------------*/
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
@@ -66,7 +66,6 @@ test('Test that signin and signout work', async (testController) => {
   await navBar.logout(testController);
   await signOutPage.isDisplayed(testController);
 });
- */
 
 test('Test that Participation Form page works', async (testController) => {
   await navBar.gotoSigninPage(testController);
@@ -76,7 +75,7 @@ test('Test that Participation Form page works', async (testController) => {
   await createProfilePage.isDisplayed(testController);
 });
 
-/** ADMIN -------------------------------------------------------------------------------------------------
+/** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that AddChallenge pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -100,4 +99,3 @@ test('Test that EditChallenge pages function', async (testController) => {
   await editChallengePage.gotoEditChallengePage(testController);
   await editChallengePage.editChallenge(testController, editedChallenge);
 });
- */
