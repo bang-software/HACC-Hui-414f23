@@ -63,6 +63,10 @@ class NavBar {
 
   /** Go to suggest/tool skill */
   async gotoSuggestToolSkill(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click('button.navbar-toggler');
+    }
     await testController.click(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`);
   }
 }
