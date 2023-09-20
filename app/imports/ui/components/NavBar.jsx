@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
-import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Dropdown, Header } from 'semantic-ui-react';
+import { useTracker } from 'meteor/react-meteor-data';
+import { NavLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 // import _ from 'lodash';
+import { BoxArrowRight, PersonFill, PersonFillX } from 'react-bootstrap-icons';
+import { Container, Nav, Navbar, NavDropdown, Spinner } from 'react-bootstrap';
 import { ROLE } from '../../api/role/Role';
 import { ROUTES } from '../../startup/client/route-constants';
 import { Participants } from '../../api/user/ParticipantCollection';
@@ -13,172 +13,167 @@ import { Teams } from '../../api/team/TeamCollection';
 import { Suggestions } from '../../api/suggestions/SuggestionCollection';
 import { CanCreateTeams } from '../../api/team/CanCreateTeamCollection';
 import { COMPONENT_IDS } from '../testIDs/componentIDs';
+import { footer } from '../styles';
 // import { MinorParticipants } from '../../api/user/MinorParticipantCollection';
 
 /**
  * The NavBar appears at the top of every page. Rendered by the App Layout component.
  * @memberOf ui/components
  */
-class NavBar extends React.Component {
-  render() {
-    // console.log(this.props);
-    let isCompliant = this.props.canCreateTeams;
-    const isAdmin = this.props.currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN);
-    const isParticipant = this.props.currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.PARTICIPANT);
-    if (isParticipant) {
+const NavBar = () => {
+
+// useTracker connects Meteor data to React components.
+  const { ready, currentUser, isCompliant, isAdmin, isParticipant, numTeams, numParticipants, teamCount, suggestionCount }
+      = useTracker(() => {
+    // Get access to collections
+    const sub1 = CanCreateTeams.subscribe();
+    const sub2 = Participants.subscribe();
+    const sub3 = Teams.subscribe();
+    const sub4 = Suggestions.subscribe();
+    const rdy = sub1.ready() && sub2.ready() && sub3.ready() && sub4.ready();
+
+    // Parse collections
+    const curUser = Meteor.user() ? Meteor.user().username : '';
+    let isCompl = CanCreateTeams.findOne().canCreateTeams;
+    const isAdm = curUser && Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN);
+    const isParti = curUser && Roles.userIsInRole(Meteor.userId(), ROLE.PARTICIPANT);
+    if (isParti) {
       const participant = Participants.findDoc({ userID: Meteor.userId() });
-      isCompliant = isCompliant && participant.isCompliant;
+      isCompl = isCompl && participant.isCompliant;
     }
+    const numParti = Participants.count();
+    const numTms = Teams.find({ open: true }).count();
+    const teamCnt = Teams.count();
+    const suggestionCnt = Suggestions.count();
+    return {
+      ready: rdy,
+      currentUser: curUser,
+      isCompliant: isCompl,
+      isAdmin: isAdm,
+      isParticipant: isParti,
+      numTeams: numTms,
+      numParticipants: numParti,
+      teamCount: teamCnt,
+      suggestionCount: suggestionCnt,
+    };
+  }, []);
 
-    const numParticipants = Participants.count();
-    const numTeams = Teams.find({ open: true }).count();
-    const teamCount = Teams.count();
-    const suggestionCount = Suggestions.count();
-    // const minors = MinorParticipants.find({}).fetch();
-    // const uncompliantMinors = _.filter(minors, (m) => Participants.findDoc(m.participantID).isCompliant).length;
-    return (
-        <Menu attached="top" borderless inverted className={'navBar'}>
-          <Menu.Item as={NavLink} activeClassName="" exact to={ROUTES.LANDING}>
-            <Header inverted as='h1'>HACC-Hui</Header>
-          </Menu.Item>
-          {isParticipant ? (
-              [
-                <Menu.Item id='navbar-profile'
-                           as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.YOUR_PROFILE}
-                           key='edit-profile'>Profile</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           disabled={!isCompliant}
-                           exact
-                           to={ROUTES.CREATE_TEAM}
-                           key='team-creation'>Create Team</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.BEST_FIT}
-                           key='list-teams'>Open Teams ({numTeams})</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.YOUR_TEAMS}
-                           key='your-teams'>Your
-                  Teams</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact to={ROUTES.LIST_PARTICIPANTS}
-                           key='list-participants'>List Participants ({numParticipants})</Menu.Item>,
-                <Menu.Item id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}
-                           as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.SUGGEST_TOOL_SKILL}
-                           key='suggest-tool-skill'>Suggest Tool/Skill</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.TEAM_INVITATIONS}
-                           key='team-invitations'>Invitations</Menu.Item>,
-              ]
-          ) : ''}
-          {isAdmin ? (
-              [
-                <Menu.Item id={COMPONENT_IDS.CONFIGURE_HACC}
-                           as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.CONFIGURE_HACC}
-                           key={ROUTES.CONFIGURE_HACC}>Configure HACC</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.UPDATE_MP}
-                           key={ROUTES.UPDATE_MP}>Update Minor Participants Status</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.LIST_SUGGESTIONS}
-                           key={ROUTES.LIST_SUGGESTIONS}>Suggestions List ({suggestionCount})</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact to={ROUTES.LIST_PARTICIPANTS_ADMIN}
-                           key='list-participants-admin'>List Participants ({numParticipants})</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.VIEW_TEAMS}
-                           key={ROUTES.VIEW_TEAMS}>View Teams ({teamCount})</Menu.Item>,
-                // <Menu.Item as={NavLink}
-                //            activeClassName="active"
-                //            exact
-                //            to={ROUTES.SHOW_MINORS}
-                //            key={ROUTES.SHOW_MINORS}>Show Minors</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact to={ROUTES.ALL_TEAM_INVITATIONS}
-                           key={ROUTES.ALL_TEAM_INVITATIONS}>View All Team Invitations</Menu.Item>,
-                <Menu.Item as={NavLink}
-                           activeClassName="active"
-                           exact
-                           to={ROUTES.DUMP_DATABASE}
-                           key={ROUTES.DUMP_DATABASE}>Dump Database</Menu.Item>,
-                // <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.SHOW_MINOR}
-                //            key={ROUTES.SHOW_MINOR}>Show Minor</Menu.Item>,
-              ]
-          ) : ''}
-          <Menu.Item position="right"
-                     as={NavLink}
-                     id={COMPONENT_IDS.HELP_BUTTON}
-                     activeClassName="active"
-                     exact
-                     to={ROUTES.HELP_PAGE}
-                     key={ROUTES.HELP_PAGE}>Help</Menu.Item>
-          <Menu.Item>
-            {this.props.currentUser === '' ? (
-                <Dropdown id={COMPONENT_IDS.LOGIN_DROPDOWN} text="Login" pointing="top right" icon={'user'}>
-                  <Dropdown.Menu>
-                    <Dropdown.Item
+  return (ready ? (
+      <Navbar expand="lg" style={footer} className="navbar-expand-lg">
+        <Container fluid>
+          <Navbar.Brand as={NavLink} to={ROUTES.LANDING}>
+            <h1>HACC-Hui</h1>
+          </Navbar.Brand>
+          <Navbar.Toggle id='button.navbar-toggler' aria-controls="basic-navbar-nav"/>
+          <Navbar.Collapse id="basic-navbar-nav" className="justify-content-start">
+            <Nav>
+              {isParticipant ? (
+                  [
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.YOUR_PROFILE}
+                              key='edit-profile'>Profile</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              disabled={!isCompliant}
+                              to={ROUTES.CREATE_TEAM}
+                              key='team-creation'>Create Team</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.BEST_FIT}
+                              key='list-teams'>Open Teams ({numTeams})</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.YOUR_TEAMS}
+                              key='your-teams'>Your
+                      Teams</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.LIST_PARTICIPANTS}
+                              key='list-participants'>List Participants ({numParticipants})</Nav.Link>,
+                    <Nav.Link id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}
+                              as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.SUGGEST_TOOL_SKILL}
+                              key='suggest-tool-skill'>Suggest Tool/Skill</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.TEAM_INVITATIONS} key='team-invitations'>Invitations</Nav.Link>,
+                  ]
+              ) : ''}
+              {isAdmin ? (
+                  [
+                    <Nav.Link id={COMPONENT_IDS.CONFIGURE_HACC}
+                              as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.CONFIGURE_HACC}
+                              key={ROUTES.CONFIGURE_HACC}>Configure HACC</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.UPDATE_MP}
+                              key={ROUTES.UPDATE_MP}>Update Minor Participants Status</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.LIST_SUGGESTIONS}
+                              key={ROUTES.LIST_SUGGESTIONS}>Suggestions List ({suggestionCount})</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.LIST_PARTICIPANTS_ADMIN}
+                              key='list-participants-admin'>List Participants ({numParticipants})</Nav.Link>,
+                    <Nav.Link id={COMPONENT_IDS.HACC_WIDGET_VIEW_TEAMS_BUTTON}
+                              as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.VIEW_TEAMS}
+                              key={ROUTES.VIEW_TEAMS}>View Teams ({teamCount})</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.ALL_TEAM_INVITATIONS}
+                              key={ROUTES.ALL_TEAM_INVITATIONS}>View All Team Invitations</Nav.Link>,
+                    <Nav.Link as={NavLink}
+                              activeClassName="active"
+                              to={ROUTES.DUMP_DATABASE}
+                              key={ROUTES.DUMP_DATABASE}>Dump Database</Nav.Link>,
+                  ]
+              ) : ''}
+            </Nav>
+          </Navbar.Collapse>
+          <Navbar.Collapse className="justify-content-end">
+            <Nav>
+              <Nav.Link
+                  as={NavLink}
+                  id={COMPONENT_IDS.HELP_BUTTON}
+                  activeClassName="active"
+                  to={ROUTES.HELP_PAGE}
+                  key={ROUTES.HELP_PAGE}>Help</Nav.Link>
+              {currentUser === '' ? (
+                  <NavDropdown id={COMPONENT_IDS.LOGIN_DROPDOWN} title="Login">
+                    <NavDropdown.Item
                         id={COMPONENT_IDS.LOGIN_DROPDOWN_SIGN_IN}
-                        icon="user"
-                        text="Sign In"
                         as={NavLink}
-                        exact to={ROUTES.SIGN_IN} key={ROUTES.SIGN_IN}/>
-                  </Dropdown.Menu>
-                </Dropdown>
-            ) : (
-                <Dropdown id={COMPONENT_IDS.NAVBAR_CURRENT_USER} text={this.props.currentUser} pointing="top right" icon={'user'}>
-                  <Dropdown.Menu>
-                    <Dropdown.Item
+                        to={ROUTES.SIGN_IN} key={ROUTES.SIGN_IN}>
+                      <PersonFill/> Sign In
+                    </NavDropdown.Item>
+                  </NavDropdown>
+              ) : (
+                  <NavDropdown id={COMPONENT_IDS.NAVBAR_CURRENT_USER} title={currentUser}>
+                    <NavDropdown.Item
                         id={COMPONENT_IDS.NAVBAR_SIGN_OUT}
-                        icon="sign out"
-                        text="Sign Out"
                         as={NavLink}
-                        exact to={ROUTES.SIGN_OUT} key={ROUTES.SIGN_OUT}/>
+                        to={ROUTES.SIGN_OUT} key={ROUTES.SIGN_OUT}>
+                      <BoxArrowRight/> Sign Out
+                    </NavDropdown.Item>
                     {isParticipant ? (
-                        <Dropdown.Item icon="user delete" text="Delete Account" as={NavLink} exact
-                                       to={ROUTES.DELETE_ACCOUNT}/>) : ''}
-                  </Dropdown.Menu>
-                </Dropdown>
-            )}
-          </Menu.Item>
-        </Menu>
-    );
-  }
-}
-
-// Declare the types of all properties.
-NavBar.propTypes = {
-  currentUser: PropTypes.string,
-  canCreateTeams: PropTypes.bool,
+                        <NavDropdown.Item as={NavLink}
+                                          to={ROUTES.DELETE_ACCOUNT}>
+                          <PersonFillX/> Delete Account
+                        </NavDropdown.Item>) : ''}
+                  </NavDropdown>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+  ) : <Spinner/>);
 };
 
-// withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-const NavBarContainer = withTracker(() => ({
-  currentUser: Meteor.user() ? Meteor.user().username : '',
-  canCreateTeams: CanCreateTeams.findOne().canCreateTeams,
-}))(NavBar);
-
-// Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter
-export default withRouter(NavBarContainer);
+export default NavBar;
