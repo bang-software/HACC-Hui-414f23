@@ -76,7 +76,7 @@ test('Test that signin and signout work', async (testController) => {
 
 test('Test that Participation Form page works', async (testController) => {
   await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsC.username, credentialsC.password);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
   await agePage.over18(testController);
   await participationForm.agreeToTerms(testController, credentialsC.firstName, credentialsC.lastName);
   await createProfilePage.isDisplayed(testController);
