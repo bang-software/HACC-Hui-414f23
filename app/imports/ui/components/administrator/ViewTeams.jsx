@@ -102,7 +102,7 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
           <Button
               variant="primary"
               onClick={handleDownload}
-              id={COMPONENT_IDS.DOWNLOAD_TEAM_CAPTAIN_EMAIL}
+              id={COMPONENT_IDS.DOWNLOAD_TEAM_CAPTAIN_EMAILS}
           >
             Download Team Captain emails
           </Button>
