@@ -9,7 +9,7 @@ export const COMPONENT_IDS = {
   LOGIN_DROPDOWN: 'login-dropdown',
   LOGIN_DROPDOWN_SIGN_IN: 'login-dropdown-sign-in',
   HELP_BUTTON: 'help-button',
-  MY_PROFILE: 'my-profile',
+  PROFILE: 'profile',
   CONFIGURE_HACC: 'configure-hacc',
   HACC_WIDGET_ADD_CHALLENGE_BUTTON: 'add-challenge-button',
   HACC_WIDGET_ADD_SKILL_BUTTON: 'add-skill-button',

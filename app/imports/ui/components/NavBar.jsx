@@ -69,7 +69,8 @@ const NavBar = () => {
             <Nav>
               {isParticipant ? (
                   [
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.PROFILE}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.YOUR_PROFILE}
                               key='edit-profile'>Profile</Nav.Link>,
