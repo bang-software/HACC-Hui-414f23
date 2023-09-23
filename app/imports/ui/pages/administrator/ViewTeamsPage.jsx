@@ -1,13 +1,12 @@
 import React from 'react';
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import ViewTeams from '../../components/administrator/ViewTeams';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
-class ViewTeamsPage extends React.Component {
-  render() {
-    return (
+const ViewTeamsPage = () => (
+    <div id={PAGE_IDS.VIEW_TEAMS_PAGE}>
         <ViewTeams />
-        );
-  }
-}
+    </div>
+);
 
 export default withAllSubscriptions(ViewTeamsPage);

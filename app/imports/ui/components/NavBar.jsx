@@ -57,7 +57,7 @@ const NavBar = () => {
       suggestionCount: suggestionCnt,
     };
   }, []);
-
+  
   return (ready ? (
       <Navbar expand="lg" style={footer} className="navbar-expand-lg">
         <Container fluid>
