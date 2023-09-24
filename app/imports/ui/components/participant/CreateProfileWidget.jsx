@@ -1,5 +1,5 @@
-import React from 'react';
-import { Header, Segment, Form } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm, BoolField,
@@ -11,7 +11,6 @@ import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import _ from 'lodash';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
 import { Skills } from '../../../api/skill/SkillCollection';
@@ -24,16 +23,13 @@ import { ROUTES } from '../../../startup/client/route-constants';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 
-class CreateProfileWidget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
+const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
+  const [redirectToReferer, setRedirectToReferer] = useState(false);
 
-  buildTheFormSchema() {
-    const challengeNames = _.map(this.props.challenges, (c) => c.title);
-    const skillNames = _.map(this.props.skills, (s) => s.name);
-    const toolNames = _.map(this.props.tools, (t) => t.name);
+  const buildTheFormSchema = () => {
+    const challengeNames = challenges.map((c) => c.title);
+    const skillNames = skills.map((s) => s.name);
+    const toolNames = tools.map((t) => t.name);
     const schema = new SimpleSchema({
       firstName: String,
       lastName: String,
@@ -55,9 +51,9 @@ class CreateProfileWidget extends React.Component {
       'tools.$': { type: String, allowedValues: toolNames },
     });
     return schema;
-  }
+  };
 
-  submit(data) {
+  const submit = (data) => {
     const collectionName = Participants.getCollectionName();
     const updateData = {};
     updateData.id = data._id;
@@ -118,53 +114,57 @@ class CreateProfileWidget extends React.Component {
         });
       }
     });
-    this.setState({ redirectToReferer: true });
-  }
-
-  render() {
-    const model = this.props.participant;
-    const schema = this.buildTheFormSchema();
+    setRedirectToReferer(true);
+  };
+    const model = participant;
+    const schema = buildTheFormSchema();
     const formSchema = new SimpleSchema2Bridge(schema);
     const firstname = model.firstName;
-    if (this.state.redirectToReferer) {
+    if (redirectToReferer) {
       const from = { pathname: ROUTES.YOUR_PROFILE };
       return <Redirect to={from} />;
     }
     return (
-        <Segment>
-          <Header dividing>Hello {firstname}, this is your first time to login, so please fill out your profile</Header>
-          <AutoForm schema={formSchema} model={model} onSubmit={data => {
-            this.submit(data);
-          }}>
-            <Form.Group widths="equal">
-              <TextField name="username" disabled />
-              <BoolField name="isCompliant" disabled />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="firstName" />
-              <TextField name="lastName" />
-              <SelectField name="demographicLevel" />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="linkedIn" />
-              <TextField name="gitHub" />
-              <TextField name="slackUsername" />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <TextField name="website" />
-              <LongTextField name="aboutMe" />
-            </Form.Group>
-            <MultiSelectField name="challenges" />
-            <Form.Group widths="equal">
-              <MultiSelectField name="skills" />
-              <MultiSelectField name="tools" />
-            </Form.Group>
-            <SubmitField />
-          </AutoForm>
-        </Segment>
+        <Container fluid>
+          <Row>
+            <h3> <b> Hello {firstname}, this is your first time to login, so please fill out your profile </b> </h3>
+            <hr/>
+          </Row>
+            <AutoForm schema={formSchema} model={model} onSubmit={data => submit(data) }>
+              <Row>
+                <Col>
+                  <TextField name="username" disabled />
+                </Col>
+                <Col>
+                  <BoolField name="isCompliant" disabled />
+                  </Col>
+              </Row>
+              <Row>
+                <Col><TextField name="firstName" /></Col>
+                <Col><TextField name="lastName" /></Col>
+                <Col><SelectField name="demographicLevel" /></Col>
+              </Row>
+              <Row>
+                <Col> <TextField name="linkedIn" /> </Col>
+                <Col> <TextField name="gitHub" /> </Col>
+                <Col> <TextField name="slackUsername" /> </Col>
+              </Row>
+              <Row>
+                <Col> <TextField name="website" /> </Col>
+                <Col> <LongTextField name="aboutMe" /> </Col>
+              </Row>
+              <Row>
+              <MultiSelectField name="challenges" />
+              </Row>
+              <Row>
+                <Col> <MultiSelectField name="skills" /> </Col>
+                <Col> <MultiSelectField name="tools" /> </Col>
+              </Row>
+              <SubmitField />
+            </AutoForm>
+        </Container>
     );
-  }
-}
+};
 
 CreateProfileWidget.propTypes = {
   participant: PropTypes.object.isRequired,
