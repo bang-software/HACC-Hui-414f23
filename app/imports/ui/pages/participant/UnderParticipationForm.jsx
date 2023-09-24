@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Col, Card, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
-
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { Meteor } from 'meteor/meteor';
+import { Redirect } from 'react-router-dom';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { USER_INTERACTIONS } from '../../../startup/client/user-interaction-constants';
 import { userInteractionDefineMethod } from '../../../api/user/UserInteractionCollection.methods';
@@ -12,8 +12,7 @@ import { MinorParticipants } from '../../../api/user/MinorParticipantCollection'
 import { defineMethod, updateMethod } from '../../../api/base/BaseCollection.methods';
 import { darkerBlueStyle, whiteStyle, greyStyle } from '../../styles';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
-// import { Redirect } from 'react-router-dom';
-// import { ROUTES } from '../../../startup/client/route-constants';
+import { ROUTES } from '../../../startup/client/route-constants';
 
 const schema = new SimpleSchema({
   yourLastName: String,
@@ -28,6 +27,7 @@ const schema = new SimpleSchema({
  * @memberOf ui/pages
  */
 const UnderParticipationForm = () => {
+  const [redirectToReferer, setRedirectToReferer] = useState(false);
 
   const submit = (formData) => {
     const { firstName, lastName, parentFirstName, parentLastName, parentEmail } = formData;
@@ -66,17 +66,15 @@ const UnderParticipationForm = () => {
         console.error('Could not update minor status', error);
       }
     });
+    setRedirectToReferer(true);
   };
 
-  /*
-  // Not sure how to do this without states so... yeah
-  if (this.state.redirectToReferer) {
+  let fRef = null;
+  const formSchema = new SimpleSchema2Bridge(schema);
+  if (redirectToReferer) {
     const from = { pathname: ROUTES.CREATE_PROFILE };
     return <Redirect to={from} />;
   }
-   */
-  let fRef = null;
-  const formSchema = new SimpleSchema2Bridge(schema);
   return (
       <Container fluid id={PAGE_IDS.UNDER_AGE_PARTICIPATION_FORM}>
         <Card style={darkerBlueStyle}>
