@@ -22,6 +22,7 @@ import MultiSelectField from '../form-fields/MultiSelectField';
 import { ROUTES } from '../../../startup/client/route-constants';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
   const [redirectToReferer, setRedirectToReferer] = useState(false);
@@ -145,22 +146,22 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
                 <Col><SelectField name="demographicLevel" /></Col>
               </Row>
               <Row>
-                <Col> <TextField name="linkedIn" /> </Col>
+                <Col> <TextField id={COMPONENT_IDS.CREATE_PROFILE_LINKEDIN} name="linkedIn" /> </Col>
                 <Col> <TextField name="gitHub" /> </Col>
                 <Col> <TextField name="slackUsername" /> </Col>
               </Row>
               <Row>
                 <Col> <TextField name="website" /> </Col>
-                <Col> <LongTextField name="aboutMe" /> </Col>
+                <Col> <LongTextField id={COMPONENT_IDS.CREATE_PROFILE_ABOUTME} name="aboutMe" /> </Col>
               </Row>
               <Row>
-              <MultiSelectField name="challenges" />
+              <MultiSelectField id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES} name="challenges" />
               </Row>
               <Row>
                 <Col> <MultiSelectField name="skills" /> </Col>
                 <Col> <MultiSelectField name="tools" /> </Col>
               </Row>
-              <SubmitField />
+              <SubmitField id={COMPONENT_IDS.CREATE_PROFILE_SUBMIT}/>
             </AutoForm>
         </Container>
     );

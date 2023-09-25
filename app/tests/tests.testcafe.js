@@ -12,7 +12,7 @@ import { addToolAdminPage } from './addToolAdmin.page';
 import { editChallengePage } from './editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
-import {viewTeamsPage} from './viewTeamsPage.page';
+import { viewTeamsPage } from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { profilePage } from './profilePage';
 /* global fixture:false, test:false */
@@ -20,6 +20,7 @@ import { profilePage } from './profilePage';
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
 const credentialsB = { username: 'john@foo.com', password: 'changeme' };
 const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
+const credentialsD = { username: 'gsummey@hotmail.com', password: 'changeme' };
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -41,10 +42,16 @@ const editedChallenge = {
   pitch: 'this is my pitch for the edit challenge',
 };
 
+const profileInfo = {
+  linkedin: 'Linkedin.com/usr/test',
+  aboutMe: 'Im a Garth Summey',
+};
+
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 
 /** USER --------------------------------------------------------------------------------------------------*/
+
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
@@ -52,6 +59,13 @@ test('Test that landing page shows up', async (testController) => {
 test('Test that help page shows up', async (testController) => {
   await navBar.gotoHelpPage(testController);
   await helpPage.isDisplayed(testController);
+});
+
+test('Test that CreateProfile page function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await createProfilePage.isDisplayed(testController);
+  await createProfilePage.fillInfo(testController, profileInfo);
 });
 
 test('Test that age page renders', async (testController) => {
