@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Header,
@@ -22,246 +22,217 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import ListParticipantsCard from './ListParticipantsCard';
 import ListParticipantsFilter from './ListParticipantsFilter';
 
-class ListParticipantsWidget extends React.Component {
+const ListParticipantsWidget = (
+    { participants, challenges, tools, skills, participantChallenges, participantSkills, participantTools, teams },
+) => {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: '',
-      challenges: [],
-      teams: [],
-      tools: [],
-      skills: [],
-      result: _.orderBy(this.props.participants, ['name'], ['asc']),
-    };
-  }
+  const [searchS, setSearchS] = useState('');
+  const [challengesS, setChallengesS] = useState([]);
+  const [teamsS, setTeamS] = useState([]);
+  const [toolsS, setToolsS] = useState([]);
+  const [skillsS, setSkillsS] = useState([]);
+  const [resultS, setResultS] = useState(_.orderBy(participants, ['name'], ['asc']));
 
-  /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
+  const sticky = {
+    position1: '-webkit-sticky',
+    position: 'sticky',
+    top: '6.5rem',
+  };
 
-  render() {
+  const filters = new ListParticipantsFilter();
 
-    if (this.props.participants.length === 0) {
-      return (
-          <div align={'center'}>
-            <Header as='h2' icon>
-              <Icon name='users' />
-              There are no participants at the moment.
-              <Header.Subheader>
-                Please check back later.
-              </Header.Subheader>
-            </Header>
-          </div>
-      );
-    }
+  const setFilters = () => {
+    const searchResults = filters.filterBySearch(participants, searchS);
+    const skillResults = filters.filterBySkills(skillsS,
+        skills, participantSkills, searchResults);
+    const toolResults = filters.filterByTools(toolsS,
+        tools, participantTools, skillResults);
+    const challengeResults = filters.filterByChallenge(challengesS,
+        challenges, participantChallenges, toolResults);
+    const sorted = filters.sortBy(challengeResults, 'participants');
+    setResultS(sorted);
+  };
 
-    const sticky = {
-      position1: '-webkit-sticky',
-      position: 'sticky',
-      top: '6.5rem',
-    };
+  const handleSearchChange = (event) => {
+    setSearchS(event.target.value);
+  };
 
-    const filters = new ListParticipantsFilter();
+  useEffect(() => {
+    setFilters();
+  }, [searchS, toolsS, skillsS, challengesS, teamsS]);
 
-    const setFilters = () => {
-      const searchResults = filters.filterBySearch(this.props.participants, this.state.search);
-      const skillResults = filters.filterBySkills(this.state.skills,
-          this.props.skills, this.props.participantSkills, searchResults);
-      const toolResults = filters.filterByTools(this.state.tools,
-          this.props.tools, this.props.participantTools, skillResults);
-      const challengeResults = filters.filterByChallenge(this.state.challenges,
-          this.props.challenges, this.props.participantChallenges, toolResults);
-      const sorted = filters.sortBy(challengeResults, 'participants');
-      this.setState({
-        result: sorted,
-      }, () => {
-      });
-    };
+  const getSkills = (event, { value }) => {
+    setSkillsS(value);
+  };
+  const getTools = (event, { value }) => {
+    setToolsS(value);
+  };
 
-    const handleSearchChange = (event) => {
-      this.setState({
-        search: event.target.value,
-      }, () => {
-        setFilters();
-      });
-    };
+  const getChallenge = (event, { value }) => {
+    setChallengesS(value);
+  };
 
-    const getSkills = (event, { value }) => {
-      this.setState({
-        skills: value,
-      }, () => {
-        setFilters();
-      });
-    };
+  const getTeam = (event, { value }) => {
+    setTeamS(value);
+  };
 
-    const getTools = (event, { value }) => {
-      this.setState({
-        tools: value,
-      }, () => {
-        setFilters();
-      });
-    };
+  const universalSkills = skills;
 
-    const getChallenge = (event, { value }) => {
-      this.setState({
-        challenges: value,
-      }, () => {
-        setFilters();
-      });
-    };
-
-    const getTeam = (event, { value }) => {
-      this.setState({
-        teams: value,
-      }, () => {
-        setFilters();
-      });
-    };
-
-    const universalSkills = this.props.skills;
-
-    function getParticipantSkills(participantID, participantSkills) {
-      const data = [];
-      const skills = _.filter(participantSkills, { participantID: participantID });
-      for (let i = 0; i < skills.length; i++) {
-        for (let j = 0; j < universalSkills.length; j++) {
-          if (skills[i].skillID === universalSkills[j]._id) {
-            data.push({ name: universalSkills[j].name });
-          }
+  const getParticipantSkills = (participantID, participantSkillsGPS) => {
+    const data = [];
+    const skillsGPS = _.filter(participantSkillsGPS, { participantID: participantID });
+    for (let i = 0; i < skillsGPS.length; i++) {
+      for (let j = 0; j < universalSkills.length; j++) {
+        if (skillsGPS[i].skillID === universalSkills[j]._id) {
+          data.push({ name: universalSkills[j].name });
         }
       }
-      // console.log(data);
-      return data;
     }
+    return data;
+  };
 
-    const universalTools = this.props.tools;
+  const universalTools = tools;
 
-    function getParticipantTools(participantID, participantTools) {
-      const data = [];
-      const tools = _.filter(participantTools, { participantID: participantID });
-      for (let i = 0; i < tools.length; i++) {
-        for (let j = 0; j < universalTools.length; j++) {
-          if (tools[i].toolID === universalTools[j]._id) {
-            data.push({ name: universalTools[j].name });
-          }
+  const getParticipantTools = (participantID, participantToolsGPT) => {
+    const data = [];
+    const toolsGPT = _.filter(participantToolsGPT, { participantID: participantID });
+    for (let i = 0; i < toolsGPT.length; i++) {
+      for (let j = 0; j < universalTools.length; j++) {
+        if (toolsGPT[i].toolID === universalTools[j]._id) {
+          data.push({ name: universalTools[j].name });
         }
       }
-      return data;
     }
+    return data;
+  };
 
-    const universalChallenges = this.props.challenges;
+  const universalChallenges = challenges;
 
-    function getParticipantChallenges(participantID, participantChallenges) {
-      const data = [];
-      const challenges = _.filter(participantChallenges, { participantID: participantID });
-      for (let i = 0; i < challenges.length; i++) {
-        for (let j = 0; j < universalChallenges.length; j++) {
-          if (challenges[i].challengeID === universalChallenges[j]._id) {
-            data.push(universalChallenges[j].title);
-          }
+  const getParticipantChallenges = (participantID, participantChallengesGPC) => {
+    const data = [];
+    const challengesGPC = _.filter(participantChallengesGPC, { participantID: participantID });
+    for (let i = 0; i < challengesGPC.length; i++) {
+      for (let j = 0; j < universalChallenges.length; j++) {
+        if (challengesGPC[i].challengeID === universalChallenges[j]._id) {
+          data.push(universalChallenges[j].title);
         }
       }
-      return data;
     }
+    return data;
+  };
 
-    return (
-        <div style={{ paddingBottom: '50px' }}>
-          <Grid container doubling relaxed stackable centered>
-            <Grid.Row centered>
-              <Grid.Column width={16}>
-                <div style={{
-                  backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
-                  borderRadius: '2rem',
-                }}>
-                  <Header as={'h2'} textAlign="center">
-                    All Participants
-                  </Header>
-                </div>
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Column width={4}>
-              <Segment style={sticky}>
+  const noParticipant = () => (
+      <div style={{ textAlign: 'center' }}>
+        <Header as='h2' icon>
+          <Icon name='users'/>
+          There are no participants at the moment.
+          <Header.Subheader>
+            Please check back later.
+          </Header.Subheader>
+        </Header>
+      </div>
+  );
+
+  const participantList = () => (
+      <div style={{ paddingBottom: '50px' }}>
+        <Grid container doubling relaxed stackable centered>
+          <Grid.Row centered>
+            <Grid.Column width={16}>
+              <div style={{
+                backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
+                borderRadius: '2rem',
+              }}>
+                <Header as={'h2'} textAlign="center">
+                  All Participants
+                </Header>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Column width={4}>
+            <Segment style={sticky}>
+              <div style={{ paddingTop: '2rem' }}>
+                <Header>
+                  <Header.Content>
+                    Total Participants: {resultS.length}
+                  </Header.Content>
+                </Header>
+              </div>
+              <div style={{ paddingTop: '2rem' }}>
+                <Input icon='search'
+                       iconPosition='left'
+                       placeholder='Search by participants name...'
+                       onChange={handleSearchChange}
+                       fluid
+                />
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>
-                    <Header.Content>
-                      Total Participants: {this.state.result.length}
-                    </Header.Content>
-                  </Header>
-                </div>
-                <div style={{ paddingTop: '2rem' }}>
-                  <Input icon='search'
-                         iconPosition='left'
-                         placeholder='Search by participants name...'
-                         onChange={handleSearchChange}
-                         fluid
-                  />
-                  <div style={{ paddingTop: '2rem' }}>
-                    <Header>Teams</Header>
-                    <Dropdown
+                  <Header>Teams</Header>
+                  <Dropdown
                       placeholder='Teams'
                       fluid
                       multiple
                       search
                       selection
-                      options={filters.dropdownValues(this.props.teams, 'name')}
+                      options={filters.dropdownValues(teams, 'name')}
                       onChange={getTeam}
-                    />
-                  </div>
-
-                  <div style={{ paddingTop: '2rem' }}>
-                    <Header>Challenges</Header>
-                    <Dropdown
-                        placeholder='Challenges'
-                        fluid
-                        multiple
-                        search
-                        selection
-                        options={filters.dropdownValues(this.props.challenges, 'title')}
-                        onChange={getChallenge}
-                    />
-                  </div>
-                </div>
-                <div style={{ paddingTop: '2rem' }}>
-                  <Header>Skills</Header>
-                  <Dropdown placeholder='Skills'
-                            fluid
-                            multiple
-                            search
-                            selection
-                            options={filters.dropdownValues(this.props.skills, 'name')}
-                            onChange={getSkills}
                   />
                 </div>
+
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>Tools</Header>
+                  <Header>Challenges</Header>
                   <Dropdown
-                      placeholder='Tools'
+                      placeholder='Challenges'
                       fluid
                       multiple
                       search
                       selection
-                      options={filters.dropdownValues(this.props.tools, 'name')}
-                      onChange={getTools}
+                      options={filters.dropdownValues(challenges, 'title')}
+                      onChange={getChallenge}
                   />
                 </div>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column width={12}>
-              <Item.Group divided>
-                {this.state.result.map((participants) => <ListParticipantsCard
-                    key={participants._id}
-                    participantID={participants._id}
-                    participants={participants}
-                    skills={getParticipantSkills(participants._id, this.props.participantSkills)}
-                    tools={getParticipantTools(participants._id, this.props.participantTools)}
-                    challenges={getParticipantChallenges(participants._id, this.props.participantChallenges)}
-                />)}
-              </Item.Group>
-            </Grid.Column>
-          </Grid>
-        </div>
-    );
-  }
-}
+              </div>
+              <div style={{ paddingTop: '2rem' }}>
+                <Header>Skills</Header>
+                <Dropdown placeholder='Skills'
+                          fluid
+                          multiple
+                          search
+                          selection
+                          options={filters.dropdownValues(skills, 'name')}
+                          onChange={getSkills}
+                />
+              </div>
+              <div style={{ paddingTop: '2rem' }}>
+                <Header>Tools</Header>
+                <Dropdown
+                    placeholder='Tools'
+                    fluid
+                    multiple
+                    search
+                    selection
+                    options={filters.dropdownValues(tools, 'name')}
+                    onChange={getTools}
+                />
+              </div>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <Item.Group divided>
+              {resultS.map((p) => <ListParticipantsCard
+                  key={p._id}
+                  participantID={p._id}
+                  participants={p}
+                  skills={getParticipantSkills(p._id, participantSkills)}
+                  tools={getParticipantTools(p._id, participantTools)}
+                  challenges={getParticipantChallenges(p._id, participantChallenges)}
+              />)}
+            </Item.Group>
+          </Grid.Column>
+        </Grid>
+      </div>
+  );
+
+  return participants.length === 0 ? noParticipant() : participantList();
+};
 
 ListParticipantsWidget.propTypes = {
   participantChallenges: PropTypes.array.isRequired,
