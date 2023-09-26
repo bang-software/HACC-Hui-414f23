@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Grid,
-  Header,
-  Item,
-  Icon,
-  Segment,
-  Input,
   Dropdown,
 } from 'semantic-ui-react';
+import Select from 'react-select';
+import { Container, Row, Col, InputGroup, FormControl, Card, ListGroup } from 'react-bootstrap';
+import * as Icon from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -22,10 +19,21 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import ListParticipantsCard from './ListParticipantsCard';
 import ListParticipantsFilter from './ListParticipantsFilter';
 
+/**
+ * Widget that list the participants from a user pov
+ * @param participants
+ * @param challenges
+ * @param tools
+ * @param skills
+ * @param participantChallenges
+ * @param participantSkills
+ * @param participantTools
+ * @param teams
+ * @returns {*}
+ */
 const ListParticipantsWidget = (
     { participants, challenges, tools, skills, participantChallenges, participantSkills, participantTools, teams },
 ) => {
-
   const [searchS, setSearchS] = useState('');
   const [challengesS, setChallengesS] = useState([]);
   const [teamsS, setTeamS] = useState([]);
@@ -123,49 +131,52 @@ const ListParticipantsWidget = (
 
   const noParticipant = () => (
       <div style={{ textAlign: 'center' }}>
-        <Header as='h2' icon>
-          <Icon name='users'/>
+        <h2>
+          <Icon.PersonCircle />
           There are no participants at the moment.
-          <Header.Subheader>
+          <h3>
             Please check back later.
-          </Header.Subheader>
-        </Header>
+          </h3>
+        </h2>
       </div>
   );
 
   const participantList = () => (
       <div style={{ paddingBottom: '50px' }}>
-        <Grid container doubling relaxed stackable centered>
-          <Grid.Row centered>
-            <Grid.Column width={16}>
+        <Container>
+          <Row>
+            <Col>
               <div style={{
                 backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
                 borderRadius: '2rem',
               }}>
-                <Header as={'h2'} textAlign="center">
+                <h2 className="text-center fw-bold">
                   All Participants
-                </Header>
+                </h2>
               </div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Column width={4}>
-            <Segment style={sticky}>
+            </Col>
+          </Row>
+          <Row>
+          <Col md={3}>
+            <Card style={sticky}>
+              <Card.Body>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>
-                  <Header.Content>
+                  <h5 className="fw-bold">
                     Total Participants: {resultS.length}
-                  </Header.Content>
-                </Header>
+                  </h5>
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Input icon='search'
-                       iconPosition='left'
-                       placeholder='Search by participants name...'
-                       onChange={handleSearchChange}
-                       fluid
-                />
+                <InputGroup className="mb-3">
+                    <InputGroup.Text>
+                      <Icon.Search/>
+                    </InputGroup.Text>
+                  <FormControl
+                      placeholder="Search by participants name..."
+                      onChange={handleSearchChange}
+                  />
+                </InputGroup>
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>Teams</Header>
+                  <h5 className="fw-bold">Teams</h5>
                   <Dropdown
                       placeholder='Teams'
                       fluid
@@ -178,7 +189,7 @@ const ListParticipantsWidget = (
                 </div>
 
                 <div style={{ paddingTop: '2rem' }}>
-                  <Header>Challenges</Header>
+                  <h5 className="fw-bold">Challenges</h5>
                   <Dropdown
                       placeholder='Challenges'
                       fluid
@@ -191,7 +202,7 @@ const ListParticipantsWidget = (
                 </div>
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>Skills</Header>
+                <h5 className="fw-bold">Skills</h5>
                 <Dropdown placeholder='Skills'
                           fluid
                           multiple
@@ -202,7 +213,7 @@ const ListParticipantsWidget = (
                 />
               </div>
               <div style={{ paddingTop: '2rem' }}>
-                <Header>Tools</Header>
+                <h5 className="fw-bold">Tools</h5>
                 <Dropdown
                     placeholder='Tools'
                     fluid
@@ -213,10 +224,11 @@ const ListParticipantsWidget = (
                     onChange={getTools}
                 />
               </div>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <Item.Group divided>
+                </Card.Body>
+            </Card>
+          </Col>
+          <Col>
+            <ListGroup>
               {resultS.map((p) => <ListParticipantsCard
                   key={p._id}
                   participantID={p._id}
@@ -225,9 +237,10 @@ const ListParticipantsWidget = (
                   tools={getParticipantTools(p._id, participantTools)}
                   challenges={getParticipantChallenges(p._id, participantChallenges)}
               />)}
-            </Item.Group>
-          </Grid.Column>
-        </Grid>
+            </ListGroup>
+          </Col>
+          </Row>
+        </Container>
       </div>
   );
 
