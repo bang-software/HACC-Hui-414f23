@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Dropdown,
-} from 'semantic-ui-react';
 import Select from 'react-select';
 import { Container, Row, Col, InputGroup, FormControl, Card, ListGroup } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
-import PropTypes from 'prop-types';
 import { _ } from 'lodash';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { ParticipantChallenges } from '../../../api/user/ParticipantChallengeCollection';
 import { ParticipantSkills } from '../../../api/user/ParticipantSkillCollection';
@@ -31,9 +27,27 @@ import ListParticipantsFilter from './ListParticipantsFilter';
  * @param teams
  * @returns {*}
  */
-const ListParticipantsWidget = (
-    { participants, challenges, tools, skills, participantChallenges, participantSkills, participantTools, teams },
-) => {
+const ListParticipantsWidget = () => {
+  const {
+    participantChallenges,
+    participantSkills,
+    participantTools,
+    teams,
+    skills,
+    challenges,
+    tools,
+    participants,
+  } = useTracker(() => ({
+    participantChallenges: ParticipantChallenges.find({}).fetch(),
+    participantSkills: ParticipantSkills.find({}).fetch(),
+    participantTools: ParticipantTools.find({}).fetch(),
+    teams: Teams.find({ open: true }).fetch(),
+    skills: Skills.find({}).fetch(),
+    challenges: Challenges.find({}).fetch(),
+    tools: Tools.find({}).fetch(),
+    participants: Participants.find({}).fetch(),
+  }));
+
   const [searchS, setSearchS] = useState('');
   const [challengesS, setChallengesS] = useState([]);
   const [teamsS, setTeamS] = useState([]);
@@ -69,26 +83,26 @@ const ListParticipantsWidget = (
     setFilters();
   }, [searchS, toolsS, skillsS, challengesS, teamsS]);
 
-  const getSkills = (event, { value }) => {
-    setSkillsS(value);
+  const getSkills = (event) => {
+    setSkillsS(event.map(e => e.value));
   };
-  const getTools = (event, { value }) => {
-    setToolsS(value);
-  };
-
-  const getChallenge = (event, { value }) => {
-    setChallengesS(value);
+  const getTools = (event) => {
+    setToolsS(event.map(e => e.value));
   };
 
-  const getTeam = (event, { value }) => {
-    setTeamS(value);
+  const getChallenge = (event) => {
+    setChallengesS(event.map(e => e.value));
+  };
+
+  const getTeam = (event) => {
+    setTeamS(event.map(e => e.value));
   };
 
   const universalSkills = skills;
 
   const getParticipantSkills = (participantID, participantSkillsGPS) => {
     const data = [];
-    const skillsGPS = _.filter(participantSkillsGPS, { participantID: participantID });
+    const skillsGPS = participantSkillsGPS.filter(skill => skill.participantID === participantID);
     for (let i = 0; i < skillsGPS.length; i++) {
       for (let j = 0; j < universalSkills.length; j++) {
         if (skillsGPS[i].skillID === universalSkills[j]._id) {
@@ -103,7 +117,7 @@ const ListParticipantsWidget = (
 
   const getParticipantTools = (participantID, participantToolsGPT) => {
     const data = [];
-    const toolsGPT = _.filter(participantToolsGPT, { participantID: participantID });
+    const toolsGPT = participantToolsGPT.filter(tool => tool.participantID === participantID);
     for (let i = 0; i < toolsGPT.length; i++) {
       for (let j = 0; j < universalTools.length; j++) {
         if (toolsGPT[i].toolID === universalTools[j]._id) {
@@ -118,7 +132,7 @@ const ListParticipantsWidget = (
 
   const getParticipantChallenges = (participantID, participantChallengesGPC) => {
     const data = [];
-    const challengesGPC = _.filter(participantChallengesGPC, { participantID: participantID });
+    const challengesGPC = participantChallengesGPC.filter(challenge => challenge.participantID === participantID);
     for (let i = 0; i < challengesGPC.length; i++) {
       for (let j = 0; j < universalChallenges.length; j++) {
         if (challengesGPC[i].challengeID === universalChallenges[j]._id) {
@@ -177,25 +191,16 @@ const ListParticipantsWidget = (
                 </InputGroup>
                 <div style={{ paddingTop: '2rem' }}>
                   <h5 className="fw-bold">Teams</h5>
-                  <Dropdown
-                      placeholder='Teams'
-                      fluid
-                      multiple
-                      search
-                      selection
+                  <Select
+                      isMulti
                       options={filters.dropdownValues(teams, 'name')}
                       onChange={getTeam}
                   />
                 </div>
-
                 <div style={{ paddingTop: '2rem' }}>
                   <h5 className="fw-bold">Challenges</h5>
-                  <Dropdown
-                      placeholder='Challenges'
-                      fluid
-                      multiple
-                      search
-                      selection
+                  <Select
+                      isMulti
                       options={filters.dropdownValues(challenges, 'title')}
                       onChange={getChallenge}
                   />
@@ -203,23 +208,16 @@ const ListParticipantsWidget = (
               </div>
               <div style={{ paddingTop: '2rem' }}>
                 <h5 className="fw-bold">Skills</h5>
-                <Dropdown placeholder='Skills'
-                          fluid
-                          multiple
-                          search
-                          selection
-                          options={filters.dropdownValues(skills, 'name')}
-                          onChange={getSkills}
+                <Select
+                    isMulti
+                    options={filters.dropdownValues(skills, 'name')}
+                    onChange={getSkills}
                 />
               </div>
               <div style={{ paddingTop: '2rem' }}>
                 <h5 className="fw-bold">Tools</h5>
-                <Dropdown
-                    placeholder='Tools'
-                    fluid
-                    multiple
-                    search
-                    selection
+                <Select
+                    isMulti
                     options={filters.dropdownValues(tools, 'name')}
                     onChange={getTools}
                 />
@@ -247,26 +245,4 @@ const ListParticipantsWidget = (
   return participants.length === 0 ? noParticipant() : participantList();
 };
 
-ListParticipantsWidget.propTypes = {
-  participantChallenges: PropTypes.array.isRequired,
-  participantSkills: PropTypes.array.isRequired,
-  skills: PropTypes.array.isRequired,
-  participantTools: PropTypes.array.isRequired,
-  teams: PropTypes.array.isRequired,
-  challenges: PropTypes.array.isRequired,
-  participants: PropTypes.array.isRequired,
-  tools: PropTypes.array.isRequired,
-
-};
-
-export default withTracker(() => ({
-  participantChallenges: ParticipantChallenges.find({}).fetch(),
-  participantSkills: ParticipantSkills.find({}).fetch(),
-  participantTools: ParticipantTools.find({}).fetch(),
-  teams: Teams.find({ open: true }).fetch(),
-  skills: Skills.find({}).fetch(),
-  challenges: Challenges.find({}).fetch(),
-  tools: Tools.find({}).fetch(),
-  participants: Participants.find({}).fetch(),
-
-}))(ListParticipantsWidget);
+export default ListParticipantsWidget;
