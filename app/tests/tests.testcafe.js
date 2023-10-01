@@ -1,6 +1,8 @@
 import { landingPage } from './landing.page';
 import { agePage } from './age.page';
 import { addChallengeAdminPage } from './addChallengeAdmin.page';
+import { addSkillAdminPage } from './addSkillAdmin.page';
+import { addToolAdminPage } from './addToolAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
@@ -18,12 +20,19 @@ import { profilePage } from './profilePage';
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
 const credentialsB = { username: 'john@foo.com', password: 'changeme' };
 const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
-
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
   submissionDetail: 'Submission details of the test challenge',
   pitch: 'this is my pitch for the test challenge',
+};
+const skill = {
+  name: 'Test skill',
+  description: 'The description of the test skill',
+};
+const tool = {
+  name: 'Test tool',
+  description: 'The description of the test tool',
 };
 
 const editedChallenge = {
@@ -33,7 +42,7 @@ const editedChallenge = {
 };
 
 fixture('meteor-application-template-react localhost test with default db')
-    .page('http://localhost:3400');
+  .page('http://localhost:3400');
 
 /** USER --------------------------------------------------------------------------------------------------*/
 test('Test that landing page shows up', async (testController) => {
@@ -128,6 +137,14 @@ test('Test that EditChallenge pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
-  await editChallengePage.gotoEditChallengePage(testController);
+  await manageHaccWidgetComponents.gotoEditChallengePage(testController);
   await editChallengePage.editChallenge(testController, editedChallenge);
+});
+
+test('Test that ViewTeams pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  await manageHaccWidgetComponents.gotoViewTeamsPage(testController);
+  await viewTeamsPage.clickFilter(testController);
 });
