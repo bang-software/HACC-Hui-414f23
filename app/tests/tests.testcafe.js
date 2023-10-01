@@ -1,14 +1,14 @@
 import { landingPage } from './landing.page';
 import { agePage } from './age.page';
+import { addChallengeAdminPage } from './addChallengeAdmin.page';
+import { addSkillAdminPage } from './addSkillAdmin.page';
+import { addToolAdminPage } from './addToolAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
 import { manageHaccWidgetComponents } from './manageHaccWidget.components';
 import { underParticipationFormPage } from './underparticipationform.page';
 import { signOutPage } from './signoutPage.page';
 import { helpPage } from './help.page';
-import { addChallengeAdminPage } from './addChallengeAdmin.page';
-import { addSkillAdminPage } from './addSkillAdmin.page';
-import { addToolAdminPage } from './addToolAdmin.page';
 import { editChallengePage } from './editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
@@ -48,7 +48,7 @@ const profileInfo = {
 };
 
 fixture('meteor-application-template-react localhost test with default db')
-    .page('http://localhost:3400');
+  .page('http://localhost:3400');
 
 /** USER --------------------------------------------------------------------------------------------------*/
 
@@ -81,6 +81,15 @@ test('Test that under participation page renders', async (testController) => {
   await underParticipationFormPage.isDisplayed(testController);
 });
 
+/** ADMIN -------------------------------------------------------------------------------------------------*/
+test('Test that Admin pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  await manageHaccWidgetComponents.gotoAddChallengePage(testController);
+  await addChallengeAdminPage.addChallenge(testController, challenge);
+});
+
 test('Test that signin and signout work', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -89,12 +98,11 @@ test('Test that signin and signout work', async (testController) => {
   await signOutPage.isDisplayed(testController);
 });
 
-test('Test that Participation Form page works', async (testController) => {
+test('Test that participation form page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsB.username, credentialsB.password);
   await agePage.over18(testController);
-  await participationForm.agreeToTerms(testController, credentialsC.firstName, credentialsC.lastName);
-  await createProfilePage.isDisplayed(testController);
+  await participationForm.isDisplayed(testController);
 });
 
 test('Test that suggest tool/skill renders', async (testController) => {

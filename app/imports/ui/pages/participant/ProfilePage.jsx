@@ -1,16 +1,12 @@
 import React from 'react';
 
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
-import ProfileWidget from '../../components/participant/ProfileWidget';
+import Profile from '../../components/participant/Profile';
 
-class ProfilePage extends React.Component {
-  render() {
-    return (
-      <div id={'profile-page'}>
-        <ProfileWidget />
-      </div>
-    );
-  }
-}
+const ProfilePage = () => (
+    <div id={'profile-page'}>
+      <Profile/>
+    </div>
+);
 
 export default withAllSubscriptions(ProfilePage);
