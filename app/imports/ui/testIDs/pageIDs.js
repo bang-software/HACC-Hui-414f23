@@ -14,4 +14,5 @@ export const PAGE_IDS = {
   PARTICIPATION_FORM: 'participation-form',
   CREATE_PROFILE: 'create-profile',
   SUGGEST_TOOL_SKILL: 'suggest-tool-skill',
+  LIST_PARTICIPANTS: 'list-participants',
 };

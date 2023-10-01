@@ -57,7 +57,7 @@ const NavBar = () => {
       suggestionCount: suggestionCnt,
     };
   }, []);
-  
+
   return (ready ? (
       <Navbar expand="lg" style={footer} className="navbar-expand-lg">
         <Container fluid>
@@ -88,7 +88,8 @@ const NavBar = () => {
                               to={ROUTES.YOUR_TEAMS}
                               key='your-teams'>Your
                       Teams</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.LIST_PARTICIPANTS}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.LIST_PARTICIPANTS}
                               key='list-participants'>List Participants ({numParticipants})</Nav.Link>,

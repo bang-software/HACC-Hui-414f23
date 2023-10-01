@@ -15,6 +15,7 @@ import { createProfilePage } from './createProfile.page';
 import { viewTeamsPage } from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { profilePage } from './profilePage';
+import { listParticipantsPage } from './listParticipants.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -66,6 +67,13 @@ test('Test that CreateProfile page function', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await createProfilePage.isDisplayed(testController);
   await createProfilePage.fillInfo(testController, profileInfo);
+});
+
+test('Test that ListParticipants page function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await navBar.gotoListParticipantsPage(testController);
+  await listParticipantsPage.isDisplayed(testController);
 });
 
 test('Test that age page renders', async (testController) => {
