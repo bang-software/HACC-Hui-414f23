@@ -11,6 +11,7 @@ import { signOutPage } from './signoutPage.page';
 import { helpPage } from './help.page';
 import { editChallengePage } from './editChallengePage.page';
 import { participationForm } from './participationForm.page';
+import { createProfilePage } from './createProfile.page';
 import { viewTeamsPage } from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { profilePage } from './profilePage';
