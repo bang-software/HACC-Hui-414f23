@@ -45,4 +45,8 @@ export const COMPONENT_IDS = {
   SUGGEST_TOOL_SKILL_NAME: 'suggest-tool-skill-name',
   SUGGEST_TOOL_SKILL_DESCRIPTION: 'suggest-tool-skill-description',
   SUGGEST_TOOL_SKILL_SUBMIT: 'suggest-tool-skill-submit',
+  CREATE_PROFILE_LINKEDIN: 'create-profile-linkedin',
+  CREATE_PROFILE_ABOUTME: 'create-profile-aboutme',
+  CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
+  CREATE_PROFILE_SUBMIT: 'create-profile-submit',
 };
