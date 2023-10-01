@@ -2,7 +2,7 @@ import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Button, Container, Header, Segment } from 'semantic-ui-react';
+import { Button, Container } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
@@ -14,31 +14,39 @@ import ProfileCard from './ProfileCard';
 import { ROUTES } from '../../../startup/client/route-constants';
 import TeamMembershipWidget from './TeamMembershipWidget';
 
-const EditProfileWidget = ({ participant, devChallenges, devSkills, devTools }) => {
-  const model = participant;
-  model.challenges = devChallenges.map(challenge => {
-    const c = Challenges.findDoc(challenge.challengeID);
-    return c.title;
-  });
-  model.skills = devSkills;
-  model.tools = devTools;
+const Profile = ({ participant, devChallenges, devSkills, devTools }) => {
+
+  const buildModel = () => {
+    const model = participant;
+    model.challenges = devChallenges.map((challenge) => {
+      const c = Challenges.findDoc(challenge.challengeID);
+      return c.title;
+    });
+    model.skills = devSkills;
+    model.tools = devTools;
+    return model;
+  };
+
+  const model = buildModel();
   return (
     <div style={{ paddingBottom: '50px', paddingTop: '40px' }}><Container>
-      <Segment style={paleBlueStyle}>
-        <Header as="h2" textAlign="center">Your Profile</Header>
-        <ProfileCard model={model} />
-        <Button color="olive"><Link to={ROUTES.EDIT_PROFILE}>Edit Profile</Link></Button>
-      </Segment>
-      <Segment style={paleBlueStyle}>
-        <Header as="h2" textAlign="center">Team Membership</Header>
-        <TeamMembershipWidget />
-      </Segment>
+      <div style={paleBlueStyle}>
+        <h2>Your Profile</h2>
+        <ProfileCard model={model}/>
+          <Link to={ROUTES.EDIT_PROFILE} style={{ color: '#ffffff' }}>
+            <Button>Edit Profile</Button>
+          </Link>
+      </div>
+      <div style={paleBlueStyle}>
+        <h2>Team Membership</h2>
+        <TeamMembershipWidget/>
+      </div>
     </Container>
     </div>
   );
 };
 
-EditProfileWidget.propTypes = {
+Profile.propTypes = {
   participant: PropTypes.object.isRequired,
   devChallenges: PropTypes.arrayOf(
     PropTypes.object,
@@ -51,7 +59,7 @@ EditProfileWidget.propTypes = {
   ),
 };
 
-const EditProfileWidgetCon = withTracker(() => {
+const ProfileCon = withTracker(() => {
   const participant = Participants.findDoc({ userID: Meteor.userId() });
   const participantID = participant._id;
   const devChallenges = ParticipantChallenges.find({ participantID }).fetch();
@@ -63,6 +71,6 @@ const EditProfileWidgetCon = withTracker(() => {
     devSkills,
     devTools,
   };
-})(EditProfileWidget);
+})(Profile);
 
-export default withRouter(EditProfileWidgetCon);
+export default withRouter(ProfileCon);
