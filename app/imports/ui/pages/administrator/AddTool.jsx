@@ -1,11 +1,13 @@
 import React from 'react';
-import { Grid, Segment, Header } from 'semantic-ui-react';
-import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-semantic';
+import { Container, Col, Card } from 'react-bootstrap';
+import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Tools } from '../../../api/tool/ToolCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
@@ -17,13 +19,13 @@ const schema = new SimpleSchema({
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-class AddTool extends React.Component {
+const AddTool = () => {
 
   /** On submit, insert the data.
    * @param data {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
-  submit(data, formRef) {
+  const submit = (data, formRef) => {
     const { name, description } = data;
     const definitionData = { name, description };
     const collectionName = Tools.getCollectionName();
@@ -39,30 +41,28 @@ class AddTool extends React.Component {
             // console.log('Success');
           }
         });
-  }
+  };
 
+  const formSchema = new SimpleSchema2Bridge(schema);
+  let fRef = null;
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    let fRef = null;
-    const formSchema = new SimpleSchema2Bridge(schema);
-    return (
-        <Grid container centered>
-          <Grid.Column>
-            <Header as="h2" textAlign="center">Add a Tool</Header>
+  return (
+        <Container fluid id={PAGE_IDS.ADD_TOOL}>
+          <Col className="addFormContainer">
+            <h2 className='addFormHeader'>Add a Tool</h2>
             <AutoForm ref={ref => {
               fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
-              <Segment>
-                <TextField name='name' />
-                <TextField name='description' />
-                <SubmitField value='Submit' />
+            }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
+              <Card className='addFormCard'>
+                <TextField id={COMPONENT_IDS.ADD_TOOL_NAME} name='name' />
+                <TextField id={COMPONENT_IDS.ADD_TOOL_DESCRIPTION} name='description' />
+                <SubmitField id={COMPONENT_IDS.ADD_TOOL_SUBMIT} value='Submit' />
                 <ErrorsField />
-              </Segment>
+              </Card>
             </AutoForm>
-          </Grid.Column>
-        </Grid>
+          </Col>
+        </Container>
     );
-  }
-}
+};
 
 export default AddTool;

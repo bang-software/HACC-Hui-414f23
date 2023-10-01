@@ -1,34 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Form, Header, Message, Segment } from 'semantic-ui-react';
+import { Card, Button, Form, Alert } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
-import { AutoForm, BoolField, SubmitField, TextField } from 'uniforms-semantic';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import SimpleSchema from 'simpl-schema';
 import { ROUTES } from '../../../startup/client/route-constants';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { userInteractionDefineMethod } from '../../../api/user/UserInteractionCollection.methods';
 import { USER_INTERACTIONS } from '../../../startup/client/user-interaction-constants';
 import { darkerBlueStyle } from '../../styles';
-
-const schema = new SimpleSchema({
-  lastName: String,
-  firstName: String,
-  agree: { type: Boolean, optional: false },
-});
+import { PAGE_IDS } from '../../testIDs/pageIDs';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /**
  * A simple static component to render some text for the landing page.
  * @memberOf ui/pages
  */
-class ParticipationForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-  }
-
-  submit(formData) {
+export default function ParticipationForm() {
+  const [redirectToReferer, setRedirectToReferer] = useState(false);
+  const submit = (formData) => {
     const { firstName, lastName, agree } = formData;
     if (agree) {
       const dev = Participants.findDoc({ userID: Meteor.userId() });
@@ -53,37 +42,66 @@ class ParticipationForm extends React.Component {
           console.error('Could not define user interaction', error);
         }
       });
-      this.setState({ redirectToReferer: true });
+      setRedirectToReferer(true);
     }
+  };
+
+  if (redirectToReferer) {
+    const from = { pathname: ROUTES.CREATE_PROFILE };
+    return <Redirect to={from}/>;
   }
 
-  render() {
-    const formSchema = new SimpleSchema2Bridge(schema);
-    if (this.state.redirectToReferer) {
-      const from = { pathname: ROUTES.CREATE_PROFILE };
-      return <Redirect to={from}/>;
-    }
-    return (
-        <Segment style={darkerBlueStyle}>
-          <Header>HACC Registration</Header>
-          <AutoForm schema={formSchema} onSubmit={data => this.submit(data)}>
-              <Segment>
-                <Message>
-                  Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>.
-                  <br />
-                  Then agree to the terms.
-                </Message>
-                <Form.Group widths="equal">
-                  <TextField name="firstName" />
-                  <TextField name="lastName" />
-                </Form.Group>
-                <BoolField name="agree" label="I have read the rules and agree to the terms" />
-                <SubmitField />
-              </Segment>
-            </AutoForm>
-        </Segment>
-    );
-  }
+  return (
+    <div id={PAGE_IDS.PARTICIPATION_FORM} style={{ marginTop: '20px' }}>
+      <Card style={darkerBlueStyle}>
+        <h2 style={{ padding: '10px' }}>HACC Registration</h2>
+        <Card style={{ padding: '10px' }}>
+          <Form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = {
+              firstName: e.target.firstName.value,
+              lastName: e.target.lastName.value,
+              agree: e.target.agree.checked,
+            };
+            submit(formData);
+          }}>
+            <Alert variant="info">
+              Read the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
+              <br />
+              Then agree to the terms
+            </Alert>
+            <Form.Group className="row">
+              <div className="col">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control id={COMPONENT_IDS.PARTICIPATION_FORM_FIRST_NAME}
+                              type="text"
+                              placeholder="First Name"
+                              name="firstName"
+                              required/>
+              </div>
+              <div className="col">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control id={COMPONENT_IDS.PARTICIPATION_FORM_LAST_NAME}
+                              type="text"
+                              placeholder="Last Name"
+                              name="lastName"
+                              required/>
+              </div>
+            </Form.Group>
+            <Form.Group style={{ padding: '10px' }}>
+              <Form.Check
+                id={COMPONENT_IDS.PARTICIPATION_FORM_AGREE_BUTTON}
+                type="checkbox"
+                label="I have read the rules and agree to the terms"
+                name="agree"
+                required />
+            </Form.Group>
+            <Button id={COMPONENT_IDS.PARTICIPATION_FORM_SUBMIT} variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Card>
+      </Card>
+    </div>
+  );
 }
-
-export default ParticipationForm;

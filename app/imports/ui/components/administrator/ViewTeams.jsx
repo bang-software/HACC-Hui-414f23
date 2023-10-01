@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
 import { ZipZap } from 'meteor/udondan:zipzap';
-import { Button, Checkbox, Form, Grid, Header, Item, Segment } from 'semantic-ui-react';
+import { Container, Row, Col, Button, Form, Card, ListGroup } from 'react-bootstrap';
 import { Teams } from '../../../api/team/TeamCollection';
 import ViewTeamExample from './ViewTeam';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const getTeamMembers = (team) => {
   const teamID = team._id;
@@ -45,47 +46,32 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
     return compliant;
   };
 
-  const handleChange = (e, { value }) => {
-    setFilterValue(value);
-    const remainingTeams = [];
-    const localTeams = filteredTeams;
+  const handleChange = (e) => {
+    const value = e.target.value;
+    let remainingTeams = [];
+
     switch (value) {
       case 'Challenge':
-        localTeams.forEach(team => {
+        remainingTeams = teams.filter(team => {
           const challengeIDs = teamChallenges.filter(tc => tc.teamID === team._id);
-          if (challengeIDs.length === 0) {
-            remainingTeams.push(team);
-          }
+          return challengeIDs.length === 0;
         });
-        setFilteredTeams(remainingTeams);
         break;
       case 'NonCompliant':
-        localTeams.forEach(team => {
-          if (!teamIsCompliant(team._id)) {
-            remainingTeams.push(team);
-          }
-        });
-        setFilteredTeams(remainingTeams);
+        remainingTeams = teams.filter(team => !teamIsCompliant(team._id));
         break;
       case 'NoDevPost':
-        localTeams.forEach(team => {
-          if (!team.devPostPage) {
-            remainingTeams.push(team);
-          }
-        });
-        setFilteredTeams(remainingTeams);
+        remainingTeams = teams.filter(team => !team.devPostPage);
         break;
       case 'NoGitHub':
-        localTeams.forEach(team => {
-          if (!team.gitHubRepo) {
-            remainingTeams.push(team);
-          }
-        });
-        setFilteredTeams(remainingTeams);
+        remainingTeams = teams.filter(team => !team.gitHubRepo);
         break;
       default:
-        setFilteredTeams(teams);
+        remainingTeams = [...teams];
     }
+
+    setFilterValue(value);
+    setFilteredTeams(remainingTeams);
   };
 
   const handleDownload = () => {
@@ -104,54 +90,49 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
   };
 
   return (
-      <Grid container centered>
-        <Grid.Row>
-          <Grid.Column width={16}>
-            <div style={{
-              backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
-              borderRadius: '2rem',
-            }}>
-              <Header as="h2" textAlign="center">View Teams ({filteredTeams.length})</Header>
-            </div>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Button onClick={handleDownload}>Download Team Captain emails</Button>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={4}>
-            <Segment style={stickyStyle}>
-              <Form>
-                <Form.Field>Select a filter</Form.Field>
-                {/* <Form.Field> */}
-                {/*  <Checkbox checked={filterValue === 'Challenge'} label="No challenge" onChange={handleChange} */}
-                {/*            radio name='checkboxRadioGroup' value='Challenge' */}
-                {/*  /> */}
-                {/* </Form.Field> */}
-                <Form.Field>
-                  <Checkbox checked={filterValue === 'NonCompliant'} label="Non Compliant" onChange={handleChange}
-                            radio name='checkboxRadioGroup' value='NonCompliant'
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox checked={filterValue === 'NoDevPost'} label="No devpost" onChange={handleChange}
-                            radio name='checkboxRadioGroup' value='NoDevPost'
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox checked={filterValue === 'NoGitHub'} label="No GitHub" onChange={handleChange}
-                            radio name='checkboxRadioGroup' value='NoGitHub'
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Checkbox checked={filterValue === 'None'} label="None" onChange={handleChange}
-                            radio name='checkboxRadioGroup' value='None' />
-                </Form.Field>
-              </Form>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column width={12}>
-            <Item.Group divided>
+      <Container className="mt-5 mb-5">
+        <Row className="mb-4">
+          <Col>
+            <Card bg="light" className="text-center p-3 rounded">
+              <Card.Title>View Teams ({filteredTeams.length})</Card.Title>
+            </Card>
+          </Col>
+        </Row>
+        <Row className="mb-4">
+          <Button
+              variant="primary"
+              onClick={handleDownload}
+              id={COMPONENT_IDS.DOWNLOAD_TEAM_CAPTAIN_EMAILS}
+          >
+            Download Team Captain emails
+          </Button>
+        </Row>
+        <Row>
+          <Col xs={4}>
+            <Card className="position-sticky" style={{ top: '6.5rem' }}>
+              <Card.Body>
+                <Form>
+                  <Form.Group>
+                    <Form.Label>Select a filter</Form.Label>
+                    <Form.Check type="radio" name="checkboxRadioGroup" value="NonCompliant"
+                                checked={filterValue === 'NonCompliant'} onChange={handleChange}
+                                label="Non Compliant" id={COMPONENT_IDS.FILTER_NON_COMPLIANT} />
+                    <Form.Check type="radio" name="checkboxRadioGroup" value="NoDevPost"
+                                checked={filterValue === 'NoDevPost'} onChange={handleChange}
+                                label="No devpost" id={COMPONENT_IDS.FILTER_NO_DEV_POST}/>
+                    <Form.Check type="radio" name="checkboxRadioGroup" value="NoGitHub"
+                                checked={filterValue === 'NoGitHub'} onChange={handleChange}
+                                label="No GitHub" id={COMPONENT_IDS.FILTER_NO_GITHUB}/>
+                    <Form.Check type="radio" name="checkboxRadioGroup" value="None"
+                                checked={filterValue === 'None'} onChange={handleChange}
+                                label="None" id={COMPONENT_IDS.FILTER_NONE}/>
+                  </Form.Group>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col xs={8}>
+            <ListGroup>
               {filteredTeams.map((team) => (
                   <ViewTeamExample key={team._id}
                                    team={team}
@@ -159,9 +140,10 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
                                    isCompliant={teamIsCompliant(team._id)}
                   />
               ))}
-            </Item.Group>
-          </Grid.Column></Grid.Row>
-      </Grid>
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
   );
 };
 

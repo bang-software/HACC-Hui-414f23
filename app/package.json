@@ -18,6 +18,7 @@
     "react": "^16.14.0",
     "react-addons-pure-render-mixin": "^15.6.3",
     "react-bootstrap": "^2.8.0",
+    "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^16.14.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
@@ -62,8 +63,10 @@
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "move-docs": "cp -r ../docs/ ../../docusaurus/static/jsdoc/",
     "deploy": "cross-env DEPLOY_HOSTNAME=us-east-1.galaxy-deploy.meteor.com meteor deploy hacchui.meteorapp.com --settings ../config/settings.production.json",
+    "test-acceptance-development-edge": "testcafe edge tests/*.testcafe.js",
     "test-acceptance-development": "testcafe chrome tests/*.testcafe.js",
     "test-acceptance-development-single": "testcafe chrome tests/*.testcafe.js -t \"Test that sign up and sign out work\"",
+    "test-acceptance-development-single-edge": "testcafe edge tests/*.testcafe.js -t \"Test that EditChallenge pages function\"",
     "test-acceptance-ci": "testcafe chrome:headless tests/*.testcafe.js -q --app \"meteor npm run start\"",
     "unimported": "npx unimported",
     "test-all": "meteor reset && meteor npm run lint && meteor npm run unimported && meteor npm run test-unit && meteor npm run test-integration && meteor npm run test-acceptance-ci"
