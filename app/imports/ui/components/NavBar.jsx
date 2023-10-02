@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { NavLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
-// import _ from 'lodash';
 import { BoxArrowRight, PersonFill, PersonFillX } from 'react-bootstrap-icons';
 import { Container, Nav, Navbar, NavDropdown, Spinner } from 'react-bootstrap';
 import { ROLE } from '../../api/role/Role';
@@ -13,7 +12,6 @@ import { Teams } from '../../api/team/TeamCollection';
 import { Suggestions } from '../../api/suggestions/SuggestionCollection';
 import { CanCreateTeams } from '../../api/team/CanCreateTeamCollection';
 import { COMPONENT_IDS } from '../testIDs/componentIDs';
-import { footer } from '../styles';
 // import { MinorParticipants } from '../../api/user/MinorParticipantCollection';
 
 /**
@@ -57,9 +55,8 @@ const NavBar = () => {
       suggestionCount: suggestionCnt,
     };
   }, []);
-  
   return (ready ? (
-      <Navbar expand="lg" style={footer} className="navbar-expand-lg">
+      <Navbar expand="lg" className="navbar navbar-dark" style={{ backgroundColor: '#124884' }} >
         <Container fluid>
           <Navbar.Brand as={NavLink} to={ROUTES.LANDING}>
             <h1>HACC-Hui</h1>
@@ -86,8 +83,7 @@ const NavBar = () => {
                     <Nav.Link as={NavLink}
                               activeClassName="active"
                               to={ROUTES.YOUR_TEAMS}
-                              key='your-teams'>Your
-                      Teams</Nav.Link>,
+                              key='your-teams'>Your Teams</Nav.Link>,
                     <Nav.Link as={NavLink}
                               activeClassName="active"
                               to={ROUTES.LIST_PARTICIPANTS}
@@ -151,7 +147,8 @@ const NavBar = () => {
                     <NavDropdown.Item
                         id={COMPONENT_IDS.LOGIN_DROPDOWN_SIGN_IN}
                         as={NavLink}
-                        to={ROUTES.SIGN_IN} key={ROUTES.SIGN_IN}>
+                        to={ROUTES.SIGN_IN}
+                        key={ROUTES.SIGN_IN}>
                       <PersonFill/> Sign In
                     </NavDropdown.Item>
                   </NavDropdown>
@@ -160,7 +157,8 @@ const NavBar = () => {
                     <NavDropdown.Item
                         id={COMPONENT_IDS.NAVBAR_SIGN_OUT}
                         as={NavLink}
-                        to={ROUTES.SIGN_OUT} key={ROUTES.SIGN_OUT}>
+                        to={ROUTES.SIGN_OUT}
+                        key={ROUTES.SIGN_OUT}>
                       <BoxArrowRight/> Sign Out
                     </NavDropdown.Item>
                     {isParticipant ? (
