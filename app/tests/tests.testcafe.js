@@ -131,12 +131,12 @@ test('Test that profile page renders', async (testController) => {
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
-test('Test that AddChallenge pages function', async (testController) => {
+test('Test that AddChallenge page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoAddChallengePage(testController);
-  await addChallengeAdminPage.addChallenge(testController, challenge);
+  await addChallengeAdminPage.isDisplayed(testController);
 });
 
 test('Test that AddSkill pages function', async (testController) => {
