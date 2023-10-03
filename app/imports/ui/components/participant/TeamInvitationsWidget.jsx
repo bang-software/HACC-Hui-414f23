@@ -1,14 +1,8 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import {
-  Grid,
-  Header,
-  Item,
-  Icon, Segment, Card,
-} from 'semantic-ui-react';
-import PropTypes from 'prop-types';
-import { _ } from 'lodash';
-import { withTracker } from 'meteor/react-meteor-data';
+import { Container, Card, Row, Col, Spinner } from 'react-bootstrap';
+import { EmojiFrown } from 'react-bootstrap-icons';
+import { useTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
@@ -22,173 +16,166 @@ import TeamInvitationCard from './TeamInvitationCard';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { paleBlueStyle } from '../../styles';
 
-/**
- * Renders the Page for adding stuff. **deprecated**
- * @memberOf ui/pages
- */
-class TeamInvitationsWidget extends React.Component {
+const TeamInvitationsWidget = () => {
 
-  /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
+  // useTracker connects Meteor data to React components.
+  const {
+    allTeamChallenges,
+    teamInvitations,
+    allTeamSkills,
+    allTeamTools,
+    allTeams,
+    allSkills,
+    allChallenges,
+    allTools,
+    allParticipants,
+    allTeamParticipants,
+    ready,
+  } = useTracker(() => {
+    // Get access to collections
+    const sub1 = TeamChallenges.subscribe();
+    const sub2 = TeamInvitations.subscribe();
+    const sub3 = TeamSkills.subscribe();
+    const sub4 = TeamTools.subscribe();
+    const sub5 = Teams.subscribe();
+    const sub6 = Skills.subscribe();
+    const sub7 = Challenges.subscribe();
+    const sub8 = Tools.subscribe();
+    const sub9 = Participants.subscribe();
+    const sub10 = TeamParticipants.subscribe();
+    const ready2 = sub1.ready() && sub2.ready() && sub3.ready() && sub4.ready() && sub5.ready()
+      && sub6.ready() && sub7.ready() && sub8.ready() && sub9.ready() && sub10.ready();
+    const allTeamChallenges2 = TeamChallenges.find({}).fetch();
+    const teamInvitations2 = TeamInvitations.find({
+      participantID: Participants.findDoc({ userID: Meteor.userId() })._id }).fetch();
+    const allTeamSkills2 = TeamSkills.find({}).fetch();
+    const allTeamTools2 = TeamTools.find({}).fetch();
+    const allTeams2 = Teams.find({}).fetch();
+    const allSkills2 = Skills.find({}).fetch();
+    const allChallenges2 = Challenges.find({}).fetch();
+    const allTools2 = Tools.find({}).fetch();
+    const allParticipants2 = Participants.find({}).fetch();
+    const allTeamParticipants2 = TeamParticipants.find({}).fetch();
 
-  render() {
+    return {
+      allTeamChallenges: allTeamChallenges2,
+      teamInvitations: teamInvitations2,
+      allTeamSkills: allTeamSkills2,
+      allTeamTools: allTeamTools2,
+      allTeams: allTeams2,
+      allSkills: allSkills2,
+      allChallenges: allChallenges2,
+      allTools: allTools2,
+      allParticipants: allParticipants2,
+      allTeamParticipants: allTeamParticipants2,
+      ready: ready2,
+    };
+  });
 
-    if (this.props.teamInvitations.length === 0) {
-      return (
-          <div align={'center'} style={{ margin: '3rem 0' }}>
-            <Header as='h2' icon>
-              <Icon name='users'/>
-              You have no invitations at the moment.
-              <Header.Subheader>
-                Please check back later.
-              </Header.Subheader>
-            </Header>
-          </div>
-      );
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    const sortBy = [
-      { key: 'teams', text: 'teams', value: 'teams' },
-      { key: 'challenges', text: 'challenges', value: 'challenges' },
-      { key: 'skills', text: 'skills', value: 'skills' },
-      { key: 'tools', text: 'tools', value: 'tools' },
-    ];
-
-    const universalTeams = this.props.teams;
-
-    function getTeamInvitations(invs) {
-      const data = [];
-      for (let i = 0; i < invs.length; i++) {
-        for (let j = 0; j < universalTeams.length; j++) {
-          if (invs[i].teamID === universalTeams[j]._id) {
-            data.push(universalTeams[j]);
-          }
+  function getTeamInvitations(invs) {
+    const data = [];
+    for (let i = 0; i < invs.length; i++) {
+      for (let j = 0; j < allTeams.length; j++) {
+        if (invs[i].teamID === allTeams[j]._id) {
+          data.push(allTeams[j]);
         }
       }
-      return data;
     }
-
-    const universalSkills = this.props.skills;
-
-    function getTeamSkills(teamID, teamSkills) {
-      const data = [];
-      const skills = _.filter(teamSkills, { teamID: teamID });
-      for (let i = 0; i < skills.length; i++) {
-        for (let j = 0; j < universalSkills.length; j++) {
-          if (skills[i].skillID === universalSkills[j]._id) {
-            data.push(universalSkills[j].name);
-          }
-        }
-      }
-      return data;
-    }
-
-    const universalTools = this.props.tools;
-
-    function getTeamTools(teamID, teamTools) {
-      const data = [];
-      const tools = _.filter(teamTools, { teamID: teamID });
-      for (let i = 0; i < tools.length; i++) {
-        for (let j = 0; j < universalTools.length; j++) {
-          if (tools[i].toolID === universalTools[j]._id) {
-            data.push(universalTools[j].name);
-          }
-        }
-      }
-      return data;
-    }
-
-    const universalChallenges = this.props.challenges;
-
-    function getTeamChallenges(teamID, teamChallenges) {
-      const data = [];
-      const challenges = _.filter(teamChallenges, { teamID: teamID });
-      for (let i = 0; i < challenges.length; i++) {
-        for (let j = 0; j < universalChallenges.length; j++) {
-          if (challenges[i].challengeID === universalChallenges[j]._id) {
-            data.push(universalChallenges[j].title);
-          }
-        }
-      }
-      return data;
-    }
-
-    const allDevelopers = this.props.participants;
-
-    function getTeamDevelopers(teamID, teamParticipants) {
-      const data = [];
-      const participants = _.filter(teamParticipants, { teamID: teamID });
-      for (let i = 0; i < participants.length; i++) {
-        for (let j = 0; j < allDevelopers.length; j++) {
-          if (participants[i].participantID === allDevelopers[j]._id) {
-            data.push({
-              firstName: allDevelopers[j].firstName,
-              lastName: allDevelopers[j].lastName,
-            });
-          }
-        }
-      }
-      return data;
-    }
-
-    return (
-        <div style={{ paddingBottom: '50px', paddingTop: '40px',
-        }}>
-          <Grid container doubling relaxed stackable style={{ display: 'block',
-            marginLeft: 'auto', marginRight: 'auto' }}>
-            <Segment style = {paleBlueStyle} >
-              <Grid.Row centered>
-                <Header as='h2' textAlign="center" style={{ paddingBottom: '1rem' }}>
-                  Team Invitations
-                </Header>
-              </Grid.Row>
-              <Grid.Column width={15}>
-                <Card fluid>
-                  <Item.Group divided>
-                    {/* eslint-disable-next-line max-len */}
-                    {getTeamInvitations(this.props.teamInvitations).map((teams) => <TeamInvitationCard key={teams._id}
-                                       teams={teams}
-                                       skills={getTeamSkills(teams._id, this.props.teamSkills)}
-                                       tools={getTeamTools(teams._id, this.props.teamTools)}
-                                       challenges={getTeamChallenges(teams._id, this.props.teamChallenges)}
-                                       participants={getTeamDevelopers(teams._id, this.props.teamParticipants)}
-                    />)}
-                  </Item.Group>
-                </Card>
-              </Grid.Column>
-            </Segment>
-          </Grid>
-        </div>
-    );
+    return data;
   }
-}
+  function getTeamSkills(teamID) {
+    const data = [];
+    const skills = allTeamSkills.filter(skill => skill.teamID === teamID);
+    for (let i = 0; i < skills.length; i++) {
+      for (let j = 0; j < allSkills.length; j++) {
+        if (skills[i].skillID === allSkills[j]._id) {
+          data.push(allSkills[j].name);
+        }
+      }
+    }
+    return data;
+  }
+  function getTeamTools(teamID) {
+    const data = [];
+    const tools = allTeamTools.filter(tool => tool.teamID === teamID);
+    for (let i = 0; i < tools.length; i++) {
+      for (let j = 0; j < allTools.length; j++) {
+        if (tools[i].toolID === allTools[j]._id) {
+          data.push(allTools[j].name);
+        }
+      }
+    }
+    return data;
+  }
+  function getTeamChallenges(teamID) {
+    const data = [];
+    const challenges = allTeamChallenges.filter(challenge => challenge.teamID === teamID);
+    for (let i = 0; i < challenges.length; i++) {
+      for (let j = 0; j < allChallenges.length; j++) {
+        if (challenges[i].challengeID === allChallenges[j]._id) {
+          data.push(allChallenges[j].title);
+        }
+      }
+    }
+    return data;
+  }
 
-TeamInvitationsWidget.propTypes = {
-  teamChallenges: PropTypes.array.isRequired,
-  teamSkills: PropTypes.array.isRequired,
-  skills: PropTypes.array.isRequired,
-  teamTools: PropTypes.array.isRequired,
-  teams: PropTypes.array.isRequired,
-  challenges: PropTypes.array.isRequired,
-  participants: PropTypes.array.isRequired,
-  tools: PropTypes.array.isRequired,
-  teamParticipants: PropTypes.array.isRequired,
-  teamInvitations: PropTypes.array.isRequired,
-
+  function getTeamDevelopers(teamID) {
+    const data = [];
+    const participants = allTeamParticipants.filter(participant => participant.teamID === teamID);
+    for (let i = 0; i < participants.length; i++) {
+      for (let j = 0; j < allParticipants.length; j++) {
+        if (participants[i].participantID === allParticipants[j]._id) {
+          data.push({
+            firstName: allParticipants[j].firstName,
+            lastName: allParticipants[j].lastName,
+          });
+        }
+      }
+    }
+    return data;
+  }
+  const returnValue = (teamInvitations.length === 0) ? (
+      <Container align='center' style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+        <Row style={{ paddingTop: '3rem 0' }}>
+          <EmojiFrown size={100} style={{ paddingTop: '3rem 0' }}/>
+        </Row>
+        <Row>
+          <h2>You have no invitations at the moment.</h2>
+        </Row>
+        <Row>
+          <h4>Please check back later.</h4>
+        </Row>
+      </Container>
+  ) : (
+    <div style={{ paddingBottom: '50px', paddingTop: '40px',
+    }}>
+      <Container style={{ display: 'block',
+        marginLeft: 'auto', marginRight: 'auto' }}>
+        <Container style = {paleBlueStyle} >
+          <Row>
+            <h2 style={{ paddingBottom: '1rem', textAlign: 'center' }}>
+              Team Invitations
+            </h2>
+          </Row>
+          <Col width={15}>
+            <Card>
+              {/* eslint-disable-next-line max-len */}
+              {getTeamInvitations(teamInvitations).map((team) => <TeamInvitationCard
+                key={team._id}
+                teams={team}
+                skills={getTeamSkills(team._id)}
+                tools={getTeamTools(team._id)}
+                challenges={getTeamChallenges(team._id)}
+                participants={getTeamDevelopers(team._id)}
+              />)}
+            </Card>
+          </Col>
+        </Container>
+      </Container>
+    </div>
+  );
+  return (ready ? returnValue : <Spinner/>);
 };
 
-export default withTracker(() => ({
-  teamChallenges: TeamChallenges.find({}).fetch(),
-  // eslint-disable-next-line max-len
-  teamInvitations: TeamInvitations.find({ participantID: Participants.findDoc({ userID: Meteor.userId() })._id }).fetch(),
-  teamSkills: TeamSkills.find({}).fetch(),
-  teamTools: TeamTools.find({}).fetch(),
-  // eslint-disable-next-line max-len
-  teams: Teams.find({}).fetch(),
-  skills: Skills.find({}).fetch(),
-  challenges: Challenges.find({}).fetch(),
-  tools: Tools.find({}).fetch(),
-  participants: Participants.find({}).fetch(),
-  teamParticipants: TeamParticipants.find({}).fetch(),
-  // eslint-disable-next-line max-len
-}))(TeamInvitationsWidget);
+export default TeamInvitationsWidget;
