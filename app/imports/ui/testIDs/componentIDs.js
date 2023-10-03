@@ -49,4 +49,5 @@ export const COMPONENT_IDS = {
   CREATE_PROFILE_ABOUTME: 'create-profile-aboutme',
   CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
   CREATE_PROFILE_SUBMIT: 'create-profile-submit',
+  LIST_PARTICIPANTS: 'list-participants',
 };
