@@ -109,7 +109,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.CONFIGURE_HACC}
                               key={ROUTES.CONFIGURE_HACC}>Configure HACC</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.UPDATE_MP}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.UPDATE_MP}
                               key={ROUTES.UPDATE_MP}>Update Minor Participants Status</Nav.Link>,

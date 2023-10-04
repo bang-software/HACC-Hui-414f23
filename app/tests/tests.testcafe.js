@@ -207,3 +207,10 @@ test('Test that TeamInvitations page renders', async (testController) => {
   await navBar.gotoTeamInvitations(testController);
   await teamInvitationsPage.isDisplayed(testController);
 });
+
+test('Test that UpdateMinorParticipantsCompliant page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoUpdateMP(testController);
+  await updateMPCompliant.isDisplayed(testController);
+});
