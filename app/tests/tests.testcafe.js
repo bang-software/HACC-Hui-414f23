@@ -16,6 +16,7 @@ import { viewTeamsPage } from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { profilePage } from './profilePage';
 import { listParticipantsPage } from './listParticipants.page';
+import { teamInvitationsPage } from './teamInvitationsPage';
 import { editSkillPage } from './editSkillPage.page';
 /* global fixture:false, test:false */
 
@@ -174,4 +175,11 @@ test('Test that ViewTeams pages function', async (testController) => {
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoViewTeamsPage(testController);
   await viewTeamsPage.clickFilter(testController);
+});
+
+test('Test that TeamInvitations page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await navBar.gotoTeamInvitations(testController);
+  await teamInvitationsPage.isDisplayed(testController);
 });
