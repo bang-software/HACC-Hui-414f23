@@ -40,6 +40,9 @@
   background-color: #E5F0FE;
 }
 
+.main {
+  min-height: calc(100vh - 205px);
+}
 
 @media screen and (max-width: 750px) {
   .navBar {
