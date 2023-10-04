@@ -44,6 +44,12 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.NAVBAR_SIGN_OUT}`);
   }
 
+  async deleteAccount(testController) {
+    await testController.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
+    await testController.click(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`);
+    await testController.click(`#${COMPONENT_IDS.DELETE_ACCOUNT_NAV}`);
+  }
+
   async gotoProfilePage(testController) {
     await testController.expect(Selector(`#${COMPONENT_IDS.PROFILE}`).exists).ok();
     await testController.click(`#${COMPONENT_IDS.PROFILE}`);

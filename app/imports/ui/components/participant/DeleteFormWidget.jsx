@@ -16,6 +16,7 @@ import { deleteAccountMethod, userInteractionDefineMethod } from '../../../api/u
 import { USER_INTERACTIONS } from '../../../startup/client/user-interaction-constants';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const reasons = [
   {
@@ -117,14 +118,14 @@ const DeleteFormWidget = () => {
                 <Container style={{ justifyContent: 'center', padding: '5px' }}>
                   <Row>
                     <Col>
-                      <SelectField name='feedback' options={reasons}/>
+                      <SelectField name='feedback' options={reasons} id={COMPONENT_IDS.DELETE_ACCOUNT_SELECT}/>
                     </Col>
                     <Col>
-                      <LongTextField name='other'/>
+                      <LongTextField name='other' id={COMPONENT_IDS.DELETE_ACCOUNT_TEXT}/>
                     </Col>
                   </Row>
                 </Container>
-                <SubmitField value='Delete Account'>
+                <SubmitField value='Delete Account' id={COMPONENT_IDS.DELETE_ACCOUNT_BUTTON}>
                 </SubmitField>
                 <ErrorsField/>
               </Card>
