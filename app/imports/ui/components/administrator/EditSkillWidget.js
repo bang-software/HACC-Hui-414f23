@@ -1,36 +1,44 @@
 import React from 'react';
-import { Grid, Segment, Header } from 'semantic-ui-react';
+import { Container, Col, Card } from 'react-bootstrap';
 import {
   AutoForm,
   ErrorsField,
   SubmitField,
   TextField,
   LongTextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import swal from 'sweetalert';
+import SimpleSchema from 'simpl-schema';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Skills } from '../../../api/skill/SkillCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /**
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-class EditSkillWidget extends React.Component {
+
+const schema = new SimpleSchema({
+  name: String,
+  description: String,
+});
+
+const EditSkillWidget = ({ doc }) => {
 
   /** On submit, insert the data.
    * @param data {Object} the results from the form.
    * @param formRef {FormRef} reference to the form.
    */
-  submit(data) {
+  const submit = (data) => {
     const {
       name, description,
     } = data;
 
-    const id = this.props.doc._id;
+    const id = doc._id;
 
     const updateData = {
       id, name, description,
@@ -45,51 +53,42 @@ class EditSkillWidget extends React.Component {
             swal('Success', 'Item edited successfully', 'success');
           }
         });
-  }
+  };
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    const formSchema = new SimpleSchema2Bridge(Skills.getSchema());
+    const formSchema = new SimpleSchema2Bridge(schema);
     return (
-        <div style={{ backgroundColor: '#C4C4C4' }}>
-          <Grid container centered>
-            <Grid.Column>
-              <div style={{
-                backgroundColor: '#393B44', padding: '1rem 0rem', margin: '2rem 0rem',
-                borderRadius: '2rem',
-              }}>
-                <Header as="h2" textAlign="center" inverted>Edit Skill</Header>
+        <div style={{ paddingBottom: '50px' }}>
+          <Container>
+            <Col>
+              <div className="editFormCol">
+                <h2 style={{ textAlign: 'center' }}>Edit Skill</h2>
               </div>
-              <AutoForm schema={formSchema} onSubmit={data => this.submit(data)} model={this.props.doc}
+              <AutoForm schema={formSchema} onSubmit={data => submit(data)} model={doc}
                         style={{
                           paddingBottom: '4rem',
                         }}>
-                <Segment style={{
+                <Card style={{
                   borderRadius: '1rem',
-                  backgroundColor: '#393B44',
+                  backgroundColor: '#E5F0FE',
                 }} className={'teamCreate'}>
-                  <Grid container centered>
-                    <Grid.Column style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
-                      <TextField name='name' required/>
-                      <LongTextField name='description' required/>
-                    </Grid.Column>
-                  </Grid>
-                  <div align='center'>
-                    <SubmitField value='Submit'
-                                 style={{
-                                   color: 'white', backgroundColor: '#24252B',
-                                   margin: '2rem 0rem',
-                                 }}/>
+                  <Container>
+                    <Col style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+                      <TextField name='name' id={COMPONENT_IDS.EDIT_SKILL_NAME} required/>
+                      <LongTextField name='description' id={COMPONENT_IDS.EDIT_SKILL_DESCRIPTION} required/>
+                    </Col>
+                  </Container>
+                  <div style={{ textAlign: 'center' }}>
+                    <SubmitField value='Submit' id={COMPONENT_IDS.EDIT_SKILL_SUBMIT}/>
                   </div>
                   <ErrorsField/>
-                </Segment>
+                </Card>
               </AutoForm>
-            </Grid.Column>
-          </Grid>
+            </Col>
+          </Container>
         </div>
     );
-  }
-}
+};
 
 EditSkillWidget.propTypes = {
   doc: PropTypes.object,

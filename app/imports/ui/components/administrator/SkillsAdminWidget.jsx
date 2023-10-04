@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import swal from 'sweetalert';
 import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { Skills } from '../../../api/skill/SkillCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
 class SkillsAdminWidget extends React.Component {
@@ -36,7 +37,16 @@ class SkillsAdminWidget extends React.Component {
           <Table.Cell>{this.props.skills.name}</Table.Cell>
           <Table.Cell>{this.props.skills.description}</Table.Cell>
           {/* eslint-disable-next-line max-len */}
-          <Table.Cell width={2}><Button><Link to={`/edit-skill/${this.props.skills._id}`} style={{ color: 'rgba(0, 0, 0, 0.6)' }}>Edit</Link></Button></Table.Cell>
+          <Table.Cell width={2}>
+            <Button>
+              <Link to={`/edit-skill/${this.props.skills._id}`}
+                    style={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                    id={COMPONENT_IDS.EDIT_SKILL_BUTTON}
+              >
+                Edit
+              </Link>
+            </Button>
+          </Table.Cell>
           {/* eslint-disable-next-line max-len */}
           <Table.Cell width={2}><Button negative onClick={() => this.removeItem(this.props.skills._id)}>Delete</Button></Table.Cell>
         </Table.Row>
