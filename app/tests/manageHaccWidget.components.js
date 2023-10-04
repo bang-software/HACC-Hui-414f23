@@ -17,6 +17,14 @@ class ManageHaccWidgetComponents {
     await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON}`);
   }
 
+  async gotoAddSkillPage(testController) {
+    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON}`);
+  }
+
+  async gotoAddToolPage(testController) {
+    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_TOOL_BUTTON}`);
+  }
+
   async gotoEditChallengePage(testController) {
     await testController.click(`#${COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}`);
   }
@@ -25,12 +33,8 @@ class ManageHaccWidgetComponents {
     await testController.click(`#${COMPONENT_IDS.EDIT_SKILL_BUTTON}`);
   }
 
-  async gotoAddSkillPage(testController) {
-    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON}`);
-  }
-
-  async gotoAddToolPage(testController) {
-    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_TOOL_BUTTON}`);
+  async gotoEditToolPage(testController) {
+    await testController.click(`#${COMPONENT_IDS.EDIT_TOOL_BUTTON}`);
   }
 
   async gotoViewTeamsPage(testController) {

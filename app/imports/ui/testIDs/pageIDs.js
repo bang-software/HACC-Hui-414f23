@@ -11,6 +11,7 @@ export const PAGE_IDS = {
   ADD_TOOL: 'add-tool',
   EDIT_CHALLENGE_PAGE: 'edit-challenge-page',
   EDIT_SKILL_PAGE: 'edit-skill-page',
+  EDIT_TOOL_PAGE: 'edit-tool-page',
   VIEW_TEAMS_PAGE: 'view-teams-page',
   PARTICIPATION_FORM: 'participation-form',
   CREATE_PROFILE: 'create-profile',

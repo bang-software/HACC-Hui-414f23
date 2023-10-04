@@ -38,6 +38,10 @@ export const COMPONENT_IDS = {
   ADD_TOOL_NAME: 'add-tool-name',
   ADD_TOOL_DESCRIPTION: 'add-tool-description',
   ADD_TOOL_SUBMIT: 'add-tool-submit',
+  EDIT_TOOL_BUTTON: 'edit-tool-button',
+  EDIT_TOOL_NAME: 'edit-tool-name',
+  EDIT_TOOL_DESCRIPTION: 'edit-tool-description',
+  EDIT_TOOL_SUBMIT: 'edit-tool-submit',
 
   PARTICIPATION_FORM_FIRST_NAME: 'participation-form-first-name',
   PARTICIPATION_FORM_LAST_NAME: 'participation-form-last-name',

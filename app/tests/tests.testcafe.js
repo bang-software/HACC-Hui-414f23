@@ -18,6 +18,7 @@ import { profilePage } from './profilePage';
 import { listParticipantsPage } from './listParticipants.page';
 import { teamInvitationsPage } from './teamInvitationsPage';
 import { editSkillPage } from './editSkillPage.page';
+import { editToolPage } from './editToolPage.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -48,6 +49,11 @@ const editedChallenge = {
 const editedSkill = {
   name: 'New skill name',
   description: 'The description of the edit skill',
+};
+
+const editedTool = {
+  name: 'New tool name',
+  description: 'The description of the edit tool',
 };
 
 const profileInfo = {
@@ -167,6 +173,14 @@ test('Test that EditSkill pages function', async (testController) => {
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoEditSkillPage(testController);
   await editSkillPage.editSkill(testController, editedSkill);
+});
+
+test('Test that EditTool pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  await manageHaccWidgetComponents.gotoEditToolPage(testController);
+  await editToolPage.editTool(testController, editedTool);
 });
 
 test('Test that ViewTeams pages function', async (testController) => {
