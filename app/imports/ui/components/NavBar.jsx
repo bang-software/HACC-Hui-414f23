@@ -55,14 +55,14 @@ const NavBar = () => {
       suggestionCount: suggestionCnt,
     };
   }, []);
-  
+
   return (ready ? (
       <Navbar expand="lg" className="navbar navbar-dark" style={{ backgroundColor: '#124884' }} >
         <Container fluid>
           <Navbar.Brand as={NavLink} to={ROUTES.LANDING}>
             <h1>HACC-Hui</h1>
           </Navbar.Brand>
-          <Navbar.Toggle id='button.navbar-toggler' aria-controls="basic-navbar-nav"/>
+          <Navbar.Toggle id={COMPONENT_IDS.NAVBAR_TOGGLE} aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-start">
             <Nav>
               {isParticipant ? (
