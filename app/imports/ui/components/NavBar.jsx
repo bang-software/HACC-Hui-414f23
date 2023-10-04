@@ -167,7 +167,8 @@ const NavBar = () => {
                       <BoxArrowRight/> Sign Out
                     </NavDropdown.Item>
                     {isParticipant ? (
-                        <NavDropdown.Item as={NavLink}
+                        <NavDropdown.Item id={COMPONENT_IDS.DELETE_ACCOUNT_NAV}
+                                          as={NavLink}
                                           to={ROUTES.DELETE_ACCOUNT}>
                           <PersonFillX/> Delete Account
                         </NavDropdown.Item>) : ''}

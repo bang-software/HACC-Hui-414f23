@@ -20,6 +20,7 @@ import { teamInvitationsPage } from './teamInvitationsPage';
 import { editSkillPage } from './editSkillPage.page';
 import { editToolPage } from './editToolPage.page';
 import { updateMPCompliant } from './updateMPCompliant.page';
+import { deleteFormPage } from './deleteForm.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -133,6 +134,14 @@ test('Test that profile page renders', async (testController) => {
   await agePage.under18(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
+});
+
+test('Test delete form renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await navBar.isLoggedIn(testController, credentialsB.username);
+  await navBar.deleteAccount(testController);
+  await deleteFormPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
