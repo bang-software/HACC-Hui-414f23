@@ -38,19 +38,28 @@ class NavBar {
 
   /** Check that someone is logged in, then click items to logout. */
   async logout(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`);
     await testController.click(`#${COMPONENT_IDS.NAVBAR_SIGN_OUT}`);
   }
 
   async deleteAccount(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`);
     await testController.click(`#${COMPONENT_IDS.DELETE_ACCOUNT_NAV}`);
   }
 
   async gotoProfilePage(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.PROFILE}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.PROFILE}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.PROFILE}`);
   }
 
@@ -73,12 +82,18 @@ class NavBar {
   }
 
   async gotoListParticipantsPage(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`);
   }
 
   async gotoTeamInvitations(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`);
   }
 
