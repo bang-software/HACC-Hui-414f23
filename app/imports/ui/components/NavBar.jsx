@@ -55,6 +55,7 @@ const NavBar = () => {
       suggestionCount: suggestionCnt,
     };
   }, []);
+  
   return (ready ? (
       <Navbar expand="lg" className="navbar navbar-dark" style={{ backgroundColor: '#124884' }} >
         <Container fluid>
@@ -83,8 +84,10 @@ const NavBar = () => {
                     <Nav.Link as={NavLink}
                               activeClassName="active"
                               to={ROUTES.YOUR_TEAMS}
-                              key='your-teams'>Your Teams</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                              key='your-teams'>Your
+                      Teams</Nav.Link>,
+                    <Nav.Link id={COMPONENT_IDS.LIST_PARTICIPANTS}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.LIST_PARTICIPANTS}
                               key='list-participants'>List Participants ({numParticipants})</Nav.Link>,

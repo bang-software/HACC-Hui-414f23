@@ -66,6 +66,11 @@ class NavBar {
     }
     await testController.click(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`);
   }
+
+  async gotoListParticipantsPage(testController) {
+    await testController.expect(Selector(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`).exists).ok();
+    await testController.click(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`);
+  }
 }
 
 export const navBar = new NavBar();

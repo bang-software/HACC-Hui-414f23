@@ -15,4 +15,5 @@ export const PAGE_IDS = {
   CREATE_PROFILE: 'create-profile',
   SUGGEST_TOOL_SKILL: 'suggest-tool-skill',
   PROFILE_PAGE: 'profile-page',
+  LIST_PARTICIPANTS: 'list-participants',
 };
