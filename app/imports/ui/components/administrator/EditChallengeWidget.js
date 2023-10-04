@@ -12,10 +12,12 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import swal from 'sweetalert';
 import SimpleSchema from 'simpl-schema';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import { ROUTES } from '../../../startup/client/route-constants';
+
 
 /**
  * Renders the Page for adding stuff. **deprecated**
@@ -30,7 +32,7 @@ const schema = new SimpleSchema({
 });
 
 const EditChallengeWidget = ({ doc }) => {
-
+  const [redirect, setRedirect] = React.useState(false);
   /** On submit, insert the data.
    * @param data {Object} the results from the form.
    */
@@ -50,12 +52,17 @@ const EditChallengeWidget = ({ doc }) => {
             swal('Error', error.message, 'error');
           } else {
             swal('Success', 'Item edited successfully', 'success');
+            setRedirect(true);
           }
         });
   };
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
     const formSchema = new SimpleSchema2Bridge(schema);
+    console.log(redirect);
+    if (redirect) {
+      return <Redirect to={ROUTES.CONFIGURE_HACC}/>;
+    }
     return (
         <div style={{ paddingBottom: '50px' }}>
           <Container>

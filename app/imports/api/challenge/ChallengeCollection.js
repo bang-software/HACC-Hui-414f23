@@ -73,6 +73,7 @@ class ChallengeCollection extends BaseSlugCollection {
 
   removeIt(docID) {
     super.removeIt(docID);
+    // TODO make sure associated slug is removed.
   }
 
   dumpOne(docID) {
