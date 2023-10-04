@@ -16,6 +16,7 @@ import { viewTeamsPage } from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { profilePage } from './profilePage';
 import { listParticipantsPage } from './listParticipants.page';
+import { editSkillPage } from './editSkillPage.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -41,6 +42,11 @@ const editedChallenge = {
   description: 'The description of the edit challenge',
   submissionDetail: 'Submission details of the edit challenge',
   pitch: 'this is my pitch for the edit challenge',
+};
+
+const editedSkill = {
+  name: 'New skill name',
+  description: 'The description of the edit skill',
 };
 
 const profileInfo = {
@@ -89,15 +95,6 @@ test('Test that under participation page renders', async (testController) => {
   await underParticipationFormPage.isDisplayed(testController);
 });
 
-/** ADMIN -------------------------------------------------------------------------------------------------*/
-test('Test that Admin pages function', async (testController) => {
-  await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.gotoConfigueHACC(testController);
-  await manageHaccWidgetComponents.gotoAddChallengePage(testController);
-  await addChallengeAdminPage.addChallenge(testController, challenge);
-});
-
 test('Test that signin and signout work', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -136,7 +133,7 @@ test('Test that AddChallenge page renders', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoAddChallengePage(testController);
-  await addChallengeAdminPage.isDisplayed(testController);
+  await addChallengeAdminPage.addChallenge(testController, challenge);
 });
 
 test('Test that AddSkill pages function', async (testController) => {
@@ -161,6 +158,14 @@ test('Test that EditChallenge pages function', async (testController) => {
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoEditChallengePage(testController);
   await editChallengePage.editChallenge(testController, editedChallenge);
+});
+
+test('Test that EditSkill pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  await manageHaccWidgetComponents.gotoEditSkillPage(testController);
+  await editSkillPage.editSkill(testController, editedSkill);
 });
 
 test('Test that ViewTeams pages function', async (testController) => {

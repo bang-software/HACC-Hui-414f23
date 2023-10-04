@@ -60,10 +60,7 @@ const EditChallengeWidget = ({ doc }) => {
         <div style={{ paddingBottom: '50px' }}>
           <Container>
             <Col>
-              <div style={{
-                backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
-                borderRadius: '2rem',
-              }}>
+              <div className="editFormCol">
                 <h2 style={{ textAlign: 'center' }}>Edit Challenge</h2>
               </div>
               <AutoForm schema={formSchema} onSubmit={data => submit(data)} model={doc}
