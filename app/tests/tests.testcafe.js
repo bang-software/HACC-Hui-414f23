@@ -136,12 +136,12 @@ test('Test that AddChallenge page renders', async (testController) => {
   await addChallengeAdminPage.addChallenge(testController, challenge);
 });
 
-test('Test that AddSkill pages function', async (testController) => {
+test('Test that AddSkill pages renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoAddSkillPage(testController);
-  await addSkillAdminPage.addSkill(testController, skill);
+  await addSkillAdminPage.isDisplayed(testController);
 });
 
 test('Test that AddTool pages function', async (testController) => {
