@@ -6,7 +6,7 @@ import {
   LongTextField, SelectField,
   SubmitField,
   TextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
@@ -18,11 +18,11 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { demographicLevels } from '../../../api/level/Levels';
-import MultiSelectField from '../form-fields/MultiSelectField';
 import { ROUTES } from '../../../startup/client/route-constants';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import Select from 'react-select';
 
 const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
   const [redirectToReferer, setRedirectToReferer] = useState(false);
@@ -35,7 +35,7 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
       firstName: String,
       lastName: String,
       username: String,
-      demographicLevel: { type: String, allowedValues: demographicLevels, optional: true },
+      demographicLevel: { type: String, optional: true },
       linkedIn: { type: String, optional: true },
       gitHub: { type: String, optional: true },
       slackUsername: { type: String, optional: true },
@@ -125,6 +125,7 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
       const from = { pathname: ROUTES.YOUR_PROFILE };
       return <Redirect to={from} />;
     }
+    console.log(challenges);
     return (
         <Container fluid>
           <Row>
@@ -143,7 +144,7 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
               <Row>
                 <Col><TextField name="firstName" /></Col>
                 <Col><TextField name="lastName" /></Col>
-                <Col><SelectField name="demographicLevel" /></Col>
+                <Col><SelectField name="demographicLevel" options={demographicLevels}/></Col>
               </Row>
               <Row>
                 <Col> <TextField id={COMPONENT_IDS.CREATE_PROFILE_LINKEDIN} name="linkedIn" /> </Col>
@@ -155,11 +156,31 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
                 <Col> <LongTextField id={COMPONENT_IDS.CREATE_PROFILE_ABOUTME} name="aboutMe" /> </Col>
               </Row>
               <Row>
-              <MultiSelectField id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES} name="challenges" />
+                <Select
+                    id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
+                    isMulti
+                    name="challenges"
+                    options={challenges.map(c => ({ label: c.title, value: c.title }))}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                />
               </Row>
               <Row>
-                <Col> <MultiSelectField name="skills" /> </Col>
-                <Col> <MultiSelectField name="tools" /> </Col>
+                <Col>
+                  <Select
+                    isMulti
+                    name="Skills"
+                    options={skills.map(s => ({ label: s.name, value: s.name }))}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                /> </Col>
+                <Col> <Select
+                    isMulti
+                    name="Tools"
+                    options={tools.map(t => ({ label: t.name, value: t.name }))}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                /> </Col>
               </Row>
               <SubmitField id={COMPONENT_IDS.CREATE_PROFILE_SUBMIT}/>
             </AutoForm>
