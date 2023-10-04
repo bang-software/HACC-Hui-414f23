@@ -3,12 +3,10 @@ import React from 'react';
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import DeleteFormWidget from '../../components/participant/DeleteFormWidget';
 
-class DeleteForm extends React.Component {
-  render() {
-    return (
+const DeleteForm = () => (
+  <div>
         <DeleteFormWidget/>
-    );
-  }
-}
+  </div>
+);
 
 export default withAllSubscriptions(DeleteForm);

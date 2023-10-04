@@ -7,7 +7,7 @@ import { AutoForm, ErrorsField, LongTextField, SelectField, SubmitField } from '
 // import Button from 'semantic-ui-react/dist/commonjs/elements/Button';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { useTracker } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -16,11 +16,40 @@ import { deleteAccountMethod, userInteractionDefineMethod } from '../../../api/u
 import { USER_INTERACTIONS } from '../../../startup/client/user-interaction-constants';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
-import { red } from 'sinon/lib/sinon/color';
 
-class DeleteFormWidget extends React.Component {
+const reasons = [
+  {
+    label: 'No challenge was interesting for me',
+    value: 'No challenge was interesting for me',
+  },
+  {
+    label: 'The challenges were too hard',
+    value: 'The challenges were too hard',
+  },
+  {
+    label: "Couldn't find a team I liked being on",
+    value: "Couldn't find a team I liked being on",
+  },
+  {
+    label: 'My schedule conflicts with the HACC',
+    value: 'My schedule conflicts with the HACC',
+  },
+  {
+    label: 'Other',
+    value: 'Other',
+  },
+];
+const schema = new SimpleSchema({
+  feedback: {
+    type: String,
+    defaultValue: 'Other',
+  },
+  other: { type: String, required: false },
+});
 
-  submit(data) {
+const DeleteFormWidget = () => {
+
+  const submit = (data) => {
     const username = this.props.participant.username;
     const type = USER_INTERACTIONS.DELETE_ACCOUNT;
     const typeData = [data.feedback, data.other];
@@ -58,38 +87,8 @@ class DeleteFormWidget extends React.Component {
     const instance = this.props.participant._id;
     removeItMethod.call({ collectionName, instance });
     deleteAccountMethod.call();
-  }
+  };
 
-  render() {
-    const reasons = [
-      {
-        label: 'No challenge was interesting for me',
-        value: 'No challenge was interesting for me',
-      },
-      {
-        label: 'The challenges were too hard',
-        value: 'The challenges were too hard',
-      },
-      {
-        label: "Couldn't find a team I liked being on",
-        value: "Couldn't find a team I liked being on",
-      },
-      {
-        label: 'My schedule conflicts with the HACC',
-        value: 'My schedule conflicts with the HACC',
-      },
-      {
-        label: 'Other',
-        value: 'Other',
-      },
-    ];
-    const schema = new SimpleSchema({
-      feedback: {
-        type: String,
-        defaultValue: 'Other',
-      },
-      other: { type: String, required: false },
-    });
     const formSchema = new SimpleSchema2Bridge(schema);
     return (
         <Container style={{ justifyContent: 'center', padding: '5px' }}>
@@ -104,7 +103,7 @@ class DeleteFormWidget extends React.Component {
               })
                   .then((willDelete) => {
                     if (willDelete) {
-                      this.submit(data);
+                      submit(data);
                     } else {
                       swal('Canceled deleting your account');
                     }
@@ -133,14 +132,13 @@ class DeleteFormWidget extends React.Component {
           </Col>
         </Container>
     );
-  }
-}
+};
 
 DeleteFormWidget.propTypes = {
   participant: PropTypes.object.isRequired,
 };
 
-const DeleteFormWidgetCon = useTracker(() => {
+const DeleteFormWidgetCon = withTracker(() => {
   const userID = Meteor.userId();
   let participant;
   if (Participants.isDefined(userID)) {
