@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import 'semantic-ui-css/semantic.css';
 import { Roles } from 'meteor/alanning:roles';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
@@ -114,14 +114,14 @@ const App = () => {
           {isDesktop ? (
               <div>
                 <NavBar/>
-                {routes()}
+                <div className="main">{routes()}</div>
                 <Footer/>
               </div>
           ) : (
               <div style={{ display: 'flex', padding: `${10}px` }}>
                 <meta name="viewport" content="width=device-width, maximum-scale=1.5"/>
                 <SideBar visible={isDesktop}>
-                  {routes()}
+                  <div className="main">{routes()}</div>
                   <Footer/>
                 </SideBar>
               </div>
