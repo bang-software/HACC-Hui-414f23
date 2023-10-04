@@ -19,6 +19,7 @@ import { listParticipantsPage } from './listParticipants.page';
 import { teamInvitationsPage } from './teamInvitationsPage';
 import { editSkillPage } from './editSkillPage.page';
 import { editToolPage } from './editToolPage.page';
+import { updateMPCompliant } from './updateMPCompliant.page';
 import { deleteFormPage } from './deleteForm.page';
 /* global fixture:false, test:false */
 
