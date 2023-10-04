@@ -12,7 +12,7 @@ import { MinorParticipants } from '../../../api/user/MinorParticipantCollection'
 import { ROUTES } from '../../../startup/client/route-constants';
 import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
 
-const UpdateMinorParticipantsWidget = ({ MinorParticipantsID }) => {
+class UpdateMinorParticipantsWidget extends React.Component {
 
   selected;
 
