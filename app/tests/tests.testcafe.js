@@ -19,6 +19,7 @@ import { listParticipantsPage } from './listParticipants.page';
 import { teamInvitationsPage } from './teamInvitationsPage';
 import { editSkillPage } from './editSkillPage.page';
 import { editToolPage } from './editToolPage.page';
+import { updateMPCompliant } from './updateMPCompliant.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -196,4 +197,11 @@ test('Test that TeamInvitations page renders', async (testController) => {
   await signinPage.signin(testController, credentialsB.username, credentialsB.password);
   await navBar.gotoTeamInvitations(testController);
   await teamInvitationsPage.isDisplayed(testController);
+});
+
+test('Test that UpdateMinorParticipantsCompliant page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoUpdateMP(testController);
+  await updateMPCompliant.isDisplayed(testController);
 });
