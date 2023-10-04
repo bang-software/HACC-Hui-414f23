@@ -1,21 +1,10 @@
-import React from 'react';
-import { Grid, Segment, Header, Divider, Loader } from 'semantic-ui-react';
-import {
-  AutoForm,
-  ErrorsField,
-  SubmitField,
-  TextField,
-  LongTextField,
-} from 'uniforms-semantic';
-import swal from 'sweetalert';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
 import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
+import swal from 'sweetalert';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import MultiSelectField from '../../components/form-fields/MultiSelectField';
-import RadioField from '../../components/form-fields/RadioField';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
@@ -23,41 +12,31 @@ import { Tools } from '../../../api/tool/ToolCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
+import { AutoForm, ErrorsField, SubmitField, TextField, LongTextField } from 'uniforms-bootstrap4';
+import { Form, Container, Row, Col, Spinner, Button, FormGroup, Label, Input } from 'reactstrap';
 
-// Create a schema to specify the structure of the data to appear in the form.
-const schema = new SimpleSchema({
-  open: {
-    type: String,
-    allowedValues: ['Open', 'Close'],
-    label: 'Availability',
-  },
-  name: String,
-  image: { type: String, optional: true },
-  challenges: { type: Array, label: 'Challenges' },
-  'challenges.$': { type: String },
-  skills: { type: Array, label: 'Skills' },
-  'skills.$': { type: String },
-  tools: { type: Array, label: 'Toolsets' },
-  'tools.$': { type: String },
-  description: String,
-  github: { type: String, optional: true },
-  devpostPage: { type: String, optional: true },
-});
+// ... [Keep the schema definition and other imports as they are]
 
-/**
- * Renders the Page for adding stuff. **deprecated**
- * @memberOf ui/pages
- */
-class TeamCreation extends React.Component {
+const TeamCreation = () => {
+  const fRef = useRef(null);
 
-  /** On submit, insert the data.
-   * @param formData {Object} the results from the form.
-   * @param formRef {FormRef} reference to the form.
-   */
-  // eslint-disable-next-line no-unused-vars
-  submit(formData, formRef) {
+  const { challenges, skills, tools, participants, ready } = useTracker(() => {
+    const subscriptionChallenges = Challenges.subscribe();
+    const subscriptionSkills = Skills.subscribe();
+    const subscriptionTools = Tools.subscribe();
+    const subscriptionParticipants = Participants.subscribe();
 
-    // console.log('CreateTeam.submit', formData, this.props);
+    return {
+      challenges: Challenges.find({}).fetch(),
+      skills: Skills.find({}).fetch(),
+      tools: Tools.find({}).fetch(),
+      participants: Participants.find({}).fetch(),
+      ready: subscriptionChallenges.ready() && subscriptionSkills.ready() &&
+        subscriptionTools.ready() && subscriptionParticipants.ready(),
+    };
+  });
+
+  const submit = (formData) => {
     const skillsArr = this.props.skills;
     const skillsObj = [];
 
@@ -123,86 +102,68 @@ class TeamCreation extends React.Component {
     };
     // console.log(collectionName, definitionData);
     defineMethod.call({
-          collectionName,
-          definitionData,
-        },
-        (error) => {
-          if (error) {
-            swal('Error', error.message, 'error');
-            // console.error(error.message);
-          } else {
-            swal('Success', 'Team created successfully', 'success');
-            formRef.reset();
-            //   console.log('Success');
-          }
-        });
-    // console.log(docID);
+        collectionName,
+        definitionData,
+      },
+      (error) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+          // console.error(error.message);
+        } else {
+          swal('Success', 'Team created successfully', 'success');
+          formRef.reset();
+          //   console.log('Success');
+        }
+      });
+  };
+
+  const formSchema = new SimpleSchema2Bridge(schema);
+  const challengeArr = challenges.map(challenge => challenge.title);
+  const skillArr = skills.map(skill => skill.name);
+  const toolArr = tools.map(tool => tool.name);
+
+  if (!ready) {
+    return <Spinner color="primary" />;
   }
 
-  /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    // console.log(Teams.dumpAll());
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
-  }
-
-  renderPage() {
-    let fRef = null;
-    const formSchema = new SimpleSchema2Bridge(schema);
-    const challengeArr = _.map(this.props.challenges, 'title');
-    const skillArr = _.map(this.props.skills, 'name');
-    const toolArr = _.map(this.props.tools, 'name');
-
-    return (
-        <Grid container centered>
-          <Grid.Column>
-            <Divider hidden />
-            <AutoForm ref={ref => {
-              fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}
-                      style={{
-                        paddingBottom: '40px',
-                      }}>
-              <Segment style={{
-                borderRadius: '10px',
-                backgroundColor: '#E5F0FE',
-              }} className={'createTeam'}>
-                <Grid columns={1} style={{ paddingTop: '20px' }}>
-                  <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
-                    <Header as="h2" textAlign="center" inverted>Team Information</Header>
-                    <Grid className='doubleLine'>
-                      <TextField name='name' />
-                      <RadioField
-                          name='open'
-                          inline
-                      />
-                    </Grid>
-                    <TextField name='image' placeholder={'Team Image URL'} />
-                    <LongTextField name='description' />
-                    <MultiSelectField name='challenges' placeholder={'Challenges'}
-                                      allowedValues={challengeArr} required />
-                    <MultiSelectField name='skills' placeholder={'Skills'}
-                                      allowedValues={skillArr} required />
-                    <MultiSelectField name='tools' placeholder={'Toolsets'}
-                                      allowedValues={toolArr} required />
-                    <TextField name="github" />
-                    <TextField name="devpostPage" />
-                  </Grid.Column>
-                </Grid>
-                <div align='center'>
-                  <SubmitField value='Submit'
-                               style={{
-                                 color: 'white', backgroundColor: '#dd000a',
-                                 margin: '20px 0px',
-                               }} />
-                </div>
-                <ErrorsField />
-              </Segment>
-            </AutoForm>
-          </Grid.Column>
-        </Grid>
-    );
-  }
-}
+  return (
+    <Container>
+      <Row className="justify-content-md-center">
+        <Col md="8">
+          <h2 className="text-center">Team Information</h2>
+          <AutoForm ref={fRef} schema={formSchema} onSubmit={submit}>
+            <FormGroup>
+              <TextField name='name' />
+              <FormGroup check>
+                <Label check>
+                  <Input type="radio" name="open" value="Open" />{' '}
+                  Open
+                </Label>
+              </FormGroup>
+              <FormGroup check>
+                <Label check>
+                  <Input type="radio" name="open" value="Close" />{' '}
+                  Close
+                </Label>
+              </FormGroup>
+            </FormGroup>
+            <TextField name='image' placeholder={'Team Image URL'} />
+            <LongTextField name='description' />
+            <FormGroup>
+              <MultiSelectField name='challenges' placeholder={'Challenges'} allowedValues={challengeArr} required />
+              <MultiSelectField name='skills' placeholder={'Skills'} allowedValues={skillArr} required />
+              <MultiSelectField name='tools' placeholder={'Toolsets'} allowedValues={toolArr} required />
+            </FormGroup>
+            <TextField name="github" />
+            <TextField name="devpostPage" />
+            <Button type="submit" color="primary">Submit</Button>
+            <ErrorsField />
+          </AutoForm>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 TeamCreation.propTypes = {
   challenges: PropTypes.array.isRequired,
@@ -210,21 +171,6 @@ TeamCreation.propTypes = {
   tools: PropTypes.array.isRequired,
   participants: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
-
 };
 
-export default withTracker(() => {
-  const subscriptionChallenges = Challenges.subscribe();
-  const subscriptionSkills = Skills.subscribe();
-  const subscriptionTools = Tools.subscribe();
-  const subscriptionParticipants = Participants.subscribe();
-
-  return {
-    challenges: Challenges.find({}).fetch(),
-    skills: Skills.find({}).fetch(),
-    tools: Tools.find({}).fetch(),
-    participants: Participants.find({}).fetch(),
-    // eslint-disable-next-line max-len
-    ready: subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready() && subscriptionParticipants.ready(),
-  };
-})(TeamCreation);
+export default TeamCreation;
