@@ -96,7 +96,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.SUGGEST_TOOL_SKILL}
                               key='suggest-tool-skill'>Suggest Tool/Skill</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.TEAM_INVITATIONS} key='team-invitations'>Invitations</Nav.Link>,
                   ]

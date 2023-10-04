@@ -16,6 +16,7 @@ import { viewTeamsPage } from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { profilePage } from './profilePage';
 import { listParticipantsPage } from './listParticipants.page';
+import { teamInvitationsPage } from './teamInvitationsPage';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -169,4 +170,11 @@ test('Test that ViewTeams pages function', async (testController) => {
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoViewTeamsPage(testController);
   await viewTeamsPage.clickFilter(testController);
+});
+
+test('Test that TeamInvitations page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await navBar.gotoTeamInvitations(testController);
+  await teamInvitationsPage.isDisplayed(testController);
 });

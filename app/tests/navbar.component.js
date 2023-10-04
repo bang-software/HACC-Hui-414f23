@@ -71,6 +71,11 @@ class NavBar {
     await testController.expect(Selector(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`).exists).ok();
     await testController.click(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`);
   }
+
+  async gotoTeamInvitations(testController) {
+    await testController.expect(Selector(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`).exists).ok();
+    await testController.click(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`);
+  }
 }
 
 export const navBar = new NavBar();
