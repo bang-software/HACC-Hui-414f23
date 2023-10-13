@@ -13,6 +13,7 @@ import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
+import Select from 'react-select';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -22,7 +23,6 @@ import { ROUTES } from '../../../startup/client/route-constants';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
-import Select from 'react-select';
 
 const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
   const [redirectToReferer, setRedirectToReferer] = useState(false);
@@ -98,7 +98,7 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
       updateData.aboutMe = data.aboutMe;
     }
     updateData.editedProfile = true;
-    // console.log(collectionName, updateData);
+
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
         console.error(error);
@@ -117,75 +117,77 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
     });
     setRedirectToReferer(true);
   };
-    const model = participant;
-    const schema = buildTheFormSchema();
-    const formSchema = new SimpleSchema2Bridge(schema);
-    const firstname = model.firstName;
-    if (redirectToReferer) {
-      const from = { pathname: ROUTES.YOUR_PROFILE };
-      return <Redirect to={from} />;
-    }
-    console.log(challenges);
-    return (
-        <Container fluid>
+  const model = participant;
+  const schema = buildTheFormSchema();
+  const formSchema = new SimpleSchema2Bridge(schema);
+  const firstname = model.firstName;
+  if (redirectToReferer) {
+    const from = { pathname: ROUTES.YOUR_PROFILE };
+    return <Redirect to={from}/>;
+  }
+  return (
+      <Container fluid>
+        <Row>
+          <h3><b> Hello {firstname}, this is your first time to login, so please fill out your profile </b></h3>
+          <hr/>
+        </Row>
+        <AutoForm schema={formSchema} model={model} onSubmit={data => submit(data)}>
           <Row>
-            <h3> <b> Hello {firstname}, this is your first time to login, so please fill out your profile </b> </h3>
-            <hr/>
+            <Col>
+              <TextField name="username" disabled/>
+            </Col>
+            <Col>
+              <BoolField name="isCompliant" disabled/>
+            </Col>
           </Row>
-            <AutoForm schema={formSchema} model={model} onSubmit={data => submit(data) }>
-              <Row>
-                <Col>
-                  <TextField name="username" disabled />
-                </Col>
-                <Col>
-                  <BoolField name="isCompliant" disabled />
-                  </Col>
-              </Row>
-              <Row>
-                <Col><TextField name="firstName" /></Col>
-                <Col><TextField name="lastName" /></Col>
-                <Col><SelectField name="demographicLevel" options={demographicLevels}/></Col>
-              </Row>
-              <Row>
-                <Col> <TextField id={COMPONENT_IDS.CREATE_PROFILE_LINKEDIN} name="linkedIn" /> </Col>
-                <Col> <TextField name="gitHub" /> </Col>
-                <Col> <TextField name="slackUsername" /> </Col>
-              </Row>
-              <Row>
-                <Col> <TextField name="website" /> </Col>
-                <Col> <LongTextField id={COMPONENT_IDS.CREATE_PROFILE_ABOUTME} name="aboutMe" /> </Col>
-              </Row>
-              <Row>
-                <Select
-                    id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
-                    isMulti
-                    name="challenges"
-                    options={challenges.map(c => ({ label: c.title, value: c.title }))}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                />
-              </Row>
-              <Row>
-                <Col>
-                  <Select
-                    isMulti
-                    name="Skills"
-                    options={skills.map(s => ({ label: s.name, value: s.name }))}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                /> </Col>
-                <Col> <Select
-                    isMulti
-                    name="Tools"
-                    options={tools.map(t => ({ label: t.name, value: t.name }))}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                /> </Col>
-              </Row>
-              <SubmitField id={COMPONENT_IDS.CREATE_PROFILE_SUBMIT}/>
-            </AutoForm>
-        </Container>
-    );
+          <Row>
+            <Col><TextField name="firstName"/></Col>
+            <Col><TextField name="lastName"/></Col>
+            <Col><SelectField name="demographicLevel" options={demographicLevels}/></Col>
+          </Row>
+          <Row>
+            <Col> <TextField id={COMPONENT_IDS.CREATE_PROFILE_LINKEDIN} name="linkedIn"/> </Col>
+            <Col> <TextField name="gitHub"/> </Col>
+            <Col> <TextField name="slackUsername"/> </Col>
+          </Row>
+          <Row>
+            <Col> <TextField name="website"/> </Col>
+            <Col> <LongTextField id={COMPONENT_IDS.CREATE_PROFILE_ABOUTME} name="aboutMe"/> </Col>
+          </Row>
+          <Row>
+            <h6 className="fw-bold"> Challenges </h6>
+            <Select
+                id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
+                isMulti
+                name="challenges"
+                options={challenges.map(c => ({ label: c.title, value: c.title }))}
+                className="basic-multi-select"
+                classNamePrefix="select"
+            />
+          </Row>
+          <Row>
+            <Col>
+              <h6 className="fw-bold"> Skills </h6>
+              <Select
+                  isMulti
+                  name="Skills"
+                  options={skills.map(s => ({ label: s.name, value: s.name }))}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+              /> </Col>
+            <Col>
+              <h6 className="fw-bold"> Tools </h6><Select
+                isMulti
+                name="Tools"
+                options={tools.map(t => ({ label: t.name, value: t.name }))}
+                className="basic-multi-select"
+                classNamePrefix="select"
+            /> </Col>
+          </Row>
+          <SubmitField id={COMPONENT_IDS.CREATE_PROFILE_SUBMIT}/>
+        </AutoForm>
+      </Container>
+  );
 };
 
 CreateProfileWidget.propTypes = {
