@@ -273,7 +273,7 @@ class ListParticipantsFilterAdmin {
     for (let i = 0; i < values.length; i++) {
       info.push({
         key: values[i],
-        text: values[i],
+        label: values[i],
         value: values[i],
       });
     }
