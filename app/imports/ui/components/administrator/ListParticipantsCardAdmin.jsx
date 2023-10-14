@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import {
-  List, Divider,
-} from 'semantic-ui-react';
 import { Container, Row, Col, Modal, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import * as Icon from 'react-bootstrap-icons';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, teams }) => {
   const [show, setShow] = useState(false);
@@ -22,26 +19,26 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
   };
   const isMinor = participants.minor;
   return (
-      <div>
+      <div id={COMPONENT_IDS.LIST_PARTICIPANTS_CARD_ADMIN}>
         <Card onMouseEnter={changeBackground} onMouseLeave={onLeave} onClick={handleShow}
               style={{ padding: '0rem 1.5rem 0.5rem 1.5rem', border: 'none' }}>
           <Card.Body>
             <Card.Title>
-              <h4>
+              <h5>
                 <Icon.PersonFill size={50}/>
                 {participants.firstName} {participants.lastName}
-                {teams.length === 0 ? (<div><Icon.SlashCircleFill color="red"/> No team </div>)
+                {teams.length === 0 ? (<div className="text-muted"> <Icon.SlashCircleFill color="red"/> No team </div>)
                     : ''}
-                {_.uniq(teams).length > 1 ? (<div><Icon.SlashCircleFill color="red"/> Multiple teams </div>)
+                {new Set(teams).size > 1 ? (<div><Icon.SlashCircleFill color="red"/> Multiple teams </div>)
                     : ''}
                 {isMinor ? (<div><Icon.PersonBoundingBox/>Minor</div>) : ''}
-              </h4>
+              </h5>
             </Card.Title>
             <Col>
               <h5>About Me</h5>
               {participants.aboutMe}
             </Col>
-            <Divider hidden/>
+            <hr/>
             <Container>
               <Row>
                 <Col>
@@ -97,35 +94,35 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
                 </Col>
               </Row>
             </Container>
-            <Divider hidden/>
             <Col>
               <h6>Challenges</h6>
-              <List bulleted>
+              <hr/>
+              <ul>
                 {challenges.map((challenge, i) => (
-                    <List.Item key={challenge + i}>{challenge}</List.Item>
+                    <li key={challenge + i}>{challenge}</li>
                 ))}
-              </List>
+              </ul>
             </Col>
-            <Divider hidden/>
             <Col>
               <h6>Skills</h6>
-              <List bulleted>
-                {skills.map((skill, i) => <List.Item key={skill + i}>{skill.name}</List.Item>)}
-              </List>
+              <hr/>
+              <ul>
+                {skills.map((skill, i) => <li key={skill + i}>{skill.name}</li>)}
+              </ul>
             </Col>
-            <Divider hidden/>
             <Col>
               <h6>Tools</h6>
-              <List bulleted>
-                {tools.map((tool, i) => <List.Item key={tool + i}>{tool.name}</List.Item>)}
-              </List>
+              <hr/>
+              <ul>
+                {tools.map((tool, i) => <li key={tool + i}>{tool.name}</li>)}
+              </ul>
             </Col>
-            <Divider hidden/>
             <Col>
               <h6>Teams</h6>
-              <List bulleted>
-                {_.uniq(teams).map((team, i) => <List.Item key={team + i}>{team}</List.Item>)}
-              </List>
+              <hr/>
+              <ul>
+                {Array.from(new Set(teams)).map((team, i) => <li key={team + i}>{team}</li>)}
+              </ul>
             </Col>
           </Modal.Body>
         </Modal>
