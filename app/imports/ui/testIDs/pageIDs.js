@@ -21,4 +21,5 @@ export const PAGE_IDS = {
   LIST_PARTICIPANTS: 'list-participants',
   UPDATE_MP_COMPLIANT: 'update-mp-compliant',
   DELETE_FORM: 'delete-account',
+  LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
 };

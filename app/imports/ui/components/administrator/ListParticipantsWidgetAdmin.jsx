@@ -245,14 +245,13 @@ const ListParticipantsWidgetAdmin = () => {
             </Col>
           </Row>
           <Row>
-            <Col md={2}>
+            <Col md={2} style={filterStyle}>
               <Card>
                 <Card.Body style={sticky}>
-                  <div style={{ paddingTop: '2rem' }}>
-                    <h5 className="fw-bold">
+                    <h4 className="fw-bold"> Filtered Participants </h4>
+                    <h5 className="text-muted">
                       Total Participants: {resultS.length}
                     </h5>
-                  </div>
                   <Form>
                     <Form.Check onChange={handleNoTeam} label="No Team"/>
                     <Form.Check onChange={handleMultipleTeams} label="Multiple Teams"/>

@@ -118,7 +118,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.LIST_SUGGESTIONS}
                               key={ROUTES.LIST_SUGGESTIONS}>Suggestions List ({suggestionCount})</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.LIST_PARTICIPANTS_ADMIN}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.LIST_PARTICIPANTS_ADMIN}
                               key='list-participants-admin'>List Participants ({numParticipants})</Nav.Link>,
