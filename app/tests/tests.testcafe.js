@@ -22,6 +22,7 @@ import { editToolPage } from './editToolPage.page';
 import { updateMPCompliant } from './updateMPCompliant.page';
 import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
+import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -145,7 +146,6 @@ test('Test delete form renders', async (testController) => {
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
-
 test('Test that AddChallenge page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -169,12 +169,12 @@ test('Test that AddTool pages function', async (testController) => {
   await manageHaccWidgetComponents.gotoAddToolPage(testController);
   await addToolAdminPage.addTool(testController, tool);
 });
-
-test('Test that EditChallenge & ListlistParticipantsAdmin pages function', async (testController) => {
+test('Test that EditChallenge & ListParticipantsAdmin pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoListParticipantsAdminPage(testController);
   await listParticipantsAdminPage.isDisplayed(testController);
+  await listParticipantsCardAdmin.isDisplayed(testController);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoEditChallengePage(testController);
   await editChallengePage.editChallenge(testController, editedChallenge);

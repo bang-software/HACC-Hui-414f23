@@ -1,146 +1,134 @@
-import React from 'react';
-import {
-  Grid,
-  Header,
-  Item,
-  Modal,
-  Icon,
-  List, Divider,
-} from 'semantic-ui-react';
-import { withTracker } from 'meteor/react-meteor-data';
+import React, { useState } from 'react';
+import { Container, Row, Col, Modal, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
+import * as Icon from 'react-bootstrap-icons';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-class ListParticipantCardAdmin extends React.Component {
+const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, teams }) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-  /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
-    // console.log(this.props.teams);
+  const changeBackground = (e) => {
+    e.currentTarget.style.backgroundColor = '#fafafa';
+    e.currentTarget.style.cursor = 'pointer';
+  };
 
-    function changeBackground(e) {
-      e.currentTarget.style.backgroundColor = '#fafafa';
-      e.currentTarget.style.cursor = 'pointer';
-    }
-
-    function onLeave(e) {
-      e.currentTarget.style.backgroundColor = 'transparent';
-    }
-    // console.log(this.props);
-    const isMinor = this.props.participants.minor;
-    // console.log(isMinor);
-    return (
-      <Item onMouseEnter={changeBackground} onMouseLeave={onLeave}
-            style={{ padding: '0rem 1.5rem 0.5rem 1.5rem' }}>
-        <Modal closeIcon trigger={
-          <Item.Content>
-            <Item.Header>
-              <Header as={'h3'} style={{ color: '#263763', paddingTop: '1.5rem' }}>
-                <Icon name='user' size='tiny' />
-                {this.props.participants.firstName} {this.props.participants.lastName}
-                {this.props.teams.length === 0 ? (<Item.Extra><Icon color='red' name='dont' />No team</Item.Extra>)
-                  : ''}
-                {_.uniq(this.props.teams).length > 1 ? (<Item.Extra><Icon color='red'
-                                                                          name='dont' />Multiple teams</Item.Extra>)
-                  : ''}
-                {isMinor ? (<Item.Extra><Icon name='child'/>Minor</Item.Extra>) : ''}
-              </Header>
-            </Item.Header>
-            <Item.Description>
-              {/* <Grid.Column> */}
-              {/*  <Header>About Me</Header> */}
-              {/*  {this.props.participants.aboutMe} */}
-              {/* </Grid.Column> */}
-              <Divider hidden />
-              <Grid doubling stackable columns={6}>
-                <Grid.Column>
-                  <b>Challenges</b><br />
-                  <Grid.Column floated={'left'} style={{ paddingBottom: '0.3rem' }}>
-                    {this.props.challenges.slice(0, 3).map((challenge, i) => <p
-                      style={{ color: 'rgb(89, 119, 199)' }}
-                      key={challenge + i}>
+  const onLeave = (e) => {
+    e.currentTarget.style.backgroundColor = 'transparent';
+  };
+  const isMinor = participants.minor;
+  return (
+      <div id={COMPONENT_IDS.LIST_PARTICIPANTS_CARD_ADMIN}>
+        <Card onMouseEnter={changeBackground} onMouseLeave={onLeave} onClick={handleShow}
+              style={{ padding: '0rem 1.5rem 0.5rem 1.5rem', border: 'none' }}>
+          <Card.Body>
+            <Card.Title>
+              <h5>
+                <Icon.PersonFill size={50}/>
+                {participants.firstName} {participants.lastName}
+                {teams.length === 0 ? (<div className="text-muted"> <Icon.SlashCircleFill color="red"/> No team </div>)
+                    : ''}
+                {new Set(teams).size > 1 ? (<div><Icon.SlashCircleFill color="red"/> Multiple teams </div>)
+                    : ''}
+                {isMinor ? (<div><Icon.PersonBoundingBox/>Minor</div>) : ''}
+              </h5>
+            </Card.Title>
+            <Col>
+              <h5>About Me</h5>
+              {participants.aboutMe}
+            </Col>
+            <hr/>
+            <Container>
+              <Row>
+                <Col>
+                  <b>Challenges</b><br/>
+                  <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
+                    {challenges.slice(0, 3).map((challenge, i) => <p
+                        style={{ color: 'rgb(89, 119, 199)' }}
+                        key={challenge + i}>
                       {challenge}</p>)}
-                  </Grid.Column>
-                </Grid.Column>
-                <Grid.Column>
-                  <b>Skills</b><br />
-                  {this.props.skills.slice(0, 3).map((skill, i) => <p key={skill + i}>
+                  </Col>
+                </Col>
+                <Col>
+                  <b>Skills</b><br/>
+                  {skills.slice(0, 3).map((skill, i) => <p key={skill + i}>
                     {skill.name}</p>)}
-                </Grid.Column>
-                <Grid.Column>
-                  <b>Tools</b><br />
-                  {this.props.tools.slice(0, 3).map((tool, i) => <p key={tool + i}>
+                </Col>
+                <Col>
+                  <b>Tools</b><br/>
+                  {tools.slice(0, 3).map((tool, i) => <p key={tool + i}>
                     {tool.name}</p>)}
-                </Grid.Column>
-                <Grid.Column>
-                  <b>Slack Username</b><br />
-                  {this.props.participants.username}
-                </Grid.Column>
-                <Grid.Column>
-                  <b>GitHub</b><br />
-                  {this.props.participants.gitHub}
-                </Grid.Column>
-              </Grid>
-            </Item.Description>
-          </Item.Content>
-        }>
-          <Modal.Header>
-            {this.props.participants.firstName} {this.props.participants.lastName}
-            <br /> {this.props.participants.demographicLevel}
+                </Col>
+                <Col>
+                  <b>Slack Username</b><br/>
+                  {participants.username}
+                </Col>
+                <Col>
+                  <b>GitHub</b><br/>
+                  {participants.gitHub}
+                </Col>
+              </Row>
+            </Container>
+          </Card.Body>
+        </Card>
+        <Modal size="lg" show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title> {participants.firstName} {participants.lastName}
+              <br/> {participants.demographicLevel} </Modal.Title>
           </Modal.Header>
-          <Modal.Content image>
-            <Modal.Description>
-              <Grid container columns={2}>
-                <Grid.Column><Icon name="github" />GitHub:<br />
-                  <a href={this.props.participants.gitHub}>{this.props.participants.gitHub}</a>
-                </Grid.Column>
-                <Grid.Column><Icon name="server" />Website:<br />
-                  <a href={this.props.participants.website}>{this.props.participants.website}</a>
-                </Grid.Column>
-                <Grid.Column><Icon name="linkedin" />LinkedIn:<br />
-                  <a href={this.props.participants.linkedIn}>{this.props.participants.linkedIn}</a>
-                </Grid.Column>
-                <Grid.Column><Icon name="slack" />Slack Username:<br />
-                  <a href={this.props.participants.username}>{this.props.participants.username}</a>
-                </Grid.Column>
-              </Grid>
-              <Divider hidden />
-              <Grid.Column>
-                <Header dividing size="small">Challenges</Header>
-                <List bulleted>
-                  {this.props.challenges.map((challenge, i) => (
-                    <List.Item key={challenge + i}>{challenge}</List.Item>
-                  ))}
-                </List>
-              </Grid.Column>
-              <Divider hidden />
-              <Grid.Column>
-                <Header dividing size="small">Skills</Header>
-                <List bulleted>
-                  {this.props.skills.map((skill, i) => <List.Item key={skill + i}>{skill.name}</List.Item>)}
-                </List>
-              </Grid.Column>
-              <Divider hidden />
-              <Grid.Column>
-                <Header dividing size="small">Tools</Header>
-                <List bulleted>
-                  {this.props.tools.map((tool, i) => <List.Item key={tool + i}>{tool.name}</List.Item>)}
-                </List>
-              </Grid.Column>
-              <Divider hidden />
-              <Grid.Column>
-                <Header dividing size="small">Teams</Header>
-                <List bulleted>
-                  {_.uniq(this.props.teams).map((team, i) => <List.Item key={team + i}>{team}</List.Item>)}
-                </List>
-              </Grid.Column>
-            </Modal.Description>
-          </Modal.Content>
+          <Modal.Body>
+            <Container>
+              <Row>
+                <Col><Icon.Github/>GitHub:<br/>
+                  <a href={participants.gitHub}>{participants.gitHub}</a>
+                </Col>
+                <Col><Icon.Server/>Website:<br/>
+                  <a href={participants.website}>{participants.website}</a>
+                </Col>
+                <Col><Icon.Linkedin/>LinkedIn:<br/>
+                  <a href={participants.linkedIn}>{participants.linkedIn}</a>
+                </Col>
+                <Col><Icon.Slack/>Slack Username:<br/>
+                  <a href={participants.username}>{participants.username}</a>
+                </Col>
+              </Row>
+            </Container>
+            <Col>
+              <h6>Challenges</h6>
+              <hr/>
+              <ul>
+                {challenges.map((challenge, i) => (
+                    <li key={challenge + i}>{challenge}</li>
+                ))}
+              </ul>
+            </Col>
+            <Col>
+              <h6>Skills</h6>
+              <hr/>
+              <ul>
+                {skills.map((skill, i) => <li key={skill + i}>{skill.name}</li>)}
+              </ul>
+            </Col>
+            <Col>
+              <h6>Tools</h6>
+              <hr/>
+              <ul>
+                {tools.map((tool, i) => <li key={tool + i}>{tool.name}</li>)}
+              </ul>
+            </Col>
+            <Col>
+              <h6>Teams</h6>
+              <hr/>
+              <ul>
+                {Array.from(new Set(teams)).map((team, i) => <li key={team + i}>{team}</li>)}
+              </ul>
+            </Col>
+          </Modal.Body>
         </Modal>
-      </Item>
-    );
-  }
-}
+      </div>
+  );
+};
 
 ListParticipantCardAdmin.propTypes = {
   participantID: PropTypes.string.isRequired,
@@ -149,12 +137,5 @@ ListParticipantCardAdmin.propTypes = {
   challenges: PropTypes.array.isRequired,
   participants: PropTypes.object.isRequired,
   teams: PropTypes.array.isRequired,
-  teamInvitations: PropTypes.array,
 };
-export default withTracker(() => {
-  const teamInvitations = TeamInvitations.find({}).fetch();
-  // console.log(minors);
-  return {
-    teamInvitations,
-  };
-})(ListParticipantCardAdmin);
+export default ListParticipantCardAdmin;

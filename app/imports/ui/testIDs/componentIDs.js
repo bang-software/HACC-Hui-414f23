@@ -65,6 +65,7 @@ export const COMPONENT_IDS = {
   CREATE_PROFILE_SUBMIT: 'create-profile-submit',
   LIST_PARTICIPANTS: 'list-participants',
   LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
+  LIST_PARTICIPANTS_CARD_ADMIN: 'list-partcipants-card-admin',
   TEAM_INVITATIONS_BUTTON: 'team-invitations-button',
 
   DELETE_ACCOUNT_NAV: 'delete-account-navbar',
