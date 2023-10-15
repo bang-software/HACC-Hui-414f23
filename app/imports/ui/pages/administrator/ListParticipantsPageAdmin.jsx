@@ -1,13 +1,12 @@
 import React from 'react';
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import ListDevelopersWidgetAdmin from '../../components/administrator/ListParticipantsWidgetAdmin';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
-class ListParticipantsPageAdmin extends React.Component {
-  render() {
-    return (
-        <ListDevelopersWidgetAdmin />
-    );
-  }
-}
+const ListParticipantsPageAdmin = () => (
+      <div id={PAGE_IDS.LIST_PARTICIPANTS_ADMIN}>
+        <ListDevelopersWidgetAdmin />;
+      </div>
+);
 
 export default withAllSubscriptions(ListParticipantsPageAdmin);

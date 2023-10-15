@@ -21,6 +21,7 @@ import { editSkillPage } from './editSkillPage.page';
 import { editToolPage } from './editToolPage.page';
 import { updateMPCompliant } from './updateMPCompliant.page';
 import { deleteFormPage } from './deleteForm.page';
+import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -64,10 +65,9 @@ const profileInfo = {
 };
 
 fixture('meteor-application-template-react localhost test with default db')
-  .page('http://localhost:3400');
+    .page('http://localhost:3400');
 
 /** USER --------------------------------------------------------------------------------------------------*/
-
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
@@ -145,6 +145,7 @@ test('Test delete form renders', async (testController) => {
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
+
 test('Test that AddChallenge page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -169,9 +170,11 @@ test('Test that AddTool pages function', async (testController) => {
   await addToolAdminPage.addTool(testController, tool);
 });
 
-test('Test that EditChallenge pages function', async (testController) => {
+test('Test that EditChallenge & ListlistParticipantsAdmin pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoListParticipantsAdminPage(testController);
+  await listParticipantsAdminPage.isDisplayed(testController);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoEditChallengePage(testController);
   await editChallengePage.editChallenge(testController, editedChallenge);
