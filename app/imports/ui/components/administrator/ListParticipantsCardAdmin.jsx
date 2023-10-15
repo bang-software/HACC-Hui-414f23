@@ -24,15 +24,15 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
               style={{ padding: '0rem 1.5rem 0.5rem 1.5rem', border: 'none' }}>
           <Card.Body>
             <Card.Title>
-              <h5>
-                <Icon.PersonFill size={50}/>
+              <h4 style={{ color: '#263763', paddingTop: '1.5rem' }}>
+                <Icon.PersonFill size={30}/>
                 {participants.firstName} {participants.lastName}
                 {teams.length === 0 ? (<div className="text-muted"> <Icon.SlashCircleFill color="red"/> No team </div>)
                     : ''}
                 {new Set(teams).size > 1 ? (<div><Icon.SlashCircleFill color="red"/> Multiple teams </div>)
                     : ''}
                 {isMinor ? (<div><Icon.PersonBoundingBox/>Minor</div>) : ''}
-              </h5>
+              </h4>
             </Card.Title>
             <Col>
               <h5>About Me</h5>
