@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Container, Col, Row, Card, Modal, Dropdown } from 'react-bootstrap';
-import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import * as Icon from 'react-bootstrap-icons';
@@ -10,6 +9,7 @@ import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const ListParticipantsCard = ({ participants, challenges, skills, tools, participantID }) => {
   const [show, setShow] = useState(false);
@@ -44,9 +44,9 @@ const ListParticipantsCard = ({ participants, challenges, skills, tools, partici
     return true;
   };
 
-  const handleChange = (dID, { val }, e) => {
-    if (e.value !== 'Select a Team') {
-      const thisTeam = Teams.findDoc({ name: e.value })._id;
+  const handleChange = (dID, eventKey) => {
+    if (eventKey !== 'Select a Team') {
+      const thisTeam = Teams.findDoc({ name: eventKey })._id;
       const thisparticipantID = Participants.findDoc({ _id: dID }).username;
       const definitionData = { team: thisTeam, participant: thisparticipantID };
       const collectionName = TeamInvitations.getCollectionName();
@@ -79,8 +79,16 @@ const ListParticipantsCard = ({ participants, challenges, skills, tools, partici
     }
   };
 
+  const handleSelect = (eventKey) => {
+    handleChange(participantID, eventKey);
+  };
+
+  const handleDropdownClick = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-      <div>
+      <div id={COMPONENT_IDS.LIST_PARTICIPANTS_CARD}>
         <Card onMouseEnter={changeBackground} onMouseLeave={onLeave} onClick={handleShow}
               style={{ padding: '0rem 1.5rem 0.5rem 1.5rem', border: 'none' }}>
           <Card.Body>
@@ -122,7 +130,12 @@ const ListParticipantsCard = ({ participants, challenges, skills, tools, partici
                 </Col>
                 <Col>
                   {hasTeams() ? (
-                      <Dropdown onSelect={handleChange} className="button icon" style={{ backgroundColor: 'transparent' }}>
+                      <Dropdown
+                          onClick={handleDropdownClick}
+                          onSelect={handleSelect}
+                          className="button icon"
+                          style={{ backgroundColor: 'transparent' }}
+                      >
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                           Send Invitation
                         </Dropdown.Toggle>
@@ -188,7 +201,7 @@ const ListParticipantsCard = ({ participants, challenges, skills, tools, partici
             <hr/>
             {hasTeams() ? (
                 <Dropdown
-                    onSelect={handleChange.bind(this, participantID)} className="button icon" style={{ backgroundColor: 'transparent' }}>
+                    onSelect={handleSelect} className="button icon" style={{ backgroundColor: 'transparent' }}>
                   <Dropdown.Toggle variant="success" id="dropdown-basic">
                     Send Invitation
                   </Dropdown.Toggle>
@@ -214,6 +227,4 @@ ListParticipantsCard.propTypes = {
   challenges: PropTypes.array.isRequired,
   participants: PropTypes.object.isRequired,
 };
-export default withTracker(() => ({
-  teamInvitation: TeamInvitations.find({}).fetch(),
-}))(ListParticipantsCard);
+export default ListParticipantsCard;

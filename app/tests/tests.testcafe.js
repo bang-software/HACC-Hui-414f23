@@ -23,6 +23,8 @@ import { updateMPCompliant } from './updateMPCompliant.page';
 import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
+import { listParticipantsCard } from './listParticipantsCard.component';
+
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -90,6 +92,7 @@ test('Test that ListParticipants page function', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoListParticipantsPage(testController);
   await listParticipantsPage.isDisplayed(testController);
+  await listParticipantsCard.isDisplayed(testController);
 });
 
 test('Test that age page renders', async (testController) => {
