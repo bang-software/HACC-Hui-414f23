@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { useState } from 'react';
 import {
-  ListGroup,
   Image,
   Modal,
   Button,
@@ -76,7 +75,7 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
       <Modal {...props} className='modal-xl modal-dialog-scrollable'>
         <Modal.Header closeButton>
           <Modal.Title>
-            {teams.name}
+            <h1>{teams.name}</h1>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="grid-example">
@@ -142,7 +141,7 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
             </h1>
           </Row>
         </Card.Header>
-        <Card.Text>
+        <Card.Body>
           <Row>
             <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
               <h4>Challenges</h4>
@@ -162,28 +161,25 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
                 {tool}</p>)}
             </Col>
             <Col>
-              <h3>Members</h3>
+              <h4>Members</h4>
               {participants.map((participant) => <p key={participant}>
                 {participant.firstName} {participant.lastName}</p>)}
             </Col>
           </Row>
-        </Card.Text>
+        </Card.Body>
         <Card.Footer>
           <Button id={teams._id} style={{ backgroundColor: 'rgb(89, 119, 199)', color: 'white' }}
                   onClick={(() => acceptClick(teams._id))}>
             <HandThumbsUp size={22}/>
             {' Accept Request'}
           </Button>
-          {/* eslint-disable-next-line max-len */}
           <Button id={teams._id} style={{ backgroundColor: 'rgb(245, 82, 82)', color: 'white' }}
                   onClick={(() => removeClick(teams._id))}>
             {'Decline Request '}
             <HandThumbsDown size={22}/>
           </Button>
         </Card.Footer>
-
       </Card>
-
       <TeamInvitationModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
