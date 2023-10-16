@@ -14,30 +14,17 @@
   padding-top: 6rem !important;
 }
 
-.addFormContainer {
-  margin-left: 20%;
-  margin-right: 20%;
-}
-
-.addFormHeader {
+.h2Title {
+  background-color: #E5F0FE;
+  padding: 1rem 0;
+  margin: 2rem 0;
+  border-radius: 2rem;
   text-align: center;
 }
 
-.addFormCard {
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.editFormCol {
+.cardStyle {
   background-color: #E5F0FE;
-  padding: 1rem 0rem;
-  margin: 2rem 0rem;
-  border-radius: 2rem;
-}
-
-.editFormCard {
   border-radius: 1rem;
-  background-color: #E5F0FE;
 }
 
 .main {
