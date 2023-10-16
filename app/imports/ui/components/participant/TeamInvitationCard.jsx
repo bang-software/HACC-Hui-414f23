@@ -70,9 +70,9 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
     e.currentTarget.style.backgroundColor = 'transparent';
   };
 
-  function TeamInvitationModal() {
+  function TeamInvitationModal(props) {
     return (
-      <Modal className='modal-xl modal-dialog-scrollable'>
+      <Modal {...props} className='modal-xl modal-dialog-scrollable'>
         <Modal.Header closeButton>
           <Modal.Title>
             {teams.name}
@@ -81,12 +81,12 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
         <Modal.Body className="grid-example">
           <Container>
             <Row>
-              <Col>
-                <h3>Description</h3>
-                <p>
-                  {teams.description}
-                </p>
-              </Col>
+              <h3>Description</h3>
+              <p>
+                {teams.description}
+              </p>
+            </Row>
+            <Row>
               <Col>
                 <h3>Challenges</h3>
                 {challenges.map((challenge) => <p key={challenge}>
@@ -135,22 +135,21 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
         onMouseEnter={changeBackground}
         onMouseLeave={onLeave}>
         <ListGroup.Item>
-          <h1 style={{ color: '#263763', paddingTop: '2rem' }}>
-            {teams.name}
-          </h1>
+          <Row>
+            <Image src={teams.image} rounded size='small'/>
+            <h1 style={{ color: '#263763', paddingTop: '2rem' }}>
+              {teams.name}
+            </h1>
+          </Row>
         </ListGroup.Item>
         <ListGroup.Item>
           <Row>
-            <Col>
-              <Image src={teams.image} rounded size='small'/>
-              <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
-                <h4>Challenges</h4>
-                {challenges.slice(0, 3).map((challenge) => <p
-                  style={{ color: 'rgb(89, 119, 199)' }}
-                  key={challenge}>
-                  {challenge}</p>)}
-              </Col>
-
+            <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
+              <h4>Challenges</h4>
+              {challenges.slice(0, 3).map((challenge) => <p
+                style={{ color: 'rgb(89, 119, 199)' }}
+                key={challenge}>
+                {challenge}</p>)}
             </Col>
             <Col>
               <h4>Skills</h4>
@@ -161,6 +160,11 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
               <h4>Tools</h4>
               {tools.slice(0, 3).map((tool) => <p key={tool}>
                 {tool}</p>)}
+            </Col>
+            <Col>
+              <h3>Members</h3>
+              {participants.map((participant) => <p key={participant}>
+                {participant.firstName} {participant.lastName}</p>)}
             </Col>
           </Row>
         </ListGroup.Item>
