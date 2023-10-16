@@ -166,66 +166,67 @@ const EditProfileWidget = ({ allChallenges, allSkills, allTools, participant, de
                 borderRadius: '1rem',
                 backgroundColor: '#E5F0FE',
               }}>
-                <Row>
-                  <Col>
-                    <TextField name="username" disabled/>
-                  </Col>
-                  <Col>
-                    <BoolField name="isCompliant" disabled/>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col><TextField name="firstName"/></Col>
-                  <Col><TextField name="lastName"/></Col>
-                  <Col><SelectField name="demographicLevel" options={demographicLevels}/></Col>
-                </Row>
-                <Row>
-                  <Col><TextField name="linkedIn"/></Col>
-                  <Col><TextField name="gitHub"/></Col>
-                  <Col><TextField name="slackUsername"/></Col>
-                </Row>
-                <Row>
-                  <Col><TextField name="website"/></Col>
-                  <Col><LongTextField name="aboutMe"/></Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <h6 className="fw-bold"> Challenges </h6>
-                    <Select
-                        id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
+                <Card.Body>
+                  <Row>
+                    <Col>
+                      <TextField name="username" disabled/>
+                    </Col>
+                    <Col>
+                      <BoolField name="isCompliant" disabled/>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col><TextField name="firstName"/></Col>
+                    <Col><TextField name="lastName"/></Col>
+                    <Col><SelectField name="demographicLevel" options={demographicLevels}/></Col>
+                  </Row>
+                  <Row>
+                    <Col><TextField name="linkedIn"/></Col>
+                    <Col><TextField name="gitHub"/></Col>
+                    <Col><TextField name="slackUsername"/></Col>
+                  </Row>
+                  <Row>
+                    <Col><TextField name="website"/></Col>
+                    <Col><LongTextField name="aboutMe"/></Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <h6 className="fw-bold"> Challenges </h6>
+                      <Select
+                          id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
+                          isMulti
+                          name="challenges"
+                          options={allChallenges.map(c => ({ label: c.title, value: c.title }))}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                      />
+                    </Col>
+                    <Col>
+                      <h6 className="fw-bold"> Skills </h6>
+                      <Select
+                          isMulti
+                          name="Skills"
+                          options={allSkills.map(s => ({ label: s.name, value: s.name }))}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                      /> </Col>
+                    <Col>
+                      <h6 className="fw-bold"> Tools </h6><Select
                         isMulti
-                        name="challenges"
-                        options={allChallenges.map(c => ({ label: c.title, value: c.title }))}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                    />
-                  </Col>
-                  <Col>
-                    <h6 className="fw-bold"> Skills </h6>
-                    <Select
-                        isMulti
-                        name="Skills"
-                        options={allSkills.map(s => ({ label: s.name, value: s.name }))}
+                        name="Tools"
+                        options={allTools.map(t => ({ label: t.name, value: t.name }))}
                         className="basic-multi-select"
                         classNamePrefix="select"
                     /> </Col>
-                  <Col>
-                    <h6 className="fw-bold"> Tools </h6><Select
-                      isMulti
-                      name="Tools"
-                      options={allTools.map(t => ({ label: t.name, value: t.name }))}
-                      className="basic-multi-select"
-                      classNamePrefix="select"
-                  /> </Col>
-                </Row>
-                <div className="text-center">
-                  <SubmitField value='Submit'
-                               style={{
-                                 color: 'white', backgroundColor: '#DB2828',
-                                 margin: '2rem 0rem',
-                               }}/>
-                </div>
-                <ErrorsField/>
+                  </Row>
+                  <div className="text-center">
+                    <SubmitField value='Submit'
+                                 style={{
+                                   margin: '2rem 0rem',
+                                 }}/>
+                  </div>
+                  <ErrorsField/>
+                </Card.Body>
               </Card>
             </AutoForm>
           </Col>

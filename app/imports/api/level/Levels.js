@@ -15,7 +15,6 @@ export const demographicLevel = [
   { label: 'Professional', value: 'PROFESSIONAL' },
 ];
 
-
 /**
  * The different demographic levels.
  * @type {Array}
