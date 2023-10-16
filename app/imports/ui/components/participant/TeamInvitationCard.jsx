@@ -8,6 +8,7 @@ import {
   Col,
   Container,
   Row,
+  Card,
 } from 'react-bootstrap';
 import { HandThumbsUp, HandThumbsDown } from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
@@ -128,21 +129,20 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
   }
   return (
     <>
-      <ListGroup
+      <Card
         align='center'
-        style={{ padding: '1rem 1rem 1rem 1rem' }}
         onClick={() => setModalShow(true)}
         onMouseEnter={changeBackground}
         onMouseLeave={onLeave}>
-        <ListGroup.Item>
+        <Card.Header>
           <Row>
             <Image src={teams.image} rounded size='small'/>
-            <h1 style={{ color: '#263763', paddingTop: '2rem' }}>
+            <h1>
               {teams.name}
             </h1>
           </Row>
-        </ListGroup.Item>
-        <ListGroup.Item>
+        </Card.Header>
+        <Card.Text>
           <Row>
             <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
               <h4>Challenges</h4>
@@ -167,8 +167,8 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
                 {participant.firstName} {participant.lastName}</p>)}
             </Col>
           </Row>
-        </ListGroup.Item>
-        <ListGroup.Item>
+        </Card.Text>
+        <Card.Footer>
           <Button id={teams._id} style={{ backgroundColor: 'rgb(89, 119, 199)', color: 'white' }}
                   onClick={(() => acceptClick(teams._id))}>
             <HandThumbsUp size={22}/>
@@ -180,9 +180,9 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
             {'Decline Request '}
             <HandThumbsDown size={22}/>
           </Button>
-        </ListGroup.Item>
+        </Card.Footer>
 
-      </ListGroup>
+      </Card>
 
       <TeamInvitationModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
