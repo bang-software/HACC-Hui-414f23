@@ -51,8 +51,9 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
           });
     }
     const collectionName2 = TeamInvitations.getCollectionName();
-    // eslint-disable-next-line max-len
-    const intID = TeamInvitations.findDoc({ teamID: thisTeam, participantID: Participants.findDoc({ userID: Meteor.userId() })._id });
+    const intID = TeamInvitations.findDoc({
+      teamID: thisTeam,
+      participantID: Participants.findDoc({ userID: Meteor.userId() })._id });
     removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
       if (error) {
         console.error('Failed to remove', error);
@@ -69,9 +70,9 @@ const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) 
     e.currentTarget.style.backgroundColor = 'transparent';
   };
 
-  function TeamInvitationModal(props) {
+  function TeamInvitationModal() {
     return (
-      <Modal {...props} className='modal-xl modal-dialog-scrollable'>
+      <Modal className='modal-xl modal-dialog-scrollable'>
         <Modal.Header closeButton>
           <Modal.Title>
             {teams.name}
