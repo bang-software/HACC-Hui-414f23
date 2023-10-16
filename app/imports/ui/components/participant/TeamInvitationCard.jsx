@@ -1,15 +1,15 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Grid,
-  Header,
+  ListGroup,
   Image,
-  Popup,
-  Item,
   Modal,
-  Icon,
   Button,
-} from 'semantic-ui-react';
+  Col,
+  Container,
+  Row,
+} from 'react-bootstrap';
+import { HandThumbsUp, HandThumbsDown } from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -17,14 +17,15 @@ import { defineMethod, removeItMethod } from '../../../api/base/BaseCollection.m
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 
-class TeamInvitationCard extends React.Component {
+const TeamInvitationCard = ({ teams, skills, tools, challenges, participants }) => {
 
-  removeClick(tID, e) {
-    console.log(e);
+  const [modalShow, setModalShow] = useState(false);
+
+  const removeClick = (tID) => {
     const thisTeamID = tID;
     const collectionName2 = TeamInvitations.getCollectionName();
-    // eslint-disable-next-line max-len
-    const intID = TeamInvitations.findDoc({ teamID: thisTeamID, participantID: Participants.findDoc({ userID: Meteor.userId() })._id });
+    const intID = TeamInvitations.findDoc({
+      teamID: thisTeamID, participantID: Participants.findDoc({ userID: Meteor.userId() })._id });
     removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
       if (error) {
         swal('Error', error.message, 'error');
@@ -32,10 +33,9 @@ class TeamInvitationCard extends React.Component {
         swal('Success', 'Removed Team Invitation', 'success');
       }
     });
-  }
+  };
 
-  handleClick(tID, e) {
-    console.log(e);
+  const acceptClick = (tID) => {
     const thisTeam = tID;
     const devID = Participants.findDoc({ userID: Meteor.userId() })._id;
     const definitionData = { team: thisTeam, participant: devID };
@@ -58,114 +58,131 @@ class TeamInvitationCard extends React.Component {
         console.error('Failed to remove', error);
       }
     });
-  }
+  };
 
-  /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-  render() {
+  const changeBackground = (e) => {
+    e.currentTarget.style.backgroundColor = '#fafafa';
+    e.currentTarget.style.cursor = 'pointer';
+  };
 
-    function changeBackground(e) {
-      e.currentTarget.style.backgroundColor = '#fafafa';
-      e.currentTarget.style.cursor = 'pointer';
-    }
+  const onLeave = (e) => {
+    e.currentTarget.style.backgroundColor = 'transparent';
+  };
 
-    function onLeave(e) {
-      e.currentTarget.style.backgroundColor = 'transparent';
-    }
-
+  function TeamInvitationModal(props) {
     return (
-        <Item onMouseEnter={changeBackground} onMouseLeave={onLeave}
-              style={{ padding: '0rem 2rem 0rem 2rem' }}>
-          <Modal closeIcon trigger={
-            <Item.Content>
-              <Item.Header>
-                <Header as={'h3'} style={{ color: '#263763', paddingTop: '2rem' }}>
-                  <Icon name='users' size='tiny'/>
-                  {this.props.teams.name}
-                </Header>
-              </Item.Header>
-              <Item.Meta>
-                <Item.Meta>
-                  <Grid doubling columns={4}>
-                    <Grid.Column>
-                      <Image src={this.props.teams.image} rounded size='small'/>
-                      <Grid.Column floated={'left'} style={{ paddingBottom: '0.3rem' }}>
-                        {this.props.challenges.slice(0, 3).map((challenge) => <p
-                            style={{ color: 'rgb(89, 119, 199)' }}
-                            key={challenge}>
-                          {challenge}</p>)}
-                      </Grid.Column>
-
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Skills</Header>
-                      {this.props.skills.slice(0, 3).map((skill) => <p key={skill}>
-                        {skill}</p>)}
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Tools</Header>
-                      {this.props.tools.slice(0, 3).map((tool) => <p key={tool}>
-                        {tool}</p>)}
-                    </Grid.Column>
-                  </Grid>
-                </Item.Meta>
-              </Item.Meta>
-
-            </Item.Content>
-          }>
-            <Modal.Header>{this.props.teams.name}</Modal.Header>
-            <Modal.Content image scrolling>
-              <Image size='medium' src={this.props.teams.image} wrapped/>
-              <Modal.Description>
-                <Header>Description</Header>
+      <Modal {...props} className='modal-xl modal-dialog-scrollable'>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {teams.name}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="grid-example">
+          <Container>
+            <Row>
+              <Col>
+                <h3>Description</h3>
                 <p>
-                  {this.props.teams.description}
+                  {teams.description}
                 </p>
-                <Header>Challenges</Header>
-                {this.props.challenges.map((challenge) => <p key={challenge}>
+              </Col>
+              <Col>
+                <h3>Challenges</h3>
+                {challenges.map((challenge) => <p key={challenge}>
                   {challenge}</p>)}
-                <Header>Skills</Header>
-                {this.props.skills.map((skill) => <p key={skill}>
+              </Col>
+              <Col>
+                <h3>Skills</h3>
+                {skills.map((skill) => <p key={skill}>
                   {skill}</p>)}
-                <Header>Tools</Header>
-                {this.props.tools.map((tool) => <p key={tool}>
+              </Col>
+              <Col>
+                <h3>Tools</h3>
+                {tools.map((tool) => <p key={tool}>
                   {tool}</p>)}
-                <Header>Members</Header>
-                {this.props.participants.map((participant) => <p key={participant}>
+              </Col>
+              <Col>
+                <h3>Members</h3>
+                {participants.map((participant) => <p key={participant}>
                   {participant.firstName} {participant.lastName}</p>)}
-
-              </Modal.Description>
-            </Modal.Content>
-            <Modal.Actions>
-              {/* eslint-disable-next-line max-len */}
-              <Button id={this.props.teams._id} style={{ backgroundColor: 'rgb(89, 119, 199)', color: 'white' }} onClick={this.handleClick.bind(this, this.props.teams._id)}>
-                <Icon name='plus'/>
-                Accept Request
-              </Button>
-              {/* eslint-disable-next-line max-len */}
-              <Button id={this.props.teams._id} style={{ backgroundColor: 'rgb(245, 82, 82)', color: 'white' }} onClick={this.removeClick.bind(this, this.props.teams._id)}>
-                Decline Request
-              </Button>
-            </Modal.Actions>
-          </Modal>
-          <Popup
-              content='Request Accepted!'
-              mouseLeaveDelay={200}
-              on='click'
-              trigger={
-                // eslint-disable-next-line max-len
-                <Button id={this.props.teams._id} style={{ backgroundColor: 'transparent' }} onClick={this.handleClick.bind(this, this.props.teams._id)}>
-                  Accept Request
-                </Button>
-              }
-          />
-          {/* eslint-disable-next-line max-len */}
-          <Button id={this.props.teams._id} style={{ backgroundColor: 'transparent' }} onClick={this.removeClick.bind(this, this.props.teams._id)}>
-            Decline Request
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button id={teams._id} style={{ backgroundColor: 'rgb(89, 119, 199)', color: 'white' }}
+                  onClick={(() => acceptClick(teams._id))}>
+            <HandThumbsUp size={22}/>
+            {' Accept Request'}
           </Button>
-        </Item>
+          {/* eslint-disable-next-line max-len */}
+          <Button id={teams._id} style={{ backgroundColor: 'rgb(245, 82, 82)', color: 'white' }}
+                  onClick={(() => removeClick(teams._id))}>
+            {'Decline Request '}
+            <HandThumbsDown size={22}/>
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
-}
+  return (
+    <>
+      <ListGroup
+        align='center'
+        style={{ padding: '1rem 1rem 1rem 1rem' }}
+        onClick={() => setModalShow(true)}
+        onMouseEnter={changeBackground}
+        onMouseLeave={onLeave}>
+        <ListGroup.Item>
+          <h1 style={{ color: '#263763', paddingTop: '2rem' }}>
+            {teams.name}
+          </h1>
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <Row>
+            <Col>
+              <Image src={teams.image} rounded size='small'/>
+              <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
+                <h4>Challenges</h4>
+                {challenges.slice(0, 3).map((challenge) => <p
+                  style={{ color: 'rgb(89, 119, 199)' }}
+                  key={challenge}>
+                  {challenge}</p>)}
+              </Col>
+
+            </Col>
+            <Col>
+              <h4>Skills</h4>
+              {skills.slice(0, 3).map((skill) => <p key={skill}>
+                {skill}</p>)}
+            </Col>
+            <Col>
+              <h4>Tools</h4>
+              {tools.slice(0, 3).map((tool) => <p key={tool}>
+                {tool}</p>)}
+            </Col>
+          </Row>
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <Button id={teams._id} style={{ backgroundColor: 'rgb(89, 119, 199)', color: 'white' }}
+                  onClick={(() => acceptClick(teams._id))}>
+            <HandThumbsUp size={22}/>
+            {' Accept Request'}
+          </Button>
+          {/* eslint-disable-next-line max-len */}
+          <Button id={teams._id} style={{ backgroundColor: 'rgb(245, 82, 82)', color: 'white' }}
+                  onClick={(() => removeClick(teams._id))}>
+            {'Decline Request '}
+            <HandThumbsDown size={22}/>
+          </Button>
+        </ListGroup.Item>
+
+      </ListGroup>
+
+      <TeamInvitationModal show={modalShow} onHide={() => setModalShow(false)} />
+    </>
+  );
+};
 
 TeamInvitationCard.propTypes = {
   teams: PropTypes.object.isRequired,
