@@ -38,8 +38,10 @@ const ChallengesAdminWidget = ({ challenges }) => {
         <td>{challenges.submissionDetail}</td>
         <td>{challenges.pitch}</td>
         <td>
-          <Button variant="outline-primary">
-            <Link to={`/edit-challenge/${challenges._id}`} id={COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}>Edit</Link>
+          <Button variant="primary">
+            <Link className='link-light'
+                  to={`/edit-challenge/${challenges._id}`}
+                  id={COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}>Edit</Link>
           </Button>
         </td>
         <td>
