@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Col, Row, Container, ListGroup } from 'react-bootstrap';
 import { Github, Linkedin, Globe2, Slack } from 'react-bootstrap-icons';
-import SkillItem from './SkillItem';
-import ToolItem from './ToolItem';
 
 const ProfileCard = ({ model }) => (
   <Card id={'profile-card'}>
@@ -56,14 +54,14 @@ const ProfileCard = ({ model }) => (
             <h5><b>Skills</b></h5>
             <hr/>
             <ListGroup>
-              {model.skills.map((item) => <SkillItem item={item} key={item}/>)}
+              {model.skills.map((item) => <ListGroup.Item key={item}>{item}</ListGroup.Item>)}
             </ListGroup>
           </Col>
           <Col>
             <h5><b>Tools</b></h5>
             <hr/>
             <ListGroup>
-              {model.tools.map((item) => <ToolItem item={item} key={item}/>)}
+              {model.tools.map((item) => <ListGroup.Item key={item}>{item}</ListGroup.Item>)}
             </ListGroup>
           </Col>
         </Row>

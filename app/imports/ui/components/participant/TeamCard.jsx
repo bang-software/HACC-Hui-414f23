@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { Button, Card, Grid, Header, List } from 'semantic-ui-react';
 import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
+import { ListGroup } from 'react-bootstrap';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
-import SkillItem from './SkillItem';
-import ToolItem from './ToolItem';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { LeavingTeams } from '../../../api/team/LeavingTeamCollection';
@@ -72,13 +71,13 @@ class TeamCard extends React.Component {
                 <Grid.Column>
                   <Header size="tiny">Desired Skills</Header>
                   <List bulleted>
-                    {team.skills.map((item) => <SkillItem item={item} key={item} />)}
+                    {team.skills.map((item) => <ListGroup.Item key={item}>{item}</ListGroup.Item>)}
                   </List>
                 </Grid.Column>
                 <Grid.Column>
                   <Header size="tiny">Desired Tools</Header>
                   <List bulleted>
-                    {team.tools.map((item) => <ToolItem item={item} key={item} />)}
+                    {team.tools.map((item) => <ListGroup.Item key={item}>{item}</ListGroup.Item>)}
                   </List>
                 </Grid.Column>
                 <Grid.Column>
