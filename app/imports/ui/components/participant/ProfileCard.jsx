@@ -56,14 +56,14 @@ const ProfileCard = ({ model }) => (
             <h5><b>Skills</b></h5>
             <hr/>
             <ListGroup>
-              {model.skills.map((item) => <SkillItem item={item} key={item._id}/>)}
+              {model.skills.map((item) => <SkillItem item={item} key={item}/>)}
             </ListGroup>
           </Col>
           <Col>
             <h5><b>Tools</b></h5>
             <hr/>
             <ListGroup>
-              {model.tools.map((item) => <ToolItem item={item} key={item._id}/>)}
+              {model.tools.map((item) => <ToolItem item={item} key={item}/>)}
             </ListGroup>
           </Col>
         </Row>

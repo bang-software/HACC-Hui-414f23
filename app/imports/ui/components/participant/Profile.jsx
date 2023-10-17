@@ -13,8 +13,10 @@ import { paleBlueStyle } from '../../styles';
 import ProfileCard from './ProfileCard';
 import { ROUTES } from '../../../startup/client/route-constants';
 import TeamMembershipWidget from './TeamMembershipWidget';
+import { Tools } from '../../../api/tool/ToolCollection';
+import { Skills } from '../../../api/skill/SkillCollection';
 
-const Profile = ({ participant, devChallenges, devSkills, devTools }) => {
+const Profile = ({ participant, devChallenges, skillNames, toolNames }) => {
 
   const buildModel = () => {
     const model = participant;
@@ -22,8 +24,8 @@ const Profile = ({ participant, devChallenges, devSkills, devTools }) => {
       const c = Challenges.findDoc(challenge.challengeID);
       return c.title;
     });
-    model.skills = devSkills;
-    model.tools = devTools;
+    model.skills = skillNames;
+    model.tools = toolNames;
     return model;
   };
 
@@ -57,6 +59,12 @@ Profile.propTypes = {
   devTools: PropTypes.arrayOf(
     PropTypes.object,
   ),
+  toolNames: PropTypes.arrayOf(
+    PropTypes.string,
+  ),
+  skillNames: PropTypes.arrayOf(
+    PropTypes.string,
+  ),
 };
 
 const ProfileCon = withTracker(() => {
@@ -65,11 +73,15 @@ const ProfileCon = withTracker(() => {
   const devChallenges = ParticipantChallenges.find({ participantID }).fetch();
   const devSkills = ParticipantSkills.find({ participantID }).fetch();
   const devTools = ParticipantTools.find({ participantID }).fetch();
+  const skillNames = devSkills.map((skill) => Skills.findDoc(skill.skillID).name);
+  const toolNames = devTools.map((tool) => Tools.findDoc(tool.toolID).name);
   return {
     participant,
     devChallenges,
     devSkills,
     devTools,
+    toolNames,
+    skillNames,
   };
 })(Profile);
 

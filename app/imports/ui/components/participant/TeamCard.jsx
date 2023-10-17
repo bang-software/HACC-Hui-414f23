@@ -13,6 +13,8 @@ import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { LeavingTeams } from '../../../api/team/LeavingTeamCollection';
 import { defineMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
+import { Tools } from '../../../api/tool/ToolCollection';
+import { Skills } from '../../../api/skill/SkillCollection';
 
 class TeamCard extends React.Component {
   buildTheTeam() {
@@ -21,8 +23,9 @@ class TeamCard extends React.Component {
     const tCs = TeamChallenges.find({ teamID }).fetch();
     const challengeTitles = _.map(tCs, (tc) => Challenges.findDoc(tc.challengeID).title);
     team.challenges = challengeTitles;
-    team.skills = TeamSkills.find({ teamID }).fetch();
-    team.tools = TeamTools.find({ teamID }).fetch();
+    team.skills = TeamSkills.find({ teamID }).fetch().map((skill) => Skills.findDoc(skill.skillID).name);
+    team.tools = TeamTools.find({ teamID }).fetch().map((tool) => Tools.findDoc(tool.toolID).name);
+
     const teamPs = TeamParticipants.find({ teamID }).fetch();
     team.members = _.map(teamPs, (tp) => Participants.getFullName(tp.participantID));
     return team;
@@ -69,13 +72,13 @@ class TeamCard extends React.Component {
                 <Grid.Column>
                   <Header size="tiny">Desired Skills</Header>
                   <List bulleted>
-                    {team.skills.map((item) => <SkillItem item={item} key={item._id} />)}
+                    {team.skills.map((item) => <SkillItem item={item} key={item} />)}
                   </List>
                 </Grid.Column>
                 <Grid.Column>
                   <Header size="tiny">Desired Tools</Header>
                   <List bulleted>
-                    {team.tools.map((item) => <ToolItem item={item} key={item._id} />)}
+                    {team.tools.map((item) => <ToolItem item={item} key={item} />)}
                   </List>
                 </Grid.Column>
                 <Grid.Column>
