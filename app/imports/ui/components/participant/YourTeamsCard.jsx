@@ -32,7 +32,7 @@ const schema = new SimpleSchema({
 
 const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
   const [open, setOpen] = useState(false);
-  let fRef = useRef(null);
+  const fRef = useRef(null);
 
   const submit = (formData) => {
     const { participants } = formData;
@@ -150,7 +150,6 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
     }
   };
 
-
   // let fRef = null;
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
@@ -167,7 +166,7 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
           <Col>
             GitHub: {teams.gitHubRepo}<br />
             DevPost: {teams?.devPostPage}
-            <Image src={teams.image} rounded className="img-large"/>s
+            <Image src={teams.image} rounded className="img-large"/>
           </Col>
           <Col>
             <h4>Members</h4>
