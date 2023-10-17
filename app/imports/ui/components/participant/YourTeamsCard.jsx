@@ -34,7 +34,7 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
   const [open, setOpen] = useState(false);
   let fRef = useRef(null);
 
-  const submit = (formData, formRef) => {
+  const submit = (formData) => {
     const { participants } = formData;
     const participantCollection = Participants.dumpAll().contents;
     const foundParticipants = [];
@@ -180,18 +180,27 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
             <Button variant="link" id={teams?._id}>
               <Link to={`/interested-participants/${teams?._id}`}>See interested participants</Link>
             </Button>
+            <Button id={teams._id}
+                    style={{ backgroundColor: 'transparent', color: '#4183C4' }}
+                    onClick={() => setOpen(true)}>
+              Invite Participants
+            </Button>
             <Modal
                 show={open}
-                onHide={() => this.setState({ open: false })}
+                onHide={() => setOpen(false)}
                 centered
             >
+              <Modal.Header closeButton>
+                <Modal.Title>Invite Participants</Modal.Title>
+              </Modal.Header>
+
               <Modal.Body>
-                <AutoForm ref={ref => { fRef = ref; }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
+                <AutoForm ref={fRef} schema={formSchema} onSubmit={data => submit(data, fRef.current)}>
                   <Row style={{ paddingTop: '20px' }}>
                     <Col>
                       <h2 className="text-center">Who would you like to invite to {teams?.name}?</h2>
                       <h4 className="text-center" style={{ paddingBottom: '2rem', marginTop: '0rem' }}>
-                        Please make sure the email you input is the same as the ones they ve used to make their Slack account.
+                        Please make sure the email you input is the same as the ones they have used to make their Slack account.
                       </h4>
                       <ListField name="participants" label="Enter each participant's email">
                         <ListItemField name="$">
@@ -217,8 +226,7 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
         </Row>
       </Container>
   );
-}
-
+};
 
 YourTeamsCard.propTypes = {
   teams: PropTypes.object.isRequired,
