@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Button, Container, Spinner } from 'react-bootstrap';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -62,4 +62,4 @@ const Profile = () => {
   ) : <Spinner/>);
 };
 
-export default withRouter(Profile);
+export default Profile;
