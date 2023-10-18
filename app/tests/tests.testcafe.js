@@ -25,6 +25,7 @@ import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
+import {yourTeamsCard} from './yourTeamsCard.component';
 
 /* global fixture:false, test:false */
 
@@ -32,6 +33,7 @@ const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changem
 const credentialsB = { username: 'john@foo.com', password: 'changeme' };
 const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
 const credentialsD = { username: 'gsummey@hotmail.com', password: 'changeme' };
+const credentialsE = { username: 'jenny@foo.com', password: 'changeme' };
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -45,6 +47,10 @@ const skill = {
 const tool = {
   name: 'Test tool',
   description: 'The description of the test tool',
+};
+
+const invite = {
+  email: 'aung@foo.com',
 };
 
 const editedChallenge = {
@@ -149,6 +155,16 @@ test('Test delete form renders', async (testController) => {
   await deleteFormPage.isDisplayed(testController);
 });
 
+test('Test your team and invite interested participants', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
+  await navBar.isLoggedIn(testController, credentialsE.username);
+  await navBar.gotoYourTeams(testController);
+  await yourTeamsCard.see_interested_participants(testController);
+  await navBar.gotoYourTeams(testController);
+  await yourTeamsCard.invite_participants(testController, invite);
+});
+
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
@@ -190,7 +206,7 @@ test('Test that EditChallenge page function', async (testController) => {
   await editChallengePage.editChallenge(testController, editedChallenge);
 });
 
-test('Test that EditSkill pages function', async (testController) => {
+test('Test that EditSkill page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
@@ -198,7 +214,7 @@ test('Test that EditSkill pages function', async (testController) => {
   await editSkillPage.editSkill(testController, editedSkill);
 });
 
-test('Test that EditTool pages function', async (testController) => {
+test('Test that EditTool page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);

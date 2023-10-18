@@ -23,4 +23,5 @@ export const PAGE_IDS = {
   DELETE_FORM: 'delete-account',
   LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
   ALL_TEAM_INVITATIONS: 'all-team-invitations',
+  YOUR_TEAMS: 'your-teams',
 };
