@@ -14,6 +14,7 @@ import { Teams } from '../../../api/team/TeamCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const schema = new SimpleSchema({
   participants: {
@@ -153,7 +154,7 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
   // let fRef = null;
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
-      <Container fluid style={{ padding: '0rem 2rem 0rem 2rem' }}>
+      <Container fluid style={{ padding: '0rem 2rem 0rem 2rem' }} id={COMPONENT_IDS.YOUR_TEAMS_CARD}>
         <Row>
           <Col>
             <h3 style={{ color: '#263763', paddingTop: '2rem' }}>
@@ -176,12 +177,16 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
         </Row>
         <Row>
           <Col>
-            <Button variant="link" id={teams?._id}>
-              <Link to={`/interested-participants/${teams?._id}`}>See interested participants</Link>
+            <Button variant="link" id={COMPONENT_IDS.SEE_INTERTESTED_PARTICIPANTS}>
+              <Link
+                  to={`/interested-participants/${teams?._id}`}>
+                See interested participants
+              </Link>
             </Button>
-            <Button id={teams._id}
+            <Button
                     style={{ backgroundColor: 'transparent', color: '#4183C4' }}
-                    onClick={() => setOpen(true)}>
+                    onClick={() => setOpen(true)}
+                    id={COMPONENT_IDS.OPEN_INVITE_PARTICIPANTS}>
               Invite Participants
             </Button>
             <Modal
@@ -203,20 +208,30 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
                       </h4>
                       <ListField name="participants" label="Enter each participant's email">
                         <ListItemField name="$">
-                          <TextField showInlineError icon="mail" name="email" label="Email"/>
+                          <TextField showInlineError
+                                     icon="mail"
+                                     name="email"
+                                     label="Email"
+                                     id={COMPONENT_IDS.INVITE_PARTICIPANTS_TEXTFIELD}
+                          />
                         </ListItemField>
                       </ListField>
                     </Col>
                   </Row>
                   <Row className="justify-content-center">
-                    <Button type="submit" variant="success" style={{ margin: '20px 10px' }}>
+                    <Button
+                        type="submit"
+                        variant="success"
+                        style={{ margin: '20px 10px' }}
+                        id={COMPONENT_IDS.INVITE_PARTICIPANTS_SUBMIT}
+                    >
                       Invite
                     </Button>
                   </Row>
                 </AutoForm>
               </Modal.Body>
             </Modal>
-          </Col>
+          </Col>s
           <Col>
             <Button variant="link" id={teams._id}>
               <Link to={`/edit-team/${teams._id}`}>Edit Team</Link>

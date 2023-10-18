@@ -24,6 +24,7 @@ import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
+import {yourTeamsCard} from './yourTeamsCard.component';
 
 /* global fixture:false, test:false */
 
@@ -31,6 +32,7 @@ const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changem
 const credentialsB = { username: 'john@foo.com', password: 'changeme' };
 const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
 const credentialsD = { username: 'gsummey@hotmail.com', password: 'changeme' };
+const credentialsE = { username: 'jenny@foo.com', password: 'changeme' };
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -44,6 +46,10 @@ const skill = {
 const tool = {
   name: 'Test tool',
   description: 'The description of the test tool',
+};
+
+const invite = {
+  email: 'aung@foo.com',
 };
 
 const editedChallenge = {
@@ -146,6 +152,16 @@ test('Test delete form renders', async (testController) => {
   await navBar.isLoggedIn(testController, credentialsB.username);
   await navBar.deleteAccount(testController);
   await deleteFormPage.isDisplayed(testController);
+});
+
+test('Test your team and invite interested participants', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
+  await navBar.isLoggedIn(testController, credentialsE.username);
+  await navBar.gotoYourTeams(testController);
+  await yourTeamsCard.see_interested_participants(testController);
+  await navBar.gotoYourTeams(testController);
+  await yourTeamsCard.invite_participants(testController, invite);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
