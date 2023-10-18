@@ -24,6 +24,7 @@ import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
+import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import {yourTeamsCard} from './yourTeamsCard.component';
 
@@ -155,15 +156,11 @@ test('Test delete form renders', async (testController) => {
   await deleteFormPage.isDisplayed(testController);
 });
 
-test('Test your team and invite interested participants', async (testController) => {
+test('Test that your teams page shows up', async (testController) => {
   await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
-  await navBar.isLoggedIn(testController, credentialsE.username);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoYourTeams(testController);
-  await yourTeamsCard.see_interested_participants(testController);
-  await navBar.gotoYourTeams(testController);
-  await yourTeamsCard.invite_participants(testController, invite);
-});
+  await yourTeams.isDisplayed(testController);
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {

@@ -122,11 +122,11 @@ class NavBar {
   }
 
   async gotoYourTeams(testController) {
-    const visible = await Selector(`#${COMPONENT_IDS.YOUR_TEAMS_CARD}`).visible;
+    const visible = await Selector(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`).visible;
     if (!visible) {
       await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
-    await testController.click(`#${COMPONENT_IDS.YOUR_TEAMS_CARD}`);
+    await testController.click(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`);
   }
 }
 

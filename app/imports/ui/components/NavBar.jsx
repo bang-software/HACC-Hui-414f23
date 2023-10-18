@@ -81,7 +81,7 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.BEST_FIT}
                               key='list-teams'>Open Teams ({numTeams})</Nav.Link>,
-                    <Nav.Link id={COMPONENT_IDS.YOUR_TEAMS_CARD}
+                    <Nav.Link id={COMPONENT_IDS.YOUR_TEAMS_BUTTON}
                               as={NavLink}
                               activeClassName="active"
                               to={ROUTES.YOUR_TEAMS}

@@ -74,10 +74,10 @@ export const COMPONENT_IDS = {
   DELETE_ACCOUNT_SELECT: 'delete-account-select',
   DELETE_ACCOUNT_BUTTON: 'delete account button',
 
+  YOUR_TEAMS_BUTTON: 'your-teams-button',
   YOUR_TEAMS_CARD: 'your-teams-card',
   OPEN_INVITE_PARTICIPANTS: 'open-invite-participants',
   SEE_INTERTESTED_PARTICIPANTS: 'see-interested-participants',
   INVITE_PARTICIPANTS_TEXTFIELD: 'invite-participants-textfield',
   INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
-
 };
