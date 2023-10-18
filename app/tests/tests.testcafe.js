@@ -76,13 +76,6 @@ test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
 
-test('Test that AllTeamInvitations pages function', async (testController) => {
-  await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.gotoAllTeamInvitationsPage(testController);
-  await allTeamInvitationsPage.isDisplayed(testController);
-});
-
 test('Test that help page shows up', async (testController) => {
   await navBar.gotoHelpPage(testController);
   await helpPage.isDisplayed(testController);
@@ -218,6 +211,13 @@ test('Test that ViewTeams pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.isDisplayed(testController);
+});
+
+test('Test that AllTeamInvitations pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoAllTeamInvitationsPage(testController);
+  await allTeamInvitationsPage.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {
