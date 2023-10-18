@@ -25,6 +25,8 @@ import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
+import { allTeamInvitationsPage } from './allTeamInvitations.page';
+import {yourTeamsCard} from './yourTeamsCard.component';
 
 /* global fixture:false, test:false */
 
@@ -32,6 +34,7 @@ const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changem
 const credentialsB = { username: 'john@foo.com', password: 'changeme' };
 const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
 const credentialsD = { username: 'gsummey@hotmail.com', password: 'changeme' };
+const credentialsE = { username: 'jenny@foo.com', password: 'changeme' };
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -45,6 +48,10 @@ const skill = {
 const tool = {
   name: 'Test tool',
   description: 'The description of the test tool',
+};
+
+const invite = {
+  email: 'aung@foo.com',
 };
 
 const editedChallenge = {
@@ -154,7 +161,6 @@ test('Test that your teams page shows up', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
-});
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
@@ -218,6 +224,13 @@ test('Test that ViewTeams pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.isDisplayed(testController);
+});
+
+test('Test that AllTeamInvitations pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoAllTeamInvitationsPage(testController);
+  await allTeamInvitationsPage.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {

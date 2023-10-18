@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Grid,
-  Header,
-  Item,
-} from 'semantic-ui-react';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
@@ -38,6 +33,10 @@ class AllTeamInvitationsWidget extends React.Component {
 
     const universalTeams = this.props.teams;
 
+    function sortedUniq(arr) {
+      return Array.from(new Set(arr)).sort();
+    }
+
     function getTeamInvitations(invs) {
       const data = [];
       for (let i = 0; i < invs.length; i++) {
@@ -47,14 +46,15 @@ class AllTeamInvitationsWidget extends React.Component {
           }
         }
       }
-      return _.sortedUniq(data);
+      return sortedUniq(data);
     }
 
     const universalSkills = this.props.skills;
 
     function getTeamSkills(teamID, teamSkills) {
       const data = [];
-      const skills = _.filter(teamSkills, { teamID: teamID });
+      // const skills = _.filter(teamSkills, { teamID: teamID });
+      const skills = teamSkills.filter(skill => skill.teamID === teamID);
       for (let i = 0; i < skills.length; i++) {
         for (let j = 0; j < universalSkills.length; j++) {
           if (skills[i].skillID === universalSkills[j]._id) {
@@ -69,7 +69,8 @@ class AllTeamInvitationsWidget extends React.Component {
 
     function getTeamTools(teamID, teamTools) {
       const data = [];
-      const tools = _.filter(teamTools, { teamID: teamID });
+      // const tools = _.filter(teamTools, { teamID: teamID });
+      const tools = teamTools.filter(tool => tool.teamID === teamID);
       for (let i = 0; i < tools.length; i++) {
         for (let j = 0; j < universalTools.length; j++) {
           if (tools[i].toolID === universalTools[j]._id) {
@@ -84,7 +85,8 @@ class AllTeamInvitationsWidget extends React.Component {
 
     function getTeamChallenges(teamID, teamChallenges) {
       const data = [];
-      const challenges = _.filter(teamChallenges, { teamID: teamID });
+      // const challenges = _.filter(teamChallenges, { teamID: teamID });
+      const challenges = teamChallenges.filter(challenge => challenge.teamID === teamID);
       for (let i = 0; i < challenges.length; i++) {
         for (let j = 0; j < universalChallenges.length; j++) {
           if (challenges[i].challengeID === universalChallenges[j]._id) {
@@ -99,7 +101,8 @@ class AllTeamInvitationsWidget extends React.Component {
 
     function getTeamDevelopers(teamID, teamParticipants) {
       const data = [];
-      const participants = _.filter(teamParticipants, { teamID: teamID });
+      // const participants = _.filter(teamParticipants, { teamID: teamID });
+      const participants = teamParticipants.filter(participant => participant.teamID === teamID);
       for (let i = 0; i < participants.length; i++) {
         for (let j = 0; j < allDevelopers.length; j++) {
           if (participants[i].participantID === allDevelopers[j]._id) {
@@ -114,14 +117,14 @@ class AllTeamInvitationsWidget extends React.Component {
     }
 
     return (
-        <Grid container doubling relaxed stackable>
-          <Grid.Row centered>
-            <Header as={'h2'} style={{ paddingTop: '2rem' }}>
+        <Container>
+          <Row style = {{ justifyContent: 'center' }}>
+            <h2 style={{ paddingTop: '2rem' }}>
               Team Invitations
-            </Header>
-          </Grid.Row>
-          <Grid.Column width={16}>
-            <Item.Group divided>
+            </h2>
+          </Row>
+          <Col width={16}>
+            <Card style={{ borderColor: 'transparent' }}>
               {getTeamInvitations(this.props.teamInvitations).map((teams) => <AllTeamInvitationCard
                   key={teams._id}
                   teams={teams}
@@ -129,9 +132,9 @@ class AllTeamInvitationsWidget extends React.Component {
                   tools={getTeamTools(teams._id, this.props.teamTools)}
                   challenges={getTeamChallenges(teams._id, this.props.teamChallenges)}
                   participants={getTeamDevelopers(teams._id, this.props.teamParticipants)}/>)}
-            </Item.Group>
-          </Grid.Column>
-        </Grid>
+            </Card>
+          </Col>
+        </Container>
     );
   }
 }
