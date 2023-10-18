@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Grid, Segment, Header } from 'semantic-ui-react';
-import { AutoForm, ErrorsField, LongTextField, SelectField } from 'uniforms-semantic';
-import Button from 'semantic-ui-react/dist/commonjs/elements/Button';
+import { Container, Card, Col, Row } from 'react-bootstrap';
+import { AutoForm, ErrorsField, LongTextField, SelectField, SubmitField } from 'uniforms-bootstrap5';
+// import Button from 'semantic-ui-react/dist/commonjs/elements/Button';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -16,10 +16,41 @@ import { deleteAccountMethod, userInteractionDefineMethod } from '../../../api/u
 import { USER_INTERACTIONS } from '../../../startup/client/user-interaction-constants';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-class DeleteFormWidget extends React.Component {
+const reasons = [
+  {
+    label: 'No challenge was interesting for me',
+    value: 'No challenge was interesting for me',
+  },
+  {
+    label: 'The challenges were too hard',
+    value: 'The challenges were too hard',
+  },
+  {
+    label: "Couldn't find a team I liked being on",
+    value: "Couldn't find a team I liked being on",
+  },
+  {
+    label: 'My schedule conflicts with the HACC',
+    value: 'My schedule conflicts with the HACC',
+  },
+  {
+    label: 'Other',
+    value: 'Other',
+  },
+];
+const schema = new SimpleSchema({
+  feedback: {
+    type: String,
+    defaultValue: 'Other',
+  },
+  other: { type: String, required: false },
+});
 
-  submit(data) {
+const DeleteFormWidget = () => {
+
+  const submit = (data) => {
     const username = this.props.participant.username;
     const type = USER_INTERACTIONS.DELETE_ACCOUNT;
     const typeData = [data.feedback, data.other];
@@ -57,29 +88,13 @@ class DeleteFormWidget extends React.Component {
     const instance = this.props.participant._id;
     removeItMethod.call({ collectionName, instance });
     deleteAccountMethod.call();
-  }
+  };
 
-  render() {
-    const reasons = [
-      'No challenge was interesting for me',
-      'The challenges were too hard',
-      "Couldn't find a team I liked being on",
-      'My schedule conflicts with the HACC',
-      'Other',
-    ];
-    const schema = new SimpleSchema({
-      feedback: {
-        type: String,
-        allowedValues: reasons,
-        defaultValue: 'Other',
-      },
-      other: { type: String, required: false },
-    });
     const formSchema = new SimpleSchema2Bridge(schema);
     return (
-        <Grid container centered>
-          <Grid.Column>
-            <Header as="h2" textAlign="center">Feedback</Header>
+        <Container style={{ justifyContent: 'center', padding: '5px' }}>
+          <Col>
+            <h2 style={{ textAlign: 'center' }}>Feedback</h2>
             <AutoForm schema={formSchema} onSubmit={data => {
               swal({
                 text: 'Are you sure you want to delete your account?',
@@ -89,38 +104,36 @@ class DeleteFormWidget extends React.Component {
               })
                   .then((willDelete) => {
                     if (willDelete) {
-                      this.submit(data);
+                      submit(data);
                     } else {
                       swal('Canceled deleting your account');
                     }
                   });
             }}>
-              <Segment>
-                <Header as="h3">We&apos;re sorry to hear you&apos;re deleting your account.</Header>
-                <Header as="h4">Please provide feedback on why you&apos;re leaving
-                  to improve the HACC experience for next year.</Header>
+              <Card style={{ padding: '10px' }}>
+                <h4>We&apos;re sorry to hear you&apos;re deleting your account.</h4>
+                <h5>Please provide feedback on why you&apos;re leaving
+                  to improve the HACC experience for next year.</h5>
                 <br/>
-                <Grid>
-                  <Grid.Row columns={2}>
-                    <Grid.Column>
-                      <SelectField name='feedback'/>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <LongTextField name='other'/>
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-                <Button basic color='red' value='submit'>
-                  Delete Account
-                </Button>
+                <Container style={{ justifyContent: 'center', padding: '5px' }}>
+                  <Row>
+                    <Col>
+                      <SelectField name='feedback' options={reasons} id={COMPONENT_IDS.DELETE_ACCOUNT_SELECT}/>
+                    </Col>
+                    <Col>
+                      <LongTextField name='other' id={COMPONENT_IDS.DELETE_ACCOUNT_TEXT}/>
+                    </Col>
+                  </Row>
+                </Container>
+                <SubmitField value='Delete Account' id={COMPONENT_IDS.DELETE_ACCOUNT_BUTTON}>
+                </SubmitField>
                 <ErrorsField/>
-              </Segment>
+              </Card>
             </AutoForm>
-          </Grid.Column>
-        </Grid>
+          </Col>
+        </Container>
     );
-  }
-}
+};
 
 DeleteFormWidget.propTypes = {
   participant: PropTypes.object.isRequired,

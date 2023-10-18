@@ -8,13 +8,13 @@ import { faker } from '@faker-js/faker';
  * @type {{PROFESSIONAL: string, COLLEGE: string, HIGH_SCHOOL: string}}
  * @memberOf api/level
  */
+
 export const demographicLevel = {
   MIDDLE_SCHOOL: 'Middle school',
   HIGH_SCHOOL: 'High school',
   COLLEGE: 'College',
   PROFESSIONAL: 'Professional',
 };
-
 /**
  * The different demographic levels.
  * @type {Array}

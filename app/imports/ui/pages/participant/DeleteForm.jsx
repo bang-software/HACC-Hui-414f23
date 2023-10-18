@@ -2,13 +2,12 @@ import React from 'react';
 
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import DeleteFormWidget from '../../components/participant/DeleteFormWidget';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
-class DeleteForm extends React.Component {
-  render() {
-    return (
+const DeleteForm = () => (
+  <div id={PAGE_IDS.DELETE_FORM}>
         <DeleteFormWidget/>
-    );
-  }
-}
+  </div>
+);
 
 export default withAllSubscriptions(DeleteForm);

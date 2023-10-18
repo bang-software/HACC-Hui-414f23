@@ -55,14 +55,14 @@ const NavBar = () => {
       suggestionCount: suggestionCnt,
     };
   }, []);
-  
+
   return (ready ? (
       <Navbar expand="lg" className="navbar navbar-dark" style={{ backgroundColor: '#124884' }} >
         <Container fluid>
           <Navbar.Brand as={NavLink} to={ROUTES.LANDING}>
             <h1>HACC-Hui</h1>
           </Navbar.Brand>
-          <Navbar.Toggle id='button.navbar-toggler' aria-controls="basic-navbar-nav"/>
+          <Navbar.Toggle id={COMPONENT_IDS.NAVBAR_TOGGLE} aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-start">
             <Nav>
               {isParticipant ? (
@@ -118,7 +118,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.LIST_SUGGESTIONS}
                               key={ROUTES.LIST_SUGGESTIONS}>Suggestions List ({suggestionCount})</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.LIST_PARTICIPANTS_ADMIN}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.LIST_PARTICIPANTS_ADMIN}
                               key='list-participants-admin'>List Participants ({numParticipants})</Nav.Link>,
@@ -167,7 +168,8 @@ const NavBar = () => {
                       <BoxArrowRight/> Sign Out
                     </NavDropdown.Item>
                     {isParticipant ? (
-                        <NavDropdown.Item as={NavLink}
+                        <NavDropdown.Item id={COMPONENT_IDS.DELETE_ACCOUNT_NAV}
+                                          as={NavLink}
                                           to={ROUTES.DELETE_ACCOUNT}>
                           <PersonFillX/> Delete Account
                         </NavDropdown.Item>) : ''}

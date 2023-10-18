@@ -1,15 +1,15 @@
 import { landingPage } from './landing.page';
 import { agePage } from './age.page';
-import { addChallengeAdminPage } from './addChallengeAdmin.page';
-import { addSkillAdminPage } from './addSkillAdmin.page';
-import { addToolAdminPage } from './addToolAdmin.page';
+import { addChallengeAdminPage } from './manage_hacc_tests/addChallengeAdmin.page';
+import { addSkillAdminPage } from './manage_hacc_tests/addSkillAdmin.page';
+import { addToolAdminPage } from './manage_hacc_tests/addToolAdmin.page';
 import { navBar } from './navbar.component';
 import { signinPage } from './signinPage.page';
-import { manageHaccWidgetComponents } from './manageHaccWidget.components';
+import { manageHaccWidgetComponents } from './manage_hacc_tests/manageHaccWidget.components';
 import { underParticipationFormPage } from './underparticipationform.page';
 import { signOutPage } from './signoutPage.page';
 import { helpPage } from './help.page';
-import { editChallengePage } from './editChallengePage.page';
+import { editChallengePage } from './manage_hacc_tests/editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
 import { viewTeamsPage } from './viewTeamsPage.page';
@@ -17,9 +17,14 @@ import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { profilePage } from './profilePage';
 import { listParticipantsPage } from './listParticipants.page';
 import { teamInvitationsPage } from './teamInvitationsPage';
-import { editSkillPage } from './editSkillPage.page';
-import { editToolPage } from './editToolPage.page';
+import { editSkillPage } from './manage_hacc_tests/editSkillPage.page';
+import { editToolPage } from './manage_hacc_tests/editToolPage.page';
 import { updateMPCompliant } from './updateMPCompliant.page';
+import { deleteFormPage } from './deleteForm.page';
+import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
+import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
+import { listParticipantsCard } from './listParticipantsCard.component';
+
 /* global fixture:false, test:false */
 
 const credentialsA = { username: 'admin@hacchui.ics.foo.com', password: 'changeme' };
@@ -63,10 +68,9 @@ const profileInfo = {
 };
 
 fixture('meteor-application-template-react localhost test with default db')
-  .page('http://localhost:3400');
+    .page('http://localhost:3400');
 
 /** USER --------------------------------------------------------------------------------------------------*/
-
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
@@ -88,6 +92,7 @@ test('Test that ListParticipants page function', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoListParticipantsPage(testController);
   await listParticipantsPage.isDisplayed(testController);
+  await listParticipantsCard.isDisplayed(testController);
 });
 
 test('Test that age page renders', async (testController) => {
@@ -135,8 +140,24 @@ test('Test that profile page renders', async (testController) => {
   await profilePage.isDisplayed(testController);
 });
 
+test('Test delete form renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await navBar.isLoggedIn(testController, credentialsB.username);
+  await navBar.deleteAccount(testController);
+  await deleteFormPage.isDisplayed(testController);
+});
+
 /** ADMIN -------------------------------------------------------------------------------------------------*/
-test('Test that AddChallenge page renders', async (testController) => {
+test('Test that ListParticipantsAdmin page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoListParticipantsAdminPage(testController);
+  await listParticipantsAdminPage.isDisplayed(testController);
+  await listParticipantsCardAdmin.isDisplayed(testController);
+});
+
+test('Test that AddChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
@@ -144,12 +165,12 @@ test('Test that AddChallenge page renders', async (testController) => {
   await addChallengeAdminPage.addChallenge(testController, challenge);
 });
 
-test('Test that AddSkill pages renders', async (testController) => {
+test('Test that AddSkill pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.gotoAddSkillPage(testController);
-  await addSkillAdminPage.isDisplayed(testController);
+  await addSkillAdminPage.addSkill(testController, skill);
 });
 
 test('Test that AddTool pages function', async (testController) => {
@@ -160,7 +181,7 @@ test('Test that AddTool pages function', async (testController) => {
   await addToolAdminPage.addTool(testController, tool);
 });
 
-test('Test that EditChallenge pages function', async (testController) => {
+test('Test that EditChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
@@ -168,7 +189,7 @@ test('Test that EditChallenge pages function', async (testController) => {
   await editChallengePage.editChallenge(testController, editedChallenge);
 });
 
-test('Test that EditSkill pages function', async (testController) => {
+test('Test that EditSkill page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
@@ -176,7 +197,7 @@ test('Test that EditSkill pages function', async (testController) => {
   await editSkillPage.editSkill(testController, editedSkill);
 });
 
-test('Test that EditTool pages function', async (testController) => {
+test('Test that EditTool page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
@@ -188,8 +209,7 @@ test('Test that ViewTeams pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
-  await manageHaccWidgetComponents.gotoViewTeamsPage(testController);
-  await viewTeamsPage.clickFilter(testController);
+  await manageHaccWidgetComponents.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {

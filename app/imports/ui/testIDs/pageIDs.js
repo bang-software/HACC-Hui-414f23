@@ -20,4 +20,6 @@ export const PAGE_IDS = {
   TEAM_INVITATIONS_PAGE: 'team-invitations-page',
   LIST_PARTICIPANTS: 'list-participants',
   UPDATE_MP_COMPLIANT: 'update-mp-compliant',
+  DELETE_FORM: 'delete-account',
+  LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
 };

@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
-import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
-import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
+import { PAGE_IDS } from '../../imports/ui/testIDs/pageIDs';
+import { COMPONENT_IDS } from '../../imports/ui/testIDs/componentIDs';
 
 class ManageHaccWidgetComponents {
   constructor() {
