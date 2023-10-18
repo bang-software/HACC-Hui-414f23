@@ -56,10 +56,7 @@ const ListParticipantsWidgetAdmin = () => {
       <div style={{ textAlign: 'center' }}>
         <h2>
           <Icon.PersonCircle/>
-          There are no participants at the moment.
-          <h3>
-            Please check back later.
-          </h3>
+          There are no participants at the moment. Please check back later.
         </h2>
       </div>
   );
