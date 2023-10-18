@@ -24,6 +24,7 @@ import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
+import { yourTeams } from './yourTeams.page';
 
 /* global fixture:false, test:false */
 
@@ -146,6 +147,13 @@ test('Test delete form renders', async (testController) => {
   await navBar.isLoggedIn(testController, credentialsB.username);
   await navBar.deleteAccount(testController);
   await deleteFormPage.isDisplayed(testController);
+});
+
+test('Test that your teams page shows up', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await navBar.gotoYourTeams(testController);
+  await yourTeams.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/

@@ -112,6 +112,14 @@ class NavBar {
     }
     await testController.click(`#${COMPONENT_IDS.UPDATE_MP}`);
   }
+
+  async gotoYourTeams(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`);
+  }
 }
 
 export const navBar = new NavBar();
