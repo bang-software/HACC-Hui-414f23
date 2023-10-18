@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-/** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
+/** Renders a single row in the table. See pages/ManageHaccWidget.jsx. */
 const SkillsAdminWidget = ({ skills }) => {
   const removeItem = (docID) => {
     swal({
@@ -54,6 +54,4 @@ SkillsAdminWidget.propTypes = {
   skills: PropTypes.object.isRequired,
 };
 
-/** Wrap this component in withRouter since we use the <Link> React Router element. */
-
-export default withRouter(SkillsAdminWidget);
+export default SkillsAdminWidget;

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-/** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
+/** Renders a single row in the table. See pages/ManageHaccWidget.jsx. */
 const ToolsAdminWidget = ({ tools }) => {
   const removeItem = (docID) => {
     swal({
@@ -36,12 +36,13 @@ const ToolsAdminWidget = ({ tools }) => {
           <td>{tools.name}</td>
           <td>{tools.description}</td>
           <td>
-            <Button>
-              <Link to={`/edit-tool/${tools._id}`}
+            <Button variant="primary">
+              <Link className="link-light" to={`/edit-tool/${tools._id}`}
                     id={COMPONENT_IDS.EDIT_TOOL_BUTTON}>Edit</Link>
             </Button>
           </td>
-          <td width={2}><Button negative onClick={() => removeItem(tools._id)}>Delete</Button></td>
+          <td>
+            <Button variant="outline-danger" onClick={() => removeItem(tools._id)}>Delete</Button></td>
         </tr>
     );
 };
@@ -51,6 +52,4 @@ ToolsAdminWidget.propTypes = {
   tools: PropTypes.object.isRequired,
 };
 
-/** Wrap this component in withRouter since we use the <Link> React Router element. */
-
-export default withRouter(ToolsAdminWidget);
+export default ToolsAdminWidget;
