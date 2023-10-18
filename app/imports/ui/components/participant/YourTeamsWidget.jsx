@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
