@@ -16,7 +16,7 @@ class NavBar {
     // await this.ensureLogout(testController);
     const visible = await Selector(`#${COMPONENT_IDS.LOGIN_DROPDOWN}`).visible;
     if (!visible) {
-      await testController.click(`#${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
     await testController.click(`#${COMPONENT_IDS.LOGIN_DROPDOWN}`);
     await testController.click(`#${COMPONENT_IDS.LOGIN_DROPDOWN_SIGN_IN}`);
@@ -25,7 +25,7 @@ class NavBar {
   async gotoHelpPage(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.HELP_BUTTON}`).visible;
     if (!visible) {
-      await testController.click(`#${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
     await testController.click(`#${COMPONENT_IDS.HELP_BUTTON}`);
   }
@@ -38,13 +38,28 @@ class NavBar {
 
   /** Check that someone is logged in, then click items to logout. */
   async logout(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`);
     await testController.click(`#${COMPONENT_IDS.NAVBAR_SIGN_OUT}`);
   }
 
+  async deleteAccount(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.NAVBAR_CURRENT_USER}`);
+    await testController.click(`#${COMPONENT_IDS.DELETE_ACCOUNT_NAV}`);
+  }
+
   async gotoProfilePage(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.PROFILE}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.PROFILE}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.PROFILE}`);
   }
 
@@ -52,7 +67,7 @@ class NavBar {
   async gotoConfigueHACC(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.CONFIGURE_HACC}`).visible;
     if (!visible) {
-      await testController.click(`#${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
     await testController.click(`#${COMPONENT_IDS.CONFIGURE_HACC}`);
   }
@@ -61,27 +76,49 @@ class NavBar {
   async gotoSuggestToolSkill(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`).visible;
     if (!visible) {
-      await testController.click(`#${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
     await testController.click(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`);
   }
 
   async gotoListParticipantsPage(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.LIST_PARTICIPANTS}`);
   }
 
+  async gotoListParticipantsAdminPage(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.LIST_PARTICIPANTS_ADMIN}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.LIST_PARTICIPANTS_ADMIN}`);
+  }
+
   async gotoTeamInvitations(testController) {
-    await testController.expect(Selector(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`).exists).ok();
+    const visible = await Selector(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
     await testController.click(`#${COMPONENT_IDS.TEAM_INVITATIONS_BUTTON}`);
   }
 
   async gotoUpdateMP(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.UPDATE_MP}`).visible;
     if (!visible) {
-      await testController.click(`#${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
     await testController.click(`#${COMPONENT_IDS.UPDATE_MP}`);
+  }
+
+  async gotoYourTeams(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.YOUR_TEAMS_CARD}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.YOUR_TEAMS_CARD}`);
   }
 }
 

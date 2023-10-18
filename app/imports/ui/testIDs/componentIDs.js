@@ -64,5 +64,20 @@ export const COMPONENT_IDS = {
   CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
   CREATE_PROFILE_SUBMIT: 'create-profile-submit',
   LIST_PARTICIPANTS: 'list-participants',
+  LIST_PARTICIPANTS_CARD: 'list-participants-card',
+  LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
+  LIST_PARTICIPANTS_CARD_ADMIN: 'list-partcipants-card-admin',
   TEAM_INVITATIONS_BUTTON: 'team-invitations-button',
+
+  DELETE_ACCOUNT_NAV: 'delete-account-navbar',
+  DELETE_ACCOUNT_TEXT: 'delete-account-textfield',
+  DELETE_ACCOUNT_SELECT: 'delete-account-select',
+  DELETE_ACCOUNT_BUTTON: 'delete account button',
+
+  YOUR_TEAMS_CARD: 'your-teams-card',
+  OPEN_INVITE_PARTICIPANTS: 'open-invite-participants',
+  SEE_INTERTESTED_PARTICIPANTS: 'see-interested-participants',
+  INVITE_PARTICIPANTS_TEXTFIELD: 'invite-participants-textfield',
+  INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
+
 };
