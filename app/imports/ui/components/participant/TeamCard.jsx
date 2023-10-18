@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import { Button, Card, Grid, Header, List } from 'semantic-ui-react';
 import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
+import { ListGroup } from 'react-bootstrap';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
-import SkillItem from './SkillItem';
-import ToolItem from './ToolItem';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { LeavingTeams } from '../../../api/team/LeavingTeamCollection';
 import { defineMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
+import { Tools } from '../../../api/tool/ToolCollection';
+import { Skills } from '../../../api/skill/SkillCollection';
 
 class TeamCard extends React.Component {
   buildTheTeam() {
@@ -21,8 +22,9 @@ class TeamCard extends React.Component {
     const tCs = TeamChallenges.find({ teamID }).fetch();
     const challengeTitles = _.map(tCs, (tc) => Challenges.findDoc(tc.challengeID).title);
     team.challenges = challengeTitles;
-    team.skills = TeamSkills.find({ teamID }).fetch();
-    team.tools = TeamTools.find({ teamID }).fetch();
+    team.skills = TeamSkills.find({ teamID }).fetch().map((skill) => Skills.findDoc(skill.skillID).name);
+    team.tools = TeamTools.find({ teamID }).fetch().map((tool) => Tools.findDoc(tool.toolID).name);
+
     const teamPs = TeamParticipants.find({ teamID }).fetch();
     team.members = _.map(teamPs, (tp) => Participants.getFullName(tp.participantID));
     return team;
@@ -69,13 +71,13 @@ class TeamCard extends React.Component {
                 <Grid.Column>
                   <Header size="tiny">Desired Skills</Header>
                   <List bulleted>
-                    {team.skills.map((item) => <SkillItem item={item} key={item._id} />)}
+                    {team.skills.map((item) => <ListGroup.Item key={item}>{item}</ListGroup.Item>)}
                   </List>
                 </Grid.Column>
                 <Grid.Column>
                   <Header size="tiny">Desired Tools</Header>
                   <List bulleted>
-                    {team.tools.map((item) => <ToolItem item={item} key={item._id} />)}
+                    {team.tools.map((item) => <ListGroup.Item key={item}>{item}</ListGroup.Item>)}
                   </List>
                 </Grid.Column>
                 <Grid.Column>
