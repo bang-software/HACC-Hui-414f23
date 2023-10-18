@@ -24,6 +24,7 @@ import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
+import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import {yourTeamsCard} from './yourTeamsCard.component';
 
 /* global fixture:false, test:false */
@@ -226,6 +227,13 @@ test('Test that ViewTeams pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.isDisplayed(testController);
+});
+
+test('Test that AllTeamInvitations pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoAllTeamInvitationsPage(testController);
+  await allTeamInvitationsPage.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {

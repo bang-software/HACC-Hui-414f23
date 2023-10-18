@@ -7,6 +7,10 @@ import {
   Modal,
   Icon,
 } from 'semantic-ui-react';
+import {
+  Container,
+  Card,
+} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
 import { Participants } from '../../../api/user/ParticipantCollection';
