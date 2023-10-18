@@ -7,7 +7,7 @@ import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-/** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
+/** Renders a single row in the table. See pages/ManageHaccWidget.jsx. */
 const ChallengesAdminWidget = ({ challenges }) => {
   const removeItem = (docID) => {
     swal({
@@ -57,7 +57,5 @@ const ChallengesAdminWidget = ({ challenges }) => {
 ChallengesAdminWidget.propTypes = {
   challenges: PropTypes.object.isRequired,
 };
-
-/** Wrap this component in withRouter since we use the <Link> React Router element. */
 
 export default ChallengesAdminWidget;
