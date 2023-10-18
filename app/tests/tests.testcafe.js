@@ -24,6 +24,7 @@ import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
+import { allTeamInvitationsPage } from './allTeamInvitations.page';
 
 /* global fixture:false, test:false */
 
@@ -73,6 +74,13 @@ fixture('meteor-application-template-react localhost test with default db')
 /** USER --------------------------------------------------------------------------------------------------*/
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
+});
+
+test('Test that AllTeamInvitations pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoAllTeamInvitationsPage(testController);
+  await allTeamInvitationsPage.isDisplayed(testController);
 });
 
 test('Test that help page shows up', async (testController) => {
@@ -206,13 +214,6 @@ test('Test that EditTool pages function', async (testController) => {
 });
 
 test('Test that ViewTeams pages function', async (testController) => {
-  await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.gotoConfigueHACC(testController);
-  await manageHaccWidgetComponents.isDisplayed(testController);
-});
-
-test('Test that AllTeamInvitations pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
