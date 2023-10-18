@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table } from 'semantic-ui-react';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import swal from 'sweetalert';
@@ -8,8 +8,8 @@ import { Tools } from '../../../api/tool/ToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
-class ToolsAdminWidget extends React.Component {
-  removeItem(docID) {
+const ToolsAdminWidget = ({ tools }) => {
+  const removeItem = (docID) => {
     swal({
       title: 'Are you sure?',
       text: 'Once deleted, you will not be able to recover this tool!',
@@ -29,30 +29,22 @@ class ToolsAdminWidget extends React.Component {
             swal('You canceled the deletion!');
           }
         });
-  }
+  };
 
-  render() {
     return (
-        <Table.Row>
-          <Table.Cell>{this.props.tools.name}</Table.Cell>
-          <Table.Cell>{this.props.tools.description}</Table.Cell>
-          {/* eslint-disable-next-line max-len */}
-          <Table.Cell width={2}>
+        <tr>
+          <td>{tools.name}</td>
+          <td>{tools.description}</td>
+          <td>
             <Button>
-              <Link to={`/edit-tool/${this.props.tools._id}`}
-                    style={{ color: 'rgba(0, 0, 0, 0.6)' }}
-                    id={COMPONENT_IDS.EDIT_TOOL_BUTTON}
-              >
-                Edit
-              </Link>
+              <Link to={`/edit-tool/${tools._id}`}
+                    id={COMPONENT_IDS.EDIT_TOOL_BUTTON}>Edit</Link>
             </Button>
-          </Table.Cell>
-          {/* eslint-disable-next-line max-len */}
-          <Table.Cell width={2}><Button negative onClick={() => this.removeItem(this.props.tools._id)}>Delete</Button></Table.Cell>
-        </Table.Row>
+          </td>
+          <td width={2}><Button negative onClick={() => removeItem(tools._id)}>Delete</Button></td>
+        </tr>
     );
-  }
-}
+};
 
 /** Require a document to be passed to this component. */
 ToolsAdminWidget.propTypes = {
