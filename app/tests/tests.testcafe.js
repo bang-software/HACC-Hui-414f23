@@ -212,6 +212,13 @@ test('Test that ViewTeams pages function', async (testController) => {
   await manageHaccWidgetComponents.isDisplayed(testController);
 });
 
+test('Test that AllTeamInvitations pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  await manageHaccWidgetComponents.isDisplayed(testController);
+});
+
 test('Test that TeamInvitations page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsB.username, credentialsB.password);

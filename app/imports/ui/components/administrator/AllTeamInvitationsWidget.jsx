@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Grid,
-  Header,
-  Item,
-} from 'semantic-ui-react';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-// import { _ } from 'lodash';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
@@ -122,14 +117,14 @@ class AllTeamInvitationsWidget extends React.Component {
     }
 
     return (
-        <Grid container doubling relaxed stackable>
-          <Grid.Row centered>
-            <Header as={'h2'} style={{ paddingTop: '2rem' }}>
+        <Container>
+          <Row style = {{ justifyContent: 'center' }}>
+            <h2 style={{ paddingTop: '2rem' }}>
               Team Invitations
-            </Header>
-          </Grid.Row>
-          <Grid.Column width={16}>
-            <Item.Group divided>
+            </h2>
+          </Row>
+          <Col width={16}>
+            <Card style={{ borderColor: 'transparent' }}>
               {getTeamInvitations(this.props.teamInvitations).map((teams) => <AllTeamInvitationCard
                   key={teams._id}
                   teams={teams}
@@ -137,9 +132,9 @@ class AllTeamInvitationsWidget extends React.Component {
                   tools={getTeamTools(teams._id, this.props.teamTools)}
                   challenges={getTeamChallenges(teams._id, this.props.teamChallenges)}
                   participants={getTeamDevelopers(teams._id, this.props.teamParticipants)}/>)}
-            </Item.Group>
-          </Grid.Column>
-        </Grid>
+            </Card>
+          </Col>
+        </Container>
     );
   }
 }
