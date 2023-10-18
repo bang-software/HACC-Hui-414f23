@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table } from 'semantic-ui-react';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import swal from 'sweetalert';
@@ -8,8 +8,8 @@ import { Skills } from '../../../api/skill/SkillCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
-class SkillsAdminWidget extends React.Component {
-  removeItem(docID) {
+const SkillsAdminWidget = ({ skills }) => {
+  const removeItem = (docID) => {
     swal({
       title: 'Are you sure?',
       text: 'Once deleted, you will not be able to recover this skill!',
@@ -29,30 +29,25 @@ class SkillsAdminWidget extends React.Component {
             swal('You canceled the deletion!');
           }
         });
-  }
+  };
 
-  render() {
     return (
-        <Table.Row>
-          <Table.Cell>{this.props.skills.name}</Table.Cell>
-          <Table.Cell>{this.props.skills.description}</Table.Cell>
-          {/* eslint-disable-next-line max-len */}
-          <Table.Cell width={2}>
-            <Button>
-              <Link to={`/edit-skill/${this.props.skills._id}`}
-                    style={{ color: 'rgba(0, 0, 0, 0.6)' }}
-                    id={COMPONENT_IDS.EDIT_SKILL_BUTTON}
-              >
-                Edit
-              </Link>
+        <tr>
+          <td>{skills.name}</td>
+          <td>{skills.description}</td>
+          <td>
+            <Button variant="primary">
+              <Link className='link-light'
+                    to={`/edit-skill/${skills._id}`}
+                    id={COMPONENT_IDS.EDIT_SKILL_BUTTON}>Edit</Link>
             </Button>
-          </Table.Cell>
-          {/* eslint-disable-next-line max-len */}
-          <Table.Cell width={2}><Button negative onClick={() => this.removeItem(this.props.skills._id)}>Delete</Button></Table.Cell>
-        </Table.Row>
+          </td>
+          <td>
+            <Button variant="outline-danger" onClick={() => removeItem(skills._id)}>Delete</Button>
+          </td>
+        </tr>
     );
-  }
-}
+};
 
 /** Require a document to be passed to this component. */
 SkillsAdminWidget.propTypes = {

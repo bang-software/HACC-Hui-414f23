@@ -189,7 +189,7 @@ test('Test that EditChallenge page function', async (testController) => {
   await editChallengePage.editChallenge(testController, editedChallenge);
 });
 
-test('Test that EditSkill pages function', async (testController) => {
+test('Test that EditSkill page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
@@ -197,7 +197,7 @@ test('Test that EditSkill pages function', async (testController) => {
   await editSkillPage.editSkill(testController, editedSkill);
 });
 
-test('Test that EditTool pages function', async (testController) => {
+test('Test that EditTool page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);

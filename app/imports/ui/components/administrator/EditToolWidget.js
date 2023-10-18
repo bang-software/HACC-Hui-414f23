@@ -10,7 +10,6 @@ import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 import { ROUTES } from '../../../startup/client/route-constants';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
 
 const EditToolWidget = () => {
 
@@ -21,7 +20,7 @@ const EditToolWidget = () => {
   });
   const documentId = useParams();
   const { doc } = useTracker(() => {
-    const document = Challenges.findOne(documentId);
+    const document = Tools.findOne(documentId);
     return {
       doc: document,
     };
