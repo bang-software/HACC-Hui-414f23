@@ -80,4 +80,5 @@ export const COMPONENT_IDS = {
   SEE_INTERTESTED_PARTICIPANTS: 'see-interested-participants',
   INVITE_PARTICIPANTS_TEXTFIELD: 'invite-participants-textfield',
   INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
+  TEAM_CARD: 'team-card',
 };
