@@ -79,7 +79,6 @@ const profileInfo = {
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 /** USER --------------------------------------------------------------------------------------------------*/
-/**
  test('Test that landing page shows up', async (testController) => {
  await landingPage.isDisplayed(testController);
  });
@@ -139,7 +138,7 @@ fixture('meteor-application-template-react localhost test with default db')
  await navBar.gotoSuggestToolSkill(testController);
  await suggestToolSkillPage.isDisplayed(testController);
  });
- */
+
 test('Test that profile page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsC.username, credentialsC.password);
