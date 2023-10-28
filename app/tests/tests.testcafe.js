@@ -79,65 +79,65 @@ const profileInfo = {
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 /** USER --------------------------------------------------------------------------------------------------*/
- test('Test that landing page shows up', async (testController) => {
- await landingPage.isDisplayed(testController);
- });
+test('Test that landing page shows up', async (testController) => {
+  await landingPage.isDisplayed(testController);
+});
 
- test('Test that help page shows up', async (testController) => {
- await navBar.gotoHelpPage(testController);
- await helpPage.isDisplayed(testController);
- });
+test('Test that help page shows up', async (testController) => {
+  await navBar.gotoHelpPage(testController);
+  await helpPage.isDisplayed(testController);
+});
 
- test('Test that CreateProfile page renders', async (testController) => {
- await navBar.gotoSigninPage(testController);
- await signinPage.signin(testController, credentialsD.username, credentialsD.password);
- await createProfilePage.isDisplayed(testController);
- // await createProfilePage.fillInfo(testController, profileInfo);
- });
+test('Test that CreateProfile page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await createProfilePage.isDisplayed(testController);
+  // await createProfilePage.fillInfo(testController, profileInfo);
+});
 
- test('Test that ListParticipants page function', async (testController) => {
- await navBar.gotoSigninPage(testController);
- await signinPage.signin(testController, credentialsD.username, credentialsD.password);
- await navBar.gotoListParticipantsPage(testController);
- await listParticipantsPage.isDisplayed(testController);
- await listParticipantsCard.isDisplayed(testController);
- });
+test('Test that ListParticipants page function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await navBar.gotoListParticipantsPage(testController);
+  await listParticipantsPage.isDisplayed(testController);
+  await listParticipantsCard.isDisplayed(testController);
+});
 
- test('Test that age page renders', async (testController) => {
- await navBar.gotoSigninPage(testController);
- await signinPage.signin(testController, credentialsB.username, credentialsB.password);
- await agePage.isDisplayed(testController);
- });
+test('Test that age page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await agePage.isDisplayed(testController);
+});
 
- test('Test that under participation page renders', async (testController) => {
- await navBar.gotoSigninPage(testController);
- await signinPage.signin(testController, credentialsB.username, credentialsB.password);
- await agePage.under18(testController);
- await underParticipationFormPage.isDisplayed(testController);
- });
+test('Test that under participation page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await agePage.under18(testController);
+  await underParticipationFormPage.isDisplayed(testController);
+});
 
- test('Test that signin and signout work', async (testController) => {
- await navBar.gotoSigninPage(testController);
- await signinPage.signin(testController, credentialsA.username, credentialsA.password);
- await navBar.isLoggedIn(testController, credentialsA.username);
- await navBar.logout(testController);
- await signOutPage.isDisplayed(testController);
- });
+test('Test that signin and signout work', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.isLoggedIn(testController, credentialsA.username);
+  await navBar.logout(testController);
+  await signOutPage.isDisplayed(testController);
+});
 
- test('Test that participation form page renders', async (testController) => {
- await navBar.gotoSigninPage(testController);
- await signinPage.signin(testController, credentialsB.username, credentialsB.password);
- await agePage.over18(testController);
- await participationForm.isDisplayed(testController);
- });
+test('Test that participation form page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await agePage.over18(testController);
+  await participationForm.isDisplayed(testController);
+});
 
- test('Test that suggest tool/skill renders', async (testController) => {
- await navBar.gotoSigninPage(testController);
- await signinPage.signin(testController, credentialsB.username, credentialsB.password);
- await navBar.isLoggedIn(testController, credentialsB.username);
- await navBar.gotoSuggestToolSkill(testController);
- await suggestToolSkillPage.isDisplayed(testController);
- });
+test('Test that suggest tool/skill renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsB.username, credentialsB.password);
+  await navBar.isLoggedIn(testController, credentialsB.username);
+  await navBar.gotoSuggestToolSkill(testController);
+  await suggestToolSkillPage.isDisplayed(testController);
+});
 
 test('Test that profile page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
