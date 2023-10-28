@@ -47,7 +47,7 @@ export const skillAndToolLevels = _.values(skillAndToolLevel);
  */
 export const getRandomDemographicLevel = () => {
   const index = faker.datatype.number({ min: 0, max: demographicLevels.length - 1 });
-  return demographicLevels[index];
+  return demographicLevels[index].value;
 };
 
 /**

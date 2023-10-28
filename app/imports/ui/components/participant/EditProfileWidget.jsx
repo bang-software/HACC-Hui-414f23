@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import {
@@ -31,13 +29,36 @@ import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { ROUTES } from '../../../startup/client/route-constants';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-const EditProfileWidget = ({ allChallenges, allSkills, allTools, participant, devChallenges, devSkills, devTools }) => {
+const EditProfileWidget = () => {
+  const {
+    allChallenges,
+    allSkills,
+    allTools,
+    participant,
+    devChallenges,
+    devSkills,
+    devTools,
+  } = useTracker(() => {
+    const userId = Meteor.userId();
+    const part = Participants.findOne({ userID: userId });
+    const participantID = part?._id;
+
+    return {
+      allChallenges: Challenges.find({}).fetch(),
+      allSkills: Skills.find({}).fetch(),
+      allTools: Tools.find({}).fetch(),
+      participant: part,
+      devChallenges: participantID ? ParticipantChallenges.find({ participantID }).fetch() : [],
+      devSkills: participantID ? ParticipantSkills.find({ participantID }).fetch() : [],
+      devTools: participantID ? ParticipantTools.find({ participantID }).fetch() : [],
+    };
+  }, []);
   const [redirectToReferer, setRedirectToReferer] = useState(false);
 
   const buildTheFormSchema = () => {
-    const challengeNames = _.map(allChallenges, (c) => c.title);
-    const skillNames = _.map(allSkills, (s) => s.name);
-    const toolNames = _.map(allTools, (t) => t.name);
+    const challengeNames = allChallenges.map((c) => c.title);
+    const skillNames = allSkills.map((s) => s.name);
+    const toolNames = allTools.map((t) => t.name);
     const schema = new SimpleSchema({
       firstName: String,
       lastName: String,
@@ -63,16 +84,15 @@ const EditProfileWidget = ({ allChallenges, allSkills, allTools, participant, de
 
   const buildTheModel = () => {
     const model = participant;
-    model.challenges = _.map(devChallenges, (challenge) => {
+    model.challenges = devChallenges.map((challenge) => {
       const c = Challenges.findDoc(challenge.challengeID);
       return c.title;
     });
-    model.skills = _.map(devSkills, (skill) => {
-      // console.log(skill);
+    model.skills = devSkills.map((skill) => {
       const s = Skills.findDoc(skill.skillID);
       return s.name;
     });
-    model.tools = _.map(devTools, (tool) => {
+    model.tools = devTools.map((tool) => {
       const t = Tools.findDoc(tool.toolID);
       return t.name;
     });
@@ -234,45 +254,4 @@ const EditProfileWidget = ({ allChallenges, allSkills, allTools, participant, de
       </div>
   );
 };
-
-EditProfileWidget.propTypes = {
-  allChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allTools: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  participant: PropTypes.object.isRequired,
-  devChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  devSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  devTools: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-};
-
-export default withTracker(() => {
-  const allChallenges = Challenges.find({}).fetch();
-  const allSkills = Skills.find({}).fetch();
-  const allTools = Tools.find({}).fetch();
-  const participant = Participants.findDoc({ userID: Meteor.userId() });
-  const participantID = participant._id;
-  const devChallenges = ParticipantChallenges.find({ participantID }).fetch();
-  const devSkills = ParticipantSkills.find({ participantID }).fetch();
-  const devTools = ParticipantTools.find({ participantID }).fetch();
-  return {
-    allChallenges,
-    allSkills,
-    allTools,
-    participant,
-    devChallenges,
-    devSkills,
-    devTools,
-  };
-})(EditProfileWidget);
+export default EditProfileWidget;
