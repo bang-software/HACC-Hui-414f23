@@ -13,6 +13,9 @@ export const COMPONENT_IDS = {
   PROFILE: 'profile',
   CONFIGURE_HACC: 'configure-hacc',
   UPDATE_MP: 'update-mp',
+
+  HACC_WIDGET_CUSTOM_SWITCH_TEAMS: 'custom-switch-teams',
+  HACC_WIDGET_CUSTOM_SWITCH_CHALLENGES: 'custom-switch-challenges',
   HACC_WIDGET_ADD_CHALLENGE_BUTTON: 'add-challenge-button',
   HACC_WIDGET_ADD_SKILL_BUTTON: 'add-skill-button',
   HACC_WIDGET_ADD_TOOL_BUTTON: 'add-tool-button',
