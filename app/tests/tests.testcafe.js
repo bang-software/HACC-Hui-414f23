@@ -26,8 +26,9 @@ import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component
 import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
-import { yourTeamsCard } from './yourTeamsCard.component';
+import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
+import { yourTeamsCard } from './yourTeamsCard.component';
 
 /* global fixture:false, test:false */
 
@@ -162,6 +163,8 @@ test('Test that your teams page shows up', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
+  await yourTeamsCard.isDisplayed(testController);
+  await memberTeamCard.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/

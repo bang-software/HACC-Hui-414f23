@@ -81,4 +81,5 @@ export const COMPONENT_IDS = {
   INVITE_PARTICIPANTS_TEXTFIELD: 'invite-participants-textfield',
   INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
   TEAM_CARD: 'team-card',
+  MEMBER_TEAM_CARD: 'member_team_card',
 };
