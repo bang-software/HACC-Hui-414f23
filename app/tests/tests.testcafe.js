@@ -29,6 +29,7 @@ import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
 import { yourTeamsCard } from './yourTeamsCard.component';
+import { teamMembership } from './teamMembership.component';
 
 /* global fixture:false, test:false */
 
@@ -147,6 +148,7 @@ test('Test that profile page renders', async (testController) => {
   await agePage.under18(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
+  await teamMembership.isDisplayed(testController);
   await teamCard.isDisplayed(testController);
 });
 
