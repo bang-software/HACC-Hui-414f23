@@ -13,6 +13,11 @@ class ManageHaccWidgetComponents {
     await testController.expect(this.pageSelector.exists).ok();
   }
 
+  async clickCustomSwitched(testContoller) {
+    await testContoller.click(`#${COMPONENT_IDS.HACC_WIDGET_CUSTOM_SWITCH_TEAMS}`);
+    await testContoller.click(`#${COMPONENT_IDS.HACC_WIDGET_CUSTOM_SWITCH_CHALLENGES}`);
+  }
+
   async gotoAddChallengePage(testController) {
     await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON}`);
   }

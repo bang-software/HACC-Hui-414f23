@@ -6,9 +6,9 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { ROUTES } from '../../../startup/client/route-constants';
-import SkillsAdminWidget from './SkillsAdminWidget';
-import ChallengesAdminWidget from './ChallengesAdminWidget';
-import ToolsAdminWidget from './ToolsAdminWidget';
+import SkillAdminWidget from './SkillAdminWidget';
+import ChallengeAdminWidget from './ChallengeAdminWidget';
+import ToolAdminWidget from './ToolAdminWidget';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
 import { CanChangeChallenges } from '../../../api/team/CanChangeChallengeCollection';
@@ -100,7 +100,7 @@ const ManageHaccWidget = () => {
           </tr>
           </thead>
           <tbody>
-          {challenges.map((challenge => <ChallengesAdminWidget key={challenge._id} challenges={challenge}/>))}
+          {challenges.map((challenge => <ChallengeAdminWidget key={challenge._id} challenge={challenge}/>))}
           </tbody>
         </Table>
         <div style={{ textAlign: 'center' }}>
@@ -122,7 +122,7 @@ const ManageHaccWidget = () => {
           </tr>
           </thead>
           <tbody>
-          {skills.map((skill => <SkillsAdminWidget key={skill._id} skills={skill}/>))}
+          {skills.map((skill => <SkillAdminWidget key={skill._id} skill={skill}/>))}
           </tbody>
         </Table>
         <div style={{ textAlign: 'center' }}>
@@ -144,7 +144,7 @@ const ManageHaccWidget = () => {
           </tr>
           </thead>
           <tbody>
-          {tools.map((tool => <ToolsAdminWidget key={tool._id} tools={tool}/>))}
+          {tools.map((tool => <ToolAdminWidget key={tool._id} tool={tool}/>))}
           </tbody>
         </Table>
         <div style={{ textAlign: 'center' }}>
