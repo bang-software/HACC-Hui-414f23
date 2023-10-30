@@ -16,6 +16,8 @@ import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
+import EditTeam from './EditTeam';
+
 const schema = new SimpleSchema({
   participants: {
     type: Array,
@@ -31,8 +33,14 @@ const schema = new SimpleSchema({
 
 });
 
-const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
+const YourTeamsCard = ({
+                        teams,
+                        teamParticipants,
+                        teamInvitation,
+                       }) => {
   const [open, setOpen] = useState(false);
+  const [editTeamShow, setEditTeamShow] = useState(false);
+
   const fRef = useRef(null);
 
   const submit = (formData) => {
@@ -105,27 +113,6 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
       }
     }
 
-    // IF WE WANT TO ISSUE DIRECT INVITE (THEY DON'T HAVE TO ACCEPT IT)
-
-    // const teamDoc = Teams.findDoc(this.props.teams._id);
-    // const team = teamDoc._id;
-    // const developerDoc = Developers.findDoc({ username: participantList[i] });
-    // const developer = developerDoc._id;
-    // console.log(definitionData);
-    // const addToTeam = TeamDevelopers.getCollectionName();
-    //
-    // defineMethod.call({ collectionName: addToTeam, definitionData: definitionData },
-    //     (error) => {
-    //       if (error) {
-    //         swal('Error', error.message, 'error');
-    //       } else {
-    //         swal('Success',
-    //             `You've successfully added participant(s):\n\n ${participantList.join(', ')}
-    //           to ${this.props.teams.name}`,
-    //             'success');
-    //       }
-    //     });
-
     // if there are no errors, we can then add everyone
     for (let i = 0; i < participantList.length; i++) {
       // const collectionName = WantsToJoin.getCollectionName();
@@ -150,7 +137,19 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
       });
     }
   };
-
+  function EditTeamModal(props) {
+    return (
+      <Modal {...props} className='modal-xl modal-dialog-scrollable'>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <EditTeam
+              team={teams}
+            />
+          </Modal.Title>
+        </Modal.Header>
+      </Modal>
+    );
+  }
   // let fRef = null;
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
@@ -231,13 +230,15 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
                 </AutoForm>
               </Modal.Body>
             </Modal>
-          </Col>s
+          </Col>
           <Col>
-            <Button variant="link" id={teams._id}>
-              <Link to={`/edit-team/${teams._id}`}>Edit Team</Link>
+            <Button id={teams._id}
+                    onClick={(() => setEditTeamShow(true))}>
+              Edit Team
             </Button>
           </Col>
         </Row>
+        <EditTeamModal show={editTeamShow} onHide={() => setEditTeamShow(false)} />
       </Container>
   );
 };
