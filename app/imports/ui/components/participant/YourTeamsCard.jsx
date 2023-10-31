@@ -140,13 +140,12 @@ const YourTeamsCard = ({
   function EditTeamModal(props) {
     return (
       <Modal {...props} className='modal-xl modal-dialog-scrollable'>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <EditTeam
-              team={teams}
-            />
-          </Modal.Title>
-        </Modal.Header>
+        <Modal.Header closeButton />
+        <Modal.Body>
+          <EditTeam
+            team={teams}
+          />
+        </Modal.Body>
       </Modal>
     );
   }

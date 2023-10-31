@@ -23,9 +23,11 @@ class TeamParticipantCollection extends BaseCollection {
    * @param participant {String} participant slug or ID.
    * @return {String} the ID of the pair.
    */
-  define({ team, participant }) {
-    const teamID = Teams.getID(team);
-    const participantID = Participants.getID(participant);
+  define({ teamID, participantID }) {
+    return this._collection.insert({ teamID, participantID });
+  }
+
+  defineWithIDs(teamID, participantID) {
     return this._collection.insert({ teamID, participantID });
   }
 
@@ -73,6 +75,10 @@ class TeamParticipantCollection extends BaseCollection {
    */
   removeTeam(team) {
     const teamID = Teams.getID(team);
+    this._collection.remove({ teamID });
+  }
+
+  removeTeamByID(teamID) {
     this._collection.remove({ teamID });
   }
 

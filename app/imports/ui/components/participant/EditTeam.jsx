@@ -15,6 +15,7 @@ import { Meteor } from 'meteor/meteor';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import Swal from 'sweetalert2';
+import { useTracker } from 'meteor/react-meteor-data';
 import MultiSelectField from '../../components/form-fields/MultiSelectField';
 import RadioField from '../../components/form-fields/RadioField';
 import { Teams } from '../../../api/team/TeamCollection';
@@ -30,7 +31,6 @@ import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
-import { useTracker } from 'meteor/react-meteor-data';
 
 /**
  * Renders the Page for adding stuff. **deprecated**
@@ -38,7 +38,15 @@ import { useTracker } from 'meteor/react-meteor-data';
  */
 const EditTeam = ({ team }) => {
 
-  const { challenges, skills, tools, members, allChallengeNames, allSkillNames, allToolNames, allParticipantNames, ready } = useTracker(() => {
+  const { challenges,
+          skills,
+          tools,
+          members,
+          allChallengeNames,
+          allSkillNames,
+          allToolNames,
+          memberNames,
+          ready } = useTracker(() => {
     const sub1 = Challenges.subscribe();
     const sub2 = Skills.subscribe();
     const sub3 = Tools.subscribe();
@@ -47,8 +55,7 @@ const EditTeam = ({ team }) => {
     const sub6 = TeamSkills.subscribe();
     const sub7 = TeamTools.subscribe();
     const sub8 = TeamParticipants.subscribe();
-
-
+    const sub9 = Slugs.subscribe();
     const challengeIDs = TeamChallenges.find({ teamID: team._id }).fetch().map((tc) => tc.challengeID);
     const skillIDs = TeamSkills.find({ teamID: team._id }).fetch().map((ts) => ts.skillID);
     const toolIDs = TeamTools.find({ teamID: team._id }).fetch().map((tt) => tt.toolID);
@@ -60,9 +67,9 @@ const EditTeam = ({ team }) => {
     const allChallengeNames2 = Challenges.find().fetch().map((c) => c.title);
     const allSkillNames2 = Skills.find().fetch().map((s) => s.name);
     const allToolNames2 = Tools.find().fetch().map((t) => t.name);
-    const allParticipantNames2 = Participants.find().fetch().map((p) => p.username);
+    const memberNames2 = members2.map((member) => member.username);
     const ready2 = sub1.ready() && sub2.ready() && sub3.ready() && sub4.ready() &&
-      sub5.ready() && sub6.ready() && sub7.ready() && sub8.ready();
+      sub5.ready() && sub6.ready() && sub7.ready() && sub8.ready() && sub9.ready();
     return {
       challenges: challenges2,
       skills: skills2,
@@ -71,7 +78,7 @@ const EditTeam = ({ team }) => {
       allChallengeNames: allChallengeNames2,
       allSkillNames: allSkillNames2,
       allToolNames: allToolNames2,
-      allParticipantNames: allParticipantNames2,
+      memberNames: memberNames2,
       ready: ready2,
     };
   });
@@ -90,7 +97,7 @@ const EditTeam = ({ team }) => {
       tools: { type: Array, label: 'Toolsets', optional: true },
       'tools.$': { type: String, allowedValues: allToolNames },
       members: { type: Array, optional: true },
-      'members.$': { type: String, allowedValues: allParticipantNames },
+      'members.$': { type: String, allowedValues: memberNames },
       description: String,
       gitHubRepo: { type: String, optional: true },
       devPostPage: { type: String, optional: true },
@@ -125,22 +132,12 @@ const EditTeam = ({ team }) => {
     updateData.devPostPage = data.devPostPage;
     updateData.affiliation = data.affiliation;
     updateData.open = data.open === 'Open';
-    if (data.challenges) {
-      updateData.challenges = data.challenges.map((title) => Challenges.findDoc({ title })._id);
-    }
-    if (data.skills) {
-      updateData.skills = data.skills.map((name) => Skills.findDoc({ name })._id);
-    }
-    if (data.tools) {
-      updateData.tools = data.tools.map((name) => Tools.findDoc({ name })._id);
-    }
-    if (data.image) {
-      updateData.image = data.image;
-    }
-    if (data.members) {
-      updateData.participants = data.members.map((username) => Participants.findDoc({ username })._id);
-    }
-    // console.log(collectionName, updateData);
+    updateData.challenges = data.challenges.map((title) => Challenges.findDoc({ title })._id);
+    updateData.skills = data.skills.map((name) => Skills.findDoc({ name })._id);
+    updateData.tools = data.tools.map((name) => Tools.findDoc({ name })._id);
+    updateData.image = data.image;
+    updateData.participants = data.members.map((username) => Participants.findDoc({ username })._id);
+    console.log(collectionName, updateData);
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
         console.error(error);
@@ -163,25 +160,11 @@ const EditTeam = ({ team }) => {
   const model = buildModel();
 
   return (
-    <Grid container centered style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-      <Grid.Column>
-        <Divider hidden/>
-        <Segment
-          style={{
-            // borderRadius: '10px',
-            backgroundColor: '#E5F0FE',
-          }} className={'createTeam'}>
-          <Header as="h2" textAlign="center">Create a Team</Header>
-          {/* eslint-disable-next-line max-len */}
-          <Message>
-            <Header as="h4" textAlign="center">Team name and Devpost page ALL
-              have to use the same name. Team names cannot have spaces or special characters.</Header>
-          </Message>
           <AutoForm schema={formSchema} onSubmit={data => submit(data)} model={model}>
             <Segment style={{
               borderRadius: '10px',
               backgroundColor: '#E5F0FE',
-            }} className={'createTeam'}>
+            }} className={'editTeam'}>
               <Grid columns={1} style={{ paddingTop: '20px' }}>
                 <Grid.Column style={{ paddingLeft: '30px', paddingRight: '30px' }}>
                   <Header as="h2" textAlign="center">Edit Team</Header>
@@ -201,7 +184,7 @@ const EditTeam = ({ team }) => {
                     <Grid.Column><MultiSelectField name='skills' /></Grid.Column>
                     <Grid.Column><MultiSelectField name='tools' /></Grid.Column>
                   </Grid>
-                  <TextField name="gitHubRepo" label="GitHub Repo" disabled />
+                  <TextField name="gitHubRepo" label="GitHub Repo"/>
                   <TextField name="devPostPage" label="Devpost Page" />
                   <TextField name="affiliation" />
                   <MultiSelectField name='members' />
@@ -217,9 +200,6 @@ const EditTeam = ({ team }) => {
               <ErrorsField />
             </Segment>
           </AutoForm>
-        </Segment>
-      </Grid.Column>
-    </Grid>
   );
 };
 
