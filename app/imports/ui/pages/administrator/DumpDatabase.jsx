@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Segment } from 'semantic-ui-react';
+import { Button } from 'react-bootstrap';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import moment from 'moment';
 import swal from 'sweetalert';
@@ -8,8 +8,9 @@ import { dumpDatabaseMethod, dumpTeamCSVMethod } from '../../../api/base/BaseCol
 
 export const databaseFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
 
-class DumpDatabase extends React.Component {
-  handleClick() {
+const DumpDatabase = () => {
+
+  const handleClick = () => {
     dumpDatabaseMethod.call((error, result) => {
       if (error) {
         console.error('Problem dumping database.', error);
@@ -21,14 +22,13 @@ class DumpDatabase extends React.Component {
         zip.saveAs(`${dir}.zip`);
       }
     });
-  }
+  };
 
-  handleDumpTeamCSV() {
+  const handleDumpTeamCSV = () => {
     dumpTeamCSVMethod.call((error, result) => {
       if (error) {
         swal('Error', error.message, 'error');
       } else {
-        // console.log(result);
         const zip = new ZipZap();
         const dir = 'hacchui-teams';
         const fileName = `${dir}/${moment(result.timestamp).format(databaseFileDateFormat)}-teams.txt`;
@@ -36,16 +36,14 @@ class DumpDatabase extends React.Component {
         zip.saveAs(`${dir}.zip`);
       }
     });
-  }
+  };
 
-  render() {
-    return (
-    <Segment>
-      <Button positive={true} onClick={this.handleClick}>Dump the Database</Button>
-      <Button positive={true} onClick={this.handleDumpTeamCSV}>Dump the Teams</Button>
-    </Segment>
-    );
-  }
-}
+  return (
+      <div className="card mt-3 mx-5">
+        <Button variant="success" onClick={handleClick} className="mb-3">Dump the Database</Button>
+        <Button variant="success" onClick={handleDumpTeamCSV}>Dump the Teams</Button>
+      </div>
+  );
+};
 
 export default DumpDatabase;
