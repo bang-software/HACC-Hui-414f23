@@ -27,6 +27,7 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
+import { teamCard } from './teamCard.component';
 
 /* global fixture:false, test:false */
 
@@ -77,7 +78,6 @@ const profileInfo = {
 
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
-
 /** USER --------------------------------------------------------------------------------------------------*/
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
@@ -146,6 +146,7 @@ test('Test that profile page renders', async (testController) => {
   await agePage.under18(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
+  await teamCard.isDisplayed(testController);
 });
 
 test('Test delete form renders', async (testController) => {
@@ -162,6 +163,7 @@ test('Test that your teams page shows up', async (testController) => {
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
 });
+
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
