@@ -172,7 +172,14 @@ test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await listParticipantsAdminPage.isDisplayed(testController);
   await listParticipantsCardAdmin.isDisplayed(testController);
 });
-
+test('Test that ManageHacc page shows and toggles switches', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  // must be clicked twice to revert back to original state
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+});
 test('Test that AddChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
