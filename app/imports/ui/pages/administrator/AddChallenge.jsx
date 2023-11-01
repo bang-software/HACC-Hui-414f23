@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Col, Card, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
@@ -56,22 +56,22 @@ const AddChallenge = () => {
   return (
       <Container id={PAGE_IDS.ADD_CHALLENGE}>
         <Col>
-          <Row className="h2Title">
+          <Row className="title">
             <h2>Add a challenge</h2>
           </Row>
           <AutoForm ref={ref => {
             fRef = ref;
           }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
-            <Card>
-              <Card.Body className='cardStyle'>
+            <Row>
+              <Col className='cardStyle'>
                 <TextField id={COMPONENT_IDS.ADD_CHALLENGE_TITLE} name='title'/>
                 <TextField id={COMPONENT_IDS.ADD_CHALLENGE_DESCRIPTION} name='description'/>
                 <TextField id={COMPONENT_IDS.ADD_CHALLENGE_SUBMISSION_DETAIL} name='submissionDetail'/>
                 <TextField id={COMPONENT_IDS.ADD_CHALLENGE_PITCH} name='pitch'/>
                 <SubmitField id={COMPONENT_IDS.ADD_CHALLENGE_SUBMIT} value='Submit'/>
                 <ErrorsField/>
-              </Card.Body>
-            </Card>
+              </Col>
+            </Row>
           </AutoForm>
         </Col>
       </Container>
