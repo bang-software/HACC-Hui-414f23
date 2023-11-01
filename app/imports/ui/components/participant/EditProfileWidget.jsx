@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Card, Col, Container, Row } from 'react-bootstrap';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import {
-  AutoForm,
-  BoolField,
-  ErrorsField,
-  LongTextField,
-  SelectField,
-  SubmitField,
-  TextField,
-} from 'uniforms-bootstrap5';
+import { AutoForm, BoolField, ErrorsField, LongTextField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -71,9 +63,9 @@ const EditProfileWidget = () => {
       challenges: { type: Array, optional: true },
       'challenges.$': { type: String },
       skills: { type: Array, optional: true },
-      'skills.$': { type: String},
+      'skills.$': { type: String },
       tools: { type: Array, optional: true },
-      'tools.$': { type: String},
+      'tools.$': { type: String },
     });
     return schema;
   };
