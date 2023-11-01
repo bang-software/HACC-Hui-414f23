@@ -99,9 +99,8 @@ class TeamCollection extends BaseSlugCollection {
    * @param devPostPage {String} The team's devpost page, optional.
    */
   update(teamID, updateData) {
-    console.log('TeamCollection update(%o, %o)', teamID, updateData);
+    // console.log('TeamCollection update(%o, %o)', teamID, updateData);
     this.assertDefined(teamID);
-    console.log('1');
     const teamData = {
       name: updateData.name,
       description: updateData.description,
@@ -110,20 +109,15 @@ class TeamCollection extends BaseSlugCollection {
       open: updateData.open,
       affiliation: updateData.affiliation,
     };
-    console.log('2');
-
     this._collection.update(teamID, { $set: teamData });
-    TeamChallenges.removeTeam(teamID);
+    TeamChallenges.removeTeamByID(teamID);
     updateData.challenges.forEach((challenge) => TeamChallenges.defineWithIDs(teamID, challenge));
     TeamSkills.removeTeamByID(teamID);
     updateData.skills.forEach((skill) => TeamSkills.defineWithIDs(teamID, skill));
     TeamTools.removeTeamByID(teamID);
     updateData.tools.forEach((tool) => TeamTools.defineWithIDs(teamID, tool));
     TeamParticipants.removeTeamByID(teamID);
-    // console.log('4');
     updateData.participants.forEach((participantID) => TeamParticipants.defineWithIDs(teamID, participantID));
-    // }
-    console.log('5');
   }
 
   /**
