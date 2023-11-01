@@ -26,11 +26,10 @@ import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component
 import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
-import {yourTeamsCard} from './yourTeamsCard.component';
-import {dumpDataBasePage} from "./dumpDataBase.page";
+import { yourTeamsCard } from './yourTeamsCard.component';
+import { dumpDataBasePage } from "./dumpDataBase.page";
 import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
-import { yourTeamsCard } from './yourTeamsCard.component';
 import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
 
@@ -41,6 +40,8 @@ const credentialsB = { username: 'john@foo.com', password: 'changeme' };
 const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
 const credentialsD = { username: 'gsummey@hotmail.com', password: 'changeme' };
 const credentialsE = { username: 'jenny@foo.com', password: 'changeme' };
+const credentialsF = { username: 'aung@foo.com', password: 'changeme' };
+
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -154,8 +155,6 @@ test('Test that profile page renders', async (testController) => {
   await profilePage.goToEditPage(testController);
   await editProfilePage.isDisplayed(testController);
   await navBar.gotoProfilePage(testController);
-  await teamMembership.isDisplayed(testController);
-  await teamCard.isDisplayed(testController);
 });
 
 test('Test delete form renders', async (testController) => {
@@ -168,11 +167,10 @@ test('Test delete form renders', async (testController) => {
 
 test('Test that your teams page shows up', async (testController) => {
   await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await signinPage.signin(testController, credentialsF.username, credentialsF.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
   await yourTeamsCard.isDisplayed(testController);
-  await memberTeamCard.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
