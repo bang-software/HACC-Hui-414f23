@@ -87,4 +87,21 @@ export const COMPONENT_IDS = {
   SEE_INTERTESTED_PARTICIPANTS: 'see-interested-participants',
   INVITE_PARTICIPANTS_TEXTFIELD: 'invite-participants-textfield',
   INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
+
+  SIDEBAR: 'sidebar',
+  SIDEBAR_TOGGLE: 'sidebar-toggle',
+  SIDEBAR_SIGN_IN: 'sidebar-sign-in',
+
+  SIDEBAR_PROFILE: 'sidebar-profile',
+  SIDEBAR_YOUR_TEAMS_BUTTON: 'sidebar-your-teams-button',
+  SIDEBAR_LIST_PARTICIPANTS: 'sidebar-list-participants',
+  SIDEBAR_SUGGEST_TOOL_SKILL_BUTTON: 'sidebar-suggest-tool-skill-button',
+  SIDEBAR_TEAM_INVITATIONS_BUTTON: 'sidebar-team-invitations-button',
+
+  SIDEBAR_CONFIGURE_HACC: 'sidebar-configure-hacc',
+  SIDEBAR_UPDATE_MP: 'sidebar-update-mp',
+  SIDEBAR_LIST_PARTICIPANTS_ADMIN: 'sidebar-list-participants-admin',
+  SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON: 'sidebar-hacc-widget-view-teams-button',
+  SIDEBAR_ALL_TEAM_INVITATIONS_NAV: 'sidebar-all-team-invitations-nav',
+  SIDEBAR_CLOSE_BUTTON: 'sidebar-close-button',
 };

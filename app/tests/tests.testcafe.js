@@ -27,6 +27,8 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
+import { sideBar } from './sidebar.component';
+import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
 
 /* global fixture:false, test:false */
 
@@ -162,6 +164,20 @@ test('Test that your teams page shows up', async (testController) => {
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
 });
+
+test('Test sidebar user buttons', async (testController) => {
+  await testController.resizeWindow(475, 667);
+  await sideBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
+  await sideBar.gotoProfilePage(testController);
+  await profilePage.isDisplayed(testController);
+  await sideBar.gotoListParticipantsPage(testController);
+  await sideBar.gotoSuggestToolSkillPage(testController);
+  await suggestToolSkillPage.isDisplayed(testController);
+  await sideBar.gotoTeamInvitationsPage(testController);
+  await teamInvitationsPage.isDisplayed(testController);
+});
+
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
