@@ -5,6 +5,8 @@ import moment from 'moment';
 import swal from 'sweetalert';
 
 import { dumpDatabaseMethod, dumpTeamCSVMethod } from '../../../api/base/BaseCollection.methods';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import {PAGE_IDS} from "../../testIDs/pageIDs";
 
 export const databaseFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
 
@@ -39,9 +41,15 @@ const DumpDatabase = () => {
   };
 
   return (
-      <div className="card mt-3 mx-5">
-        <Button variant="success" onClick={handleClick} className="mb-3">Dump the Database</Button>
-        <Button variant="success" onClick={handleDumpTeamCSV}>Dump the Teams</Button>
+      <div className="card mt-3 mx-5" id={PAGE_IDS.DUMP_DATABASE}>
+        <Button variant="success"
+                id={COMPONENT_IDS.DUMP_DATABASE}
+                onClick={handleClick}
+                className="mb-3"
+        >
+          Dump the Database
+        </Button>
+        <Button variant="success" id={COMPONENT_IDS.DUMP_TEAM} onClick={handleDumpTeamCSV}>Dump the Teams</Button>
       </div>
   );
 };

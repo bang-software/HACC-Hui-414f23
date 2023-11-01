@@ -27,6 +27,7 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import {yourTeamsCard} from './yourTeamsCard.component';
+import {dumpDataBasePage} from "./dumpDataBase.page";
 
 /* global fixture:false, test:false */
 
@@ -245,4 +246,11 @@ test('Test that UpdateMinorParticipantsCompliant page renders', async (testContr
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoUpdateMP(testController);
   await updateMPCompliant.isDisplayed(testController);
+});
+
+test('Test that Dump DataBase page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoDumpDataBase(testController);
+  await dumpDataBasePage.clickDumpDownload(testController);
 });
