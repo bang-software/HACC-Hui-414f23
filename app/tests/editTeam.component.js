@@ -12,4 +12,4 @@ class EditTeam {
     }
 }
 
-export const yourTeamsCard = new EditTeam();
+export const editTeam = new EditTeam();

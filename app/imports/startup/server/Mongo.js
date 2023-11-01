@@ -60,7 +60,7 @@ export function loadCollection(collection, loadJSON, consolep) {
   if (consolep) {
     console.log(`Defining ${definitions.length} ${collection._collectionName} documents.`);
   }
-  _.each(definitions, (definition) => collection.define(definition));
+  definitions.forEach((definition) => collection.define(definition));
   if (consolep) {
     console.log(`Have ${collection.find().count()} documents.`);
   }
@@ -101,7 +101,7 @@ function loadDatabase() {
       console.log(`Error: Expected collections are missing from restore JSON file: ${extraCollectionNames}`);
     }
     if (!extraRestoreNames.length && !extraCollectionNames.length) {
-      _.each(collectionList, (collection) => loadCollection(collection, loadJSON, true));
+      collectionList.forEach((collection) => loadCollection(collection, loadJSON, true));
     }
     console.log('Finished loading database.');
   }

@@ -17,6 +17,7 @@ import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /**
  * Renders the Page for adding stuff. **deprecated**
@@ -137,7 +138,7 @@ const EditTeam = ({ team }) => {
   const model = buildModel();
 
   return (
-          <AutoForm schema={formSchema} onSubmit={data => submit(data)} model={model}>
+          <AutoForm id={COMPONENT_IDS.EDIT_TEAM} schema={formSchema} onSubmit={data => submit(data)} model={model}>
             <Container style={{
               borderRadius: '40px',
               backgroundColor: '#E5F0FE',

@@ -24,6 +24,11 @@ class YourTeamsCard {
         await testController.click(`#${COMPONENT_IDS.SEE_INTERTESTED_PARTICIPANTS}`);
         await this.isDisplayed(testController);
     }
+
+    async open_edit_team_modal(testController) {
+        await this.isDisplayed(testController);
+        await testController.click(`#${COMPONENT_IDS.EDIT_TEAM_BUTTON}`);
+    }
 }
 
 export const yourTeamsCard = new YourTeamsCard();

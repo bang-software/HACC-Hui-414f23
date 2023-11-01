@@ -15,7 +15,6 @@ import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
-
 import EditTeam from './EditTeam';
 
 const schema = new SimpleSchema({
@@ -231,7 +230,7 @@ const YourTeamsCard = ({
             </Modal>
           </Col>
           <Col>
-            <Button id={teams._id}
+            <Button id={COMPONENT_IDS.EDIT_TEAM_BUTTON}
                     onClick={(() => setEditTeamShow(true))}>
               Edit Team
             </Button>
