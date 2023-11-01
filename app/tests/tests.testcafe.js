@@ -154,7 +154,6 @@ test('Test that profile page renders', async (testController) => {
   await profilePage.isDisplayed(testController);
   await profilePage.goToEditPage(testController);
   await editProfilePage.isDisplayed(testController);
-  await navBar.gotoProfilePage(testController);
 });
 
 test('Test delete form renders', async (testController) => {
