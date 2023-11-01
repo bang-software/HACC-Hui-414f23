@@ -90,6 +90,11 @@ export const COMPONENT_IDS = {
   SEE_INTERTESTED_PARTICIPANTS: 'see-interested-participants',
   INVITE_PARTICIPANTS_TEXTFIELD: 'invite-participants-textfield',
   INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
+
+  DUMP_DATABASE: 'dump-database',
+  DUMP_TEAM: 'dump-team',
+  GOTO_DUMP_DATABASE: 'goto-dump-database',
+
   TEAM_CARD: 'team-card',
   MEMBER_TEAM_CARD: 'member_team_card',
   TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
