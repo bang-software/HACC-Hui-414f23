@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 
 import { dumpDatabaseMethod, dumpTeamCSVMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
-import {PAGE_IDS} from "../../testIDs/pageIDs";
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
 export const databaseFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
 
