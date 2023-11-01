@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import _ from 'lodash';
 import BaseSlugCollection from '../base/BaseSlugCollection';
-import { demographicLevels } from '../level/Levels';
 import { Slugs } from '../slug/SlugCollection';
 import { ROLE } from '../role/Role';
 import { Users } from './UserCollection';
@@ -28,7 +27,7 @@ class ParticipantCollection extends BaseSlugCollection {
       slugID: { type: String },
       firstName: { type: String },
       lastName: { type: String },
-      demographicLevel: { type: String, allowedValues: demographicLevels, optional: true },
+      demographicLevel: { type: String, optional: true },
       linkedIn: { type: String, optional: true },
       gitHub: { type: String, optional: true },
       slackUsername: { type: String, optional: true },

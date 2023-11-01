@@ -14,17 +14,32 @@
   padding-top: 6rem !important;
 }
 
-.h2Title {
+.title {
   background-color: #E5F0FE;
   padding: 1rem 0;
   margin: 2rem 0;
   border-radius: 2rem;
   text-align: center;
 }
+.centerEntire {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+}
 
+.centerText {
+  text-align: center;
+}
 .cardStyle {
   background-color: #E5F0FE;
-  border-radius: 1rem;
+  padding: 1rem 0;
+  margin: 2rem 0;
+  border-radius: 2rem;
+}
+.addbutton {
+  color: white;
+  background-color: #DB2828;
+  margin: 2rem 0;
 }
 
 .main {
