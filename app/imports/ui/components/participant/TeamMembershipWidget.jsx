@@ -1,37 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
-import _ from 'lodash';
+import { useTracker } from 'meteor/react-meteor-data';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import TeamCard from './TeamCard';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Teams } from '../../../api/team/TeamCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-class TeamMembershipWidget extends React.Component {
-  render() {
-    return (
+const TeamMembershipWidget = () => {
+  const { teams, participantID } = useTracker(() => {
+    const partID = Participants.findOne({ userID: Meteor.userId() })._id;
+    const teamsParts = TeamParticipants.find({ participantID: partID }).fetch();
+    const userTeams = teamsParts.map((tP) => Teams.findDoc(tP.teamID));
+    return {
+      participantID: partID,
+      teams: userTeams,
+    };
+  }, [Meteor.userId()]);
+
+  return (
+      <div id={COMPONENT_IDS.TEAM_MEMBERSHIP_WIDGET}>
         <React.Fragment>
-          {this.props.teams.map((team) => <TeamCard team={team}
-                                                    key={team._id} participantID={this.props.participantID}/>)}
+          {teams.map((team) => <TeamCard team={team}
+                                         key={team._id} participantID={participantID}/>)}
         </React.Fragment>
-    );
-  }
-}
-
-TeamMembershipWidget.propTypes = {
-  teams: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  participantID: PropTypes.string,
+      </div>
+  );
 };
-
-export default withTracker(() => {
-  const participantID = Participants.findDoc({ userID: Meteor.userId() })._id;
-  const teamParts = TeamParticipants.find({ participantID }).fetch();
-  const teams = _.map(teamParts, (tP) => Teams.findDoc(tP.teamID));
-  return {
-    teams,
-    participantID,
-  };
-})(TeamMembershipWidget);
+export default TeamMembershipWidget;

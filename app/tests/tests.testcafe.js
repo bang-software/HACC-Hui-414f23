@@ -26,9 +26,13 @@ import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component
 import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
+import { memberTeamCard } from './memberTeamCard.component';
+import { teamCard } from './teamCard.component';
 import { yourTeamsCard } from './yourTeamsCard.component';
 import { sideBar } from './sidebar.component';
 import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
+import { teamMembership } from './teamMembership.component';
+import { editProfilePage } from './editProfile.page';
 
 /* global fixture:false, test:false */
 
@@ -79,7 +83,6 @@ const profileInfo = {
 
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
-
 /** USER --------------------------------------------------------------------------------------------------*/
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
@@ -148,6 +151,11 @@ test('Test that profile page renders', async (testController) => {
   await agePage.under18(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
+  await profilePage.goToEditPage(testController);
+  await editProfilePage.isDisplayed(testController);
+  await navBar.gotoProfilePage(testController);
+  await teamMembership.isDisplayed(testController);
+  await teamCard.isDisplayed(testController);
 });
 
 test('Test delete form renders', async (testController) => {
@@ -163,6 +171,8 @@ test('Test that your teams page shows up', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
+  await yourTeamsCard.isDisplayed(testController);
+  await memberTeamCard.isDisplayed(testController);
 });
 
 test('Test sidebar user buttons', async (testController) => {

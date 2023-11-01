@@ -16,7 +16,7 @@ if (Meteor.isServer) {
       const username = 'cmoore@hawaii.edu';
       const firstName = 'Cam';
       const lastName = 'Moore';
-      const demographicLevel = demographicLevels[0];
+      const demographicLevel = demographicLevels[0].label;
       const lookingForTeam = true;
       const skills = makeSampleSkillSlugArray(2);
       const tools = makeSampleToolSlugArray();

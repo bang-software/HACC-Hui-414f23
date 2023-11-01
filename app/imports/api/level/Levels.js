@@ -8,13 +8,13 @@ import { faker } from '@faker-js/faker';
  * @type {{PROFESSIONAL: string, COLLEGE: string, HIGH_SCHOOL: string}}
  * @memberOf api/level
  */
+export const demographicLevel = [
+  { label: 'Middle school', value: 'MIDDLE_SCHOOL' },
+  { label: 'High school', value: 'HIGH_SCHOOL' },
+  { label: 'College', value: 'COLLEGE' },
+  { label: 'Professional', value: 'PROFESSIONAL' },
+];
 
-export const demographicLevel = {
-  MIDDLE_SCHOOL: 'Middle school',
-  HIGH_SCHOOL: 'High school',
-  COLLEGE: 'College',
-  PROFESSIONAL: 'Professional',
-};
 /**
  * The different demographic levels.
  * @type {Array}
@@ -47,7 +47,7 @@ export const skillAndToolLevels = _.values(skillAndToolLevel);
  */
 export const getRandomDemographicLevel = () => {
   const index = faker.datatype.number({ min: 0, max: demographicLevels.length - 1 });
-  return demographicLevels[index];
+  return demographicLevels[index].value;
 };
 
 /**

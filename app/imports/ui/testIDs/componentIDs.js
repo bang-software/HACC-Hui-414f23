@@ -16,6 +16,9 @@ export const COMPONENT_IDS = {
 
   HACC_WIDGET_VIEW_TEAMS_BUTTON: 'view-teams-button',
 
+  HACC_WIDGET_NAV_CHALLENGE: 'custom-nav-challenge',
+  HACC_WIDGET_NAV_SKILL: 'custom-nav-skill',
+  HACC_WIDGET_NAV_TOOl: 'custom-nav-tool',
   HACC_WIDGET_CUSTOM_SWITCH_TEAMS: 'custom-switch-teams',
   HACC_WIDGET_CUSTOM_SWITCH_CHALLENGES: 'custom-switch-challenges',
   HACC_WIDGET_ADD_CHALLENGE_BUTTON: 'add-challenge-button',
@@ -104,4 +107,9 @@ export const COMPONENT_IDS = {
   SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON: 'sidebar-hacc-widget-view-teams-button',
   SIDEBAR_ALL_TEAM_INVITATIONS_NAV: 'sidebar-all-team-invitations-nav',
   SIDEBAR_CLOSE_BUTTON: 'sidebar-close-button',
+  
+  TEAM_CARD: 'team-card',
+  MEMBER_TEAM_CARD: 'member_team_card',
+  TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
+  EDIT_PROFILE_BUTTON: 'edit-profile-button',
 };
