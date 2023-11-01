@@ -116,4 +116,6 @@ export const COMPONENT_IDS = {
   MEMBER_TEAM_CARD: 'member_team_card',
   TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
   EDIT_PROFILE_BUTTON: 'edit-profile-button',
+  EDIT_TEAM_BUTTON: 'edit-team-button',
+  EDIT_TEAM: 'edit-team',
 };

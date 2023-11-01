@@ -34,6 +34,7 @@ import { sideBar } from './sidebar.component';
 import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
 import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
+import { editTeam } from './editTeam.component';
 
 /* global fixture:false, test:false */
 
@@ -170,6 +171,9 @@ test('Test that profile page renders', async (testController) => {
   await profilePage.isDisplayed(testController);
   await profilePage.goToEditPage(testController);
   await editProfilePage.isDisplayed(testController);
+  await navBar.gotoProfilePage(testController);
+  await teamMembership.isDisplayed(testController);
+  // await teamCard.isDisplayed(testController);
 });
 
 test('Test delete form renders', async (testController) => {
@@ -180,12 +184,15 @@ test('Test delete form renders', async (testController) => {
   await deleteFormPage.isDisplayed(testController);
 });
 
-test('Test that your teams page shows up', async (testController) => {
+test('Test that your teams page and edit team form shows up', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsF.username, credentialsF.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
   await yourTeamsCard.isDisplayed(testController);
+  await yourTeamsCard.open_edit_team_modal(testController);
+  await editTeam.isDisplayed(testController);
+  // await memberTeamCard.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/

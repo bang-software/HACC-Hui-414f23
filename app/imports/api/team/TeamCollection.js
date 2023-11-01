@@ -98,62 +98,26 @@ class TeamCollection extends BaseSlugCollection {
    * @param gitHubRepo {String} The team's GitHub Repository, optional.
    * @param devPostPage {String} The team's devpost page, optional.
    */
-  update(docID, { name, description, open, challenges,
-    skills, tools, participants, affiliation, gitHubRepo,
-    devPostPage, newOwner }) {
-    this.assertDefined(docID);
-    const updateData = {};
-    if (name) {
-      updateData.name = name;
-    }
-    if (description) {
-      updateData.description = description;
-    }
-    if (_.isBoolean(open)) {
-      updateData.open = open;
-    }
-    if (affiliation) {
-      updateData.affiliation = affiliation;
-    }
-    if (gitHubRepo) {
-      updateData.gitHubRepo = gitHubRepo;
-    }
-    if (devPostPage) {
-      updateData.devPostPage = devPostPage;
-    }
-    if (newOwner) {
-      updateData.owner = newOwner;
-    }
-    this._collection.update(docID, { $set: updateData });
-    const selector = { teamID: docID };
-    const team = this.findSlugByID(docID);
-    if (challenges) {
-      TeamChallenges.removeTeam(team);
-      _.forEach(challenges, (challenge) => TeamChallenges.define({ team, challenge }));
-    }
-    if (skills) {
-      const teamSkills = TeamSkills.find(selector).fetch();
-      _.forEach(teamSkills, (tS) => TeamSkills.removeIt(tS._id));
-      _.forEach(skills, (skill) => {
-        TeamSkills.define({ team, skill });
-      });
-    }
-    if (tools) {
-      const teamTools = TeamTools.find(selector).fetch();
-      _.forEach(teamTools, (tT) => TeamTools.removeIt(tT._id));
-      _.forEach(tools, (tool) => {
-        TeamTools.define({ team, tool });
-      });
-    }
-    if (participants) {
-      const owner = this.findDoc(docID).owner;
-      const teamParticipants = TeamParticipants.find(selector).fetch();
-      _.forEach(teamParticipants, (tD) => TeamParticipants.removeIt(tD._id));
-      _.forEach(participants, (participant) => TeamParticipants.define({ team, participant }));
-      if (!_.includes(participants, owner)) {
-        TeamParticipants.define({ team, participant: owner });
-      }
-    }
+  update(teamID, updateData) {
+    // console.log('TeamCollection update(%o, %o)', teamID, updateData);
+    this.assertDefined(teamID);
+    const teamData = {
+      name: updateData.name,
+      description: updateData.description,
+      gitHubRepo: updateData.gitHubRepo,
+      devPostPage: updateData.devPostPage,
+      open: updateData.open,
+      affiliation: updateData.affiliation,
+    };
+    this._collection.update(teamID, { $set: teamData });
+    TeamChallenges.removeTeamByID(teamID);
+    updateData.challenges.forEach((challenge) => TeamChallenges.defineWithIDs(teamID, challenge));
+    TeamSkills.removeTeamByID(teamID);
+    updateData.skills.forEach((skill) => TeamSkills.defineWithIDs(teamID, skill));
+    TeamTools.removeTeamByID(teamID);
+    updateData.tools.forEach((tool) => TeamTools.defineWithIDs(teamID, tool));
+    TeamParticipants.removeTeamByID(teamID);
+    updateData.participants.forEach((participantID) => TeamParticipants.defineWithIDs(teamID, participantID));
   }
 
   /**
