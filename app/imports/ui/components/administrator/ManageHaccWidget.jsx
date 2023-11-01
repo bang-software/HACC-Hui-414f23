@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaSortUp, FaSortDown } from 'react-icons/fa';
-import { Table, Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { Table, Container, Button, Form, Row, Col, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
@@ -21,6 +21,11 @@ import { COMPONENT_IDS } from '../../testIDs/componentIDs';
  * @memberOf ui/pages
  */
 const ManageHaccWidget = () => {
+  const [selectedSection, setSelectedSection] = useState('challenges');
+  const handleSectionChange = (section) => {
+    setSelectedSection(section);
+  };
+
   const [canCreateTeams, setCanCreateTeams] = useState(CanCreateTeams.findOne()?.canCreateTeams || false);
   const [canChangeChallenges, setCanChangeChallenges] = useState(CanChangeChallenges.findOne()?.canChangeChallenges || false);
 
@@ -95,7 +100,7 @@ const ManageHaccWidget = () => {
       if (direction === 'asc') {
         return valueA.localeCompare(valueB);
       }
-        return valueB.localeCompare(valueA);
+      return valueB.localeCompare(valueA);
 
     });
   };
@@ -133,34 +138,38 @@ const ManageHaccWidget = () => {
   );
   const ManageHaccChallengeList = () => (
       <div>
-        <h2 className="centerText">Challenges</h2>
+        <div className="centerText">
+          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton">
+            <Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>
+        </div>
         <Table>
           <thead>
           <tr>
             <th onClick={() => handleSort('challenges', 'title')}>
               Title{' '}
               {challengeSort.column === 'title' && (
-                  challengeSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  challengeSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
             </th>
             <th onClick={() => handleSort('challenges', 'description')}>
               Description{' '}
               {challengeSort.column === 'description' && (
-                  challengeSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  challengeSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
             </th>
             <th onClick={() => handleSort('challenges', 'submissionDetail')}>
               Submission Detail{' '}
               {challengeSort.column === 'submissionDetail' && (
-                  challengeSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  challengeSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
             </th>
             <th onClick={() => handleSort('challenges', 'pitch')}>
               Pitch{' '}
               {challengeSort.column === 'pitch' && (
-                  challengeSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  challengeSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
-            </th><th>Edit</th>
+            </th>
+            <th>Edit</th>
             <th>Delete</th>
           </tr>
           </thead>
@@ -168,28 +177,27 @@ const ManageHaccWidget = () => {
           {sortedChallenges.map((challenge => <ChallengeAdminWidget key={challenge._id} challenge={challenge}/>))}
           </tbody>
         </Table>
-        <div className="centerText">
-          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton">
-            <Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>
-        </div>
       </div>
   );
   const ManageHaccSkillList = () => (
       <div>
-        <h2 className="centerText">Skills</h2>
+        <div className="centerText">
+          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON} className="addbutton">
+            <Link to={ROUTES.ADD_SKILL} style={{ color: 'white' }}>Add Skill</Link></Button>
+        </div>
         <Table>
           <thead>
           <tr>
             <th onClick={() => handleSort('skills', 'name')}>
               Name{' '}
               {skillSort.column === 'name' && (
-                  skillSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  skillSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
             </th>
             <th onClick={() => handleSort('skills', 'description')}>
               Description{' '}
               {skillSort.column === 'description' && (
-                  skillSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  skillSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
             </th>
             <th>Edit</th>
@@ -200,28 +208,27 @@ const ManageHaccWidget = () => {
           {sortedSkills.map((skill => <SkillAdminWidget key={skill._id} skill={skill}/>))}
           </tbody>
         </Table>
-        <div className="centerText">
-          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_SKILL_BUTTON} className="addbutton">
-            <Link to={ROUTES.ADD_SKILL} style={{ color: 'white' }}>Add Skill</Link></Button>
-        </div>
       </div>
   );
   const ManageHaccToolList = () => (
       <div>
-        <h2 className="centerText">Tools</h2>
+        <div className="centerText">
+          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_TOOL_BUTTON} className="addbutton">
+            <Link to={ROUTES.ADD_TOOL} style={{ color: 'white' }}>Add Tool</Link></Button>
+        </div>
         <Table>
           <thead>
           <tr>
             <th onClick={() => handleSort('tools', 'name')}>
               Name{' '}
               {toolSort.column === 'name' && (
-                  toolSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  toolSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
             </th>
             <th onClick={() => handleSort('tools', 'description')}>
               Description{' '}
               {toolSort.column === 'description' && (
-                  toolSort.direction === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  toolSort.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>
               )}
             </th>
             <th>Edit</th>
@@ -232,10 +239,6 @@ const ManageHaccWidget = () => {
           {sortedTools.map((tool => <ToolAdminWidget key={tool._id} tool={tool}/>))}
           </tbody>
         </Table>
-        <div className="centerText">
-          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_TOOL_BUTTON} className="addbutton">
-            <Link to={ROUTES.ADD_TOOL} style={{ color: 'white' }}>Add Tool</Link></Button>
-        </div>
       </div>
   );
 
@@ -246,9 +249,45 @@ const ManageHaccWidget = () => {
         </Row>
         <Row className="cardStyle">
           <Col>
-            <ManageHaccChallengeList/>
-            <ManageHaccSkillList/>
-            <ManageHaccToolList/>
+            <div>
+              <Nav style={{ backgroundColor: 'white', paddingTop: '1rem', borderRadius: '2rem' }}
+                   variant="tabs" className="justify-content-center">
+                <Nav.Item as="h2">
+                  <Nav.Link
+                      id={COMPONENT_IDS.HACC_WIDGET_NAV_CHALLENGE}
+                      eventKey="challenges"
+                      onClick={() => handleSectionChange('challenges')}
+                      active={selectedSection === 'challenges'}
+                  >
+                    Challenges
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item as="h2">
+                  <Nav.Link
+                      id={COMPONENT_IDS.HACC_WIDGET_NAV_SKILL}
+                      eventKey="skills"
+                      onClick={() => handleSectionChange('skills')}
+                      active={selectedSection === 'skills'}
+                  >
+                    Skills
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item as="h2">
+                  <Nav.Link
+                      id={COMPONENT_IDS.HACC_WIDGET_NAV_TOOl}
+                      eventKey="tools"
+                      onClick={() => handleSectionChange('tools')}
+                      active={selectedSection === 'tools'}
+                  >
+                    Tools
+                  </Nav.Link>
+                </Nav.Item>
+              </Nav>
+
+              {selectedSection === 'challenges' && <ManageHaccChallengeList />}
+              {selectedSection === 'skills' && <ManageHaccSkillList />}
+              {selectedSection === 'tools' && <ManageHaccToolList />}
+            </div>
           </Col>
         </Row>
       </Container>
