@@ -15,7 +15,6 @@ import {
 } from 'uniforms-bootstrap5';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
-import Select from 'react-select';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
@@ -56,9 +55,6 @@ const EditProfileWidget = () => {
   const [redirectToReferer, setRedirectToReferer] = useState(false);
 
   const buildTheFormSchema = () => {
-    const challengeNames = allChallenges.map((c) => c.title);
-    const skillNames = allSkills.map((s) => s.name);
-    const toolNames = allTools.map((t) => t.name);
     const schema = new SimpleSchema({
       firstName: String,
       lastName: String,
@@ -73,11 +69,11 @@ const EditProfileWidget = () => {
       lookingForTeam: { type: Boolean, optional: true },
       isCompliant: { type: Boolean, optional: true },
       challenges: { type: Array, optional: true },
-      'challenges.$': { type: String, allowedValues: challengeNames },
+      'challenges.$': { type: String },
       skills: { type: Array, optional: true },
-      'skills.$': { type: String, allowedValues: skillNames },
+      'skills.$': { type: String},
       tools: { type: Array, optional: true },
-      'tools.$': { type: String, allowedValues: toolNames },
+      'tools.$': { type: String},
     });
     return schema;
   };
@@ -212,31 +208,26 @@ const EditProfileWidget = () => {
                   <Row>
                     <Col>
                       <h6 className="fw-bold"> Challenges </h6>
-                      <Select
+                      <SelectField
                           id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
-                          isMulti
+                          multiple
                           name="challenges"
                           options={allChallenges.map(c => ({ label: c.title, value: c.title }))}
-                          className="basic-multi-select"
-                          classNamePrefix="select"
                       />
                     </Col>
                     <Col>
                       <h6 className="fw-bold"> Skills </h6>
-                      <Select
-                          isMulti
-                          name="Skills"
+                      <SelectField
+                          multiple
+                          name="skills"
                           options={allSkills.map(s => ({ label: s.name, value: s.name }))}
-                          className="basic-multi-select"
-                          classNamePrefix="select"
                       /> </Col>
                     <Col>
-                      <h6 className="fw-bold"> Tools </h6><Select
-                        isMulti
-                        name="Tools"
+                      <h6 className="fw-bold"> Tools </h6>
+                      <SelectField
+                        multiple
+                        name="tools"
                         options={allTools.map(t => ({ label: t.name, value: t.name }))}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
                     /> </Col>
                   </Row>
                   <div className="text-center">
