@@ -87,6 +87,20 @@ const profileInfo = {
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 /** USER --------------------------------------------------------------------------------------------------*/
+test('Test sidebar user buttons', async (testController) => {
+  await testController.resizeWindow(475, 667);
+  await sideBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
+  await sideBar.gotoProfilePage(testController);
+  await profilePage.isDisplayed(testController);
+  await sideBar.gotoListParticipantsPage(testController);
+  await sideBar.gotoSuggestToolSkillPage(testController);
+  await suggestToolSkillPage.isDisplayed(testController);
+  await sideBar.gotoTeamInvitationsPage(testController);
+  await teamInvitationsPage.isDisplayed(testController);
+  await testController.resizeWindow(1024, 667);
+});
+
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
@@ -172,19 +186,6 @@ test('Test that your teams page shows up', async (testController) => {
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
   await yourTeamsCard.isDisplayed(testController);
-});
-
-test('Test sidebar user buttons', async (testController) => {
-  await testController.resizeWindow(475, 667);
-  await sideBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
-  await sideBar.gotoProfilePage(testController);
-  await profilePage.isDisplayed(testController);
-  await sideBar.gotoListParticipantsPage(testController);
-  await sideBar.gotoSuggestToolSkillPage(testController);
-  await suggestToolSkillPage.isDisplayed(testController);
-  await sideBar.gotoTeamInvitationsPage(testController);
-  await teamInvitationsPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
