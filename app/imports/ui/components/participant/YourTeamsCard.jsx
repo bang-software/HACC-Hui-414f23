@@ -231,7 +231,7 @@ const YourTeamsCard = ({ teams, teamParticipants, teamInvitation }) => {
                 </AutoForm>
               </Modal.Body>
             </Modal>
-          </Col>s
+          </Col>
           <Col>
             <Button variant="link" id={teams._id}>
               <Link to={`/edit-team/${teams._id}`}>Edit Team</Link>
