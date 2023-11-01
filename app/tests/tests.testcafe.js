@@ -28,6 +28,11 @@ import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import {yourTeamsCard} from './yourTeamsCard.component';
 import {dumpDataBasePage} from "./dumpDataBase.page";
+import { memberTeamCard } from './memberTeamCard.component';
+import { teamCard } from './teamCard.component';
+import { yourTeamsCard } from './yourTeamsCard.component';
+import { teamMembership } from './teamMembership.component';
+import { editProfilePage } from './editProfile.page';
 
 /* global fixture:false, test:false */
 
@@ -78,7 +83,6 @@ const profileInfo = {
 
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
-
 /** USER --------------------------------------------------------------------------------------------------*/
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
@@ -147,6 +151,11 @@ test('Test that profile page renders', async (testController) => {
   await agePage.under18(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
+  await profilePage.goToEditPage(testController);
+  await editProfilePage.isDisplayed(testController);
+  await navBar.gotoProfilePage(testController);
+  await teamMembership.isDisplayed(testController);
+  await teamCard.isDisplayed(testController);
 });
 
 test('Test delete form renders', async (testController) => {
@@ -162,6 +171,9 @@ test('Test that your teams page shows up', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
+  await yourTeamsCard.isDisplayed(testController);
+  await memberTeamCard.isDisplayed(testController);
+});
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
@@ -171,7 +183,14 @@ test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await listParticipantsAdminPage.isDisplayed(testController);
   await listParticipantsCardAdmin.isDisplayed(testController);
 });
-
+test('Test that ManageHacc page shows and toggles switches', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  // must be clicked twice to revert back to original state
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+});
 test('Test that AddChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);

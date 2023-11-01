@@ -14,6 +14,7 @@ import { ROUTES } from '../../../startup/client/route-constants';
 import TeamMembershipWidget from './TeamMembershipWidget';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const Profile = () => {
     const { model, ready } = useTracker(() => {
@@ -50,7 +51,7 @@ const Profile = () => {
         <h2>Your Profile</h2>
         <ProfileCard model={model}/>
           <Link to={ROUTES.EDIT_PROFILE} style={{ color: '#ffffff' }}>
-            <Button>Edit Profile</Button>
+            <Button id={COMPONENT_IDS.EDIT_PROFILE_BUTTON}>Edit Profile</Button>
           </Link>
       </div>
       <div style={paleBlueStyle}>

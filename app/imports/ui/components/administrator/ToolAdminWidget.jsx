@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { removeItMethod } from '../../../api/base/BaseCollection.methods';
-import { Skills } from '../../../api/skill/SkillCollection';
+import { Tools } from '../../../api/tool/ToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /** Renders a single row in the table. See pages/ManageHaccWidget.jsx. */
-const SkillsAdminWidget = ({ skills }) => {
+const ToolAdminWidget = ({ tool }) => {
   const removeItem = (docID) => {
     swal({
       title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this skill!',
+      text: 'Once deleted, you will not be able to recover this tool!',
       icon: 'warning',
       buttons: true,
       dangerMode: true,
@@ -20,11 +20,11 @@ const SkillsAdminWidget = ({ skills }) => {
         .then((willDelete) => {
           if (willDelete) {
             removeItMethod.call({
-              collectionName: Skills.getCollectionName(),
-              instance: Skills.getID(docID),
+              collectionName: Tools.getCollectionName(),
+              instance: Tools.getID(docID),
             }, (error) => (error ?
                 swal('Error', error.message, 'error') :
-                swal('Success', 'Skill removed', 'success')));
+                swal('Success', 'Tool removed', 'success')));
           } else {
             swal('You canceled the deletion!');
           }
@@ -33,25 +33,28 @@ const SkillsAdminWidget = ({ skills }) => {
 
     return (
         <tr>
-          <td>{skills.name}</td>
-          <td>{skills.description}</td>
+          <td>{tool.name}</td>
+          <td>{tool.description}</td>
           <td>
             <Button variant="primary">
-              <Link className='link-light'
-                    to={`/edit-skill/${skills._id}`}
-                    id={COMPONENT_IDS.EDIT_SKILL_BUTTON}>Edit</Link>
+              <Link className="link-light" to={`/edit-tool/${tool._id}`}
+                    id={COMPONENT_IDS.EDIT_TOOL_BUTTON}>Edit</Link>
             </Button>
           </td>
           <td>
-            <Button variant="outline-danger" onClick={() => removeItem(skills._id)}>Delete</Button>
+            <Button id={`${COMPONENT_IDS.DELETE_TOOL_BUTTON}-${tool._id}`}
+                    variant="outline-danger"
+                    onClick={() => removeItem(tool._id)}>
+              Delete
+            </Button>
           </td>
         </tr>
     );
 };
 
 /** Require a document to be passed to this component. */
-SkillsAdminWidget.propTypes = {
-  skills: PropTypes.object.isRequired,
+ToolAdminWidget.propTypes = {
+  tool: PropTypes.object.isRequired,
 };
 
-export default SkillsAdminWidget;
+export default ToolAdminWidget;
