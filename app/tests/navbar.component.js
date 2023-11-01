@@ -128,6 +128,14 @@ class NavBar {
     }
     await testController.click(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`);
   }
+
+  async gotoDumpDataBase(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.GOTO_DUMP_DATABASE}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.GOTO_DUMP_DATABASE}`);
+  }
 }
 
 export const navBar = new NavBar();

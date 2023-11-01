@@ -134,7 +134,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.ALL_TEAM_INVITATIONS}
                               key={ROUTES.ALL_TEAM_INVITATIONS}>View All Team Invitations</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.GOTO_DUMP_DATABASE}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.DUMP_DATABASE}
                               key={ROUTES.DUMP_DATABASE}>Dump Database</Nav.Link>,

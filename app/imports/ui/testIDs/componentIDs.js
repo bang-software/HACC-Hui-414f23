@@ -108,6 +108,10 @@ export const COMPONENT_IDS = {
   SIDEBAR_ALL_TEAM_INVITATIONS_NAV: 'sidebar-all-team-invitations-nav',
   SIDEBAR_CLOSE_BUTTON: 'sidebar-close-button',
   
+  DUMP_DATABASE: 'dump-database',
+  DUMP_TEAM: 'dump-team',
+  GOTO_DUMP_DATABASE: 'goto-dump-database',
+
   TEAM_CARD: 'team-card',
   MEMBER_TEAM_CARD: 'member_team_card',
   TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
