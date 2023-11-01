@@ -27,7 +27,7 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
-import { dumpDataBasePage } from "./dumpDataBase.page";
+import { dumpDataBasePage } from './dumpDataBase.page';
 import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
 import { sideBar } from './sidebar.component';
@@ -103,6 +103,7 @@ test('Test sidebar user buttons', async (testController) => {
 });
 
 test('Test that landing page shows up', async (testController) => {
+  await testController.resizeWindow(1024, 667);
   await landingPage.isDisplayed(testController);
 });
 
