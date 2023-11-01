@@ -1,5 +1,6 @@
 import React from 'react';
-import { Header } from 'semantic-ui-react';
+import { Col, Container, Row } from 'react-bootstrap';
+import { PAGE_IDS } from '../testIDs/pageIDs';
 
 /**
  * Render a Not Found page if the user enters a URL that doesn't match any route.
@@ -8,9 +9,13 @@ import { Header } from 'semantic-ui-react';
 class NotFound extends React.Component {
   render() {
     return (
-      <Header as="h2" textAlign="center">
-        <p>Page not found</p>
-      </Header>
+        <Container id={PAGE_IDS.UPDATE_MP_COMPLIANT}>
+          <Row className="justify-content-center">
+            <Col className="text-center"><h2>
+              Page not found
+            </h2></Col>
+          </Row>
+        </Container>
     );
   }
 }
