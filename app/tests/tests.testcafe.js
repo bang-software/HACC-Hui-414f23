@@ -29,6 +29,7 @@ import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
 import { yourTeamsCard } from './yourTeamsCard.component';
+import { teamCard } from './teamCard.component';
 
 /* global fixture:false, test:false */
 
