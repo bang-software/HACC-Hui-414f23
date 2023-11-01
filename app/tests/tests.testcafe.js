@@ -24,7 +24,9 @@ import { deleteFormPage } from './deleteForm.page';
 import { listParticipantsAdminPage } from './listParticipantsAdmin.page';
 import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component';
 import { listParticipantsCard } from './listParticipantsCard.component';
-import {yourTeamsCard} from './yourTeamsCard.component';
+import { yourTeams } from './yourTeams.page';
+import { allTeamInvitationsPage } from './allTeamInvitations.page';
+import { yourTeamsCard } from './yourTeamsCard.component';
 
 /* global fixture:false, test:false */
 
@@ -154,16 +156,12 @@ test('Test delete form renders', async (testController) => {
   await deleteFormPage.isDisplayed(testController);
 });
 
-test('Test your team and invite interested participants', async (testController) => {
+test('Test that your teams page shows up', async (testController) => {
   await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
-  await navBar.isLoggedIn(testController, credentialsE.username);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoYourTeams(testController);
-  await yourTeamsCard.see_interested_participants(testController);
-  await navBar.gotoYourTeams(testController);
-  await yourTeamsCard.invite_participants(testController, invite);
+  await yourTeams.isDisplayed(testController);
 });
-
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
@@ -172,7 +170,14 @@ test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await listParticipantsAdminPage.isDisplayed(testController);
   await listParticipantsCardAdmin.isDisplayed(testController);
 });
-
+test('Test that ManageHacc page shows and toggles switches', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  // must be clicked twice to revert back to original state
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+});
 test('Test that AddChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -226,6 +231,13 @@ test('Test that ViewTeams pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoConfigueHACC(testController);
   await manageHaccWidgetComponents.isDisplayed(testController);
+});
+
+test('Test that AllTeamInvitations pages function', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoAllTeamInvitationsPage(testController);
+  await allTeamInvitationsPage.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {

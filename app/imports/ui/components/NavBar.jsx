@@ -81,7 +81,7 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.BEST_FIT}
                               key='list-teams'>Open Teams ({numTeams})</Nav.Link>,
-                    <Nav.Link id={COMPONENT_IDS.YOUR_TEAMS_CARD}
+                    <Nav.Link id={COMPONENT_IDS.YOUR_TEAMS_BUTTON}
                               as={NavLink}
                               activeClassName="active"
                               to={ROUTES.YOUR_TEAMS}
@@ -129,7 +129,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.VIEW_TEAMS}
                               key={ROUTES.VIEW_TEAMS}>View Teams ({teamCount})</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id = {COMPONENT_IDS.ALL_TEAM_INVITATIONS_NAV}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.ALL_TEAM_INVITATIONS}
                               key={ROUTES.ALL_TEAM_INVITATIONS}>View All Team Invitations</Nav.Link>,

@@ -8,7 +8,7 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 /** Renders a single row in the table. See pages/ManageHaccWidget.jsx. */
-const ChallengesAdminWidget = ({ challenges }) => {
+const ChallengeAdminWidget = ({ challenge }) => {
   const removeItem = (docID) => {
     swal({
       title: 'Are you sure?',
@@ -33,19 +33,21 @@ const ChallengesAdminWidget = ({ challenges }) => {
 
   return (
       <tr>
-        <td>{challenges.title}</td>
-        <td>{challenges.description}</td>
-        <td>{challenges.submissionDetail}</td>
-        <td>{challenges.pitch}</td>
+        <td>{challenge.title}</td>
+        <td>{challenge.description}</td>
+        <td>{challenge.submissionDetail}</td>
+        <td>{challenge.pitch}</td>
         <td>
           <Button variant="primary">
             <Link className='link-light'
-                  to={`/edit-challenge/${challenges._id}`}
+                  to={`/edit-challenge/${challenge._id}`}
                   id={COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}>Edit</Link>
           </Button>
         </td>
         <td>
-          <Button variant="outline-danger" onClick={() => removeItem(challenges._id)}>
+          <Button id={`${COMPONENT_IDS.DELETE_CHALLENGE_BUTTON}-${challenge._id}`}
+                  variant="outline-danger"
+                  onClick={() => removeItem(challenge._id)}>
             Delete
           </Button>
         </td>
@@ -54,8 +56,8 @@ const ChallengesAdminWidget = ({ challenges }) => {
 };
 
 /** Require a document to be passed to this component. */
-ChallengesAdminWidget.propTypes = {
-  challenges: PropTypes.object.isRequired,
+ChallengeAdminWidget.propTypes = {
+  challenge: PropTypes.object.isRequired,
 };
 
-export default ChallengesAdminWidget;
+export default ChallengeAdminWidget;
