@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Col, Card, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, SubmitField, TextField, LongTextField } from 'uniforms-bootstrap5';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -55,19 +55,19 @@ const EditChallengeWidget = () => {
   return (
       <Container>
         <Col>
-          <Row className="h2Title">
+          <Row className="title">
             <h2>Edit Challenge</h2>
           </Row>
           <AutoForm schema={formSchema} onSubmit={data => submit(data)} model={doc}>
-            <Card>
-              <Card.Body className='cardStyle'>
+            <Row>
+              <Col className='cardStyle'>
                 <LongTextField name='description' id={COMPONENT_IDS.EDIT_CHALLENGE_DESCRIPTION} required/>
                 <TextField name='submissionDetail' id={COMPONENT_IDS.EDIT_CHALLENGE_SUBMISSION_DETAIL} required/>
                 <TextField name='pitch' id={COMPONENT_IDS.EDIT_CHALLENGE_PITCH} required/>
                 <SubmitField value='Submit' id={COMPONENT_IDS.EDIT_CHALLENGE_SUBMIT}/>
                 <ErrorsField/>
-              </Card.Body>
-            </Card>
+              </Col>
+            </Row>
           </AutoForm>
         </Col>
       </Container>
