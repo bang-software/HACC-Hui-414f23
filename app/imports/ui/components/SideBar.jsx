@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Sidebar, Segment, Icon } from 'semantic-ui-react';
+import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap';
 import { Roles } from 'meteor/alanning:roles';
-import _ from 'lodash';
 import { ROLE } from '../../api/role/Role';
 import { ROUTES } from '../../startup/client/route-constants';
 import { Participants } from '../../api/user/ParticipantCollection';
@@ -13,174 +12,109 @@ import { Teams } from '../../api/team/TeamCollection';
 import { Suggestions } from '../../api/suggestions/SuggestionCollection';
 import { MinorParticipants } from '../../api/user/MinorParticipantCollection';
 import { HACCHui } from '../../api/hacc-hui/HACCHui';
+import { COMPONENT_IDS } from '../testIDs/componentIDs';
 
-/**
- * The SideBar appears on the side of every page. Rendered by the App Layout component.
- * @memberOf ui/components
- */
-class SideBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: false,
-    };
-  }
+const SideBar = ({ children }) => {
+  const [visible, setVisible] = useState(false);
+  let currentUser = '';
+  let isParticipant = false;
+  let isAdmin = false;
+  const { isCompliant, numParticipants, numTeams, teamCount, suggestionCount, uncompliantMinors } =
+    useTracker(() => {
+    currentUser = Meteor.user() ? Meteor.user().username : '';
+    isAdmin = currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN);
+    isParticipant = currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.PARTICIPANT);
+    let compliant = HACCHui.canCreateTeams;
 
-  render() {
-
-    let isCompliant = HACCHui.canCreateTeams;
-    const isAdmin = this.props.currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN);
-    const isParticipant = this.props.currentUser && Roles.userIsInRole(Meteor.userId(), ROLE.PARTICIPANT);
     if (isParticipant) {
-      const participant = Participants.findDoc({ userID: Meteor.userId() });
-      isCompliant = isCompliant && participant.isCompliant;
+      const participant = Participants.findOne({ userID: Meteor.userId() });
+      compliant = compliant && participant.isCompliant;
     }
 
-    const numParticipants = Participants.count();
-    const numTeams = Teams.find({ open: true }).count();
-    const teamCount = Teams.count();
-    const suggestionCount = Suggestions.count();
-    const minors = MinorParticipants.find({}).fetch();
-    const uncompliantMinors = _.filter(minors, (m) => Participants.findDoc(m.participantID).isCompliant).length;
-
-    const setVisible = (state) => {
-      this.setState({ visible: state });
+    return {
+      currentUser: Meteor.user() ? Meteor.user().username : '',
+      isCompliant: compliant,
+      numParticipants: Participants.find().count(),
+      numTeams: Teams.find({ open: true }).count(),
+      teamCount: Teams.find().count(),
+      suggestionCount: Suggestions.find().count(),
+      uncompliantMinors:
+      MinorParticipants.find({}).fetch().filter(m => !Participants.findOne(m.participantID).isCompliant).length,
     };
-
-    return (
-        <div>
-          <Menu borderless inverted fixed={'top'} className={'mobileBar'}>
-            <Menu.Item position={'left'}>
-              <div onClick={() => setVisible(!this.state.visible)} style={{ padding: '5px' }}>
-                <Icon name='bars'/>
-              </div>
-            </Menu.Item>
-          </Menu>
-          <Sidebar.Pushable as={Segment} className={'sideBar'}>
-            <Sidebar
-                style={{ paddingTop: '4rem', backgroundColor: 'rgb(18, 72, 132)' }}
-                as={Menu}
-                animation='overlay'
-                icon='labeled'
-                inverted
-                vertical
-                onHide={() => setVisible(false)}
-                visible={this.state.visible}
-                width='thin'
-            >
-              <Menu.Item as={NavLink} activeClassName="" exact to={ROUTES.LANDING}
-                         onClick={() => setVisible(!this.state.visible)}>
-                <Header inverted as='h1'>HACC-Hui</Header>
-              </Menu.Item>
-              {isParticipant ? (
-                  [
-                      <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               disabled={!isCompliant}
-                               exact
-                               to={ROUTES.CREATE_TEAM}
-                               key='team-creation'>Create a Team</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.YOUR_PROFILE}
-                               key='edit-profile'>Your Profile</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.BEST_FIT}
-                               key='list-teams'>List the Teams ({numTeams})</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               disabled={!isCompliant}
-                               exact
-                               to={ROUTES.YOUR_TEAMS}
-                               key='your-teams'>Your
-                      Teams</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact to={ROUTES.LIST_PARTICIPANTS}
-                               key='list-participants'>List the Participants ({numParticipants})</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.SUGGEST_TOOL_SKILL}
-                               key='suggest-tool-skill'>Suggest Tool/Skill</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.TEAM_INVITATIONS}
-                               key='team-invitations'>Your Invitations</Menu.Item>,
-                  ]
-              ) : ''}
-              {isAdmin ? (
-                  [
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.CONFIGURE_HACC}
-                               key={ROUTES.CONFIGURE_HACC}>Configure HACC</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.UPDATE_MP}
-                               key={ROUTES.UPDATE_MP}>
-                      Update Minor Participants Status ({uncompliantMinors})
-                    </Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.LIST_SUGGESTIONS}
-                               key={ROUTES.LIST_SUGGESTIONS}>Suggestions List ({suggestionCount})</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.VIEW_TEAMS}
-                               key={ROUTES.VIEW_TEAMS}>View Team ({teamCount})</Menu.Item>,
-                    <Menu.Item as={NavLink}
-                               activeClassName="active"
-                               exact
-                               to={ROUTES.DUMP_DATABASE}
-                               key={ROUTES.DUMP_DATABASE}>Dump Database</Menu.Item>,
-                  ]
-              ) : ''}
-              <Menu.Item>
-                {this.props.currentUser === '' ? (
-                    <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.SIGN_IN}
-                               key={ROUTES.SIGN_IN}
-                               onClick={() => setVisible(!this.state.visible)}>Sign In</Menu.Item>
-                ) : (
-                    [<Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.SIGN_OUT}
-                               key={ROUTES.SIGN_OUT}
-                               onClick={() => setVisible(!this.state.visible)}>Sign Out</Menu.Item>,
-                      <Menu.Item as={NavLink} activeClassName="active" exact to={ROUTES.DELETE_ACCOUNT}
-                                 key={ROUTES.DELETE_ACCOUNT}
-                                 onClick={() => setVisible(!this.state.visible)}>Delete Account</Menu.Item>,
-                    ]
-                )}
-              </Menu.Item>
-            </Sidebar>
-            <Sidebar.Pusher style={{ paddingTop: '5rem' }}>
-              {this.props.children}
-            </Sidebar.Pusher>
-          </Sidebar.Pushable>
-        </div>
-
-    );
-  }
-}
-
-// Declare the types of all properties.
-SideBar.propTypes = {
-  currentUser: PropTypes.string,
-  children: PropTypes.array,
-  visible: PropTypes.bool,
+  });
+  // TODO: Fix styling of sidebar to keep consistency
+  return (
+  <Container fluid>
+      <Navbar borderless inverted fixed={'top'} expand={false} className={'mobileBar'} style={{ color: 'white' }}>
+        <Navbar.Toggle id={COMPONENT_IDS.SIDEBAR_TOGGLE} aria-controls="offcanvasNavbar" onClick={() => setVisible(!visible)}/>
+        <Navbar.Brand href="#" style={{ color: 'white' }}>HACC-Hui</Navbar.Brand>
+      </Navbar>
+      <Offcanvas show={visible} onHide={() => setVisible(false)} placement="start">
+        <Offcanvas.Header>
+          <Offcanvas.Title>Menu</Offcanvas.Title>
+          <button
+            type="button"
+            className="btn-close"
+            aria-label="Close"
+            onClick={() => setVisible(false)}
+            id={COMPONENT_IDS.SIDEBAR_CLOSE_BUTTON}
+          ></button>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Nav id={COMPONENT_IDS.SIDEBAR} className="flex-column">
+            {isParticipant && (
+              <>
+                {isCompliant && <Nav.Link as={NavLink} to={ROUTES.CREATE_TEAM}>Create a Team</Nav.Link>}
+                <Nav.Link as={NavLink} id={COMPONENT_IDS.SIDEBAR_PROFILE} to={ROUTES.YOUR_PROFILE}>Your Profile</Nav.Link>
+                <Nav.Link as={NavLink} to={ROUTES.BEST_FIT}>List the Teams ({numTeams})</Nav.Link>
+                {isCompliant && <Nav.Link id={COMPONENT_IDS.SIDEBAR_YOUR_TEAMS_BUTTON}
+                  as={NavLink} to={ROUTES.YOUR_TEAMS}>Your Teams</Nav.Link>}
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_LIST_PARTICIPANTS}
+                          as={NavLink} to={ROUTES.LIST_PARTICIPANTS}>List the Participants ({numParticipants})</Nav.Link>
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_SUGGEST_TOOL_SKILL_BUTTON}
+                          as={NavLink} to={ROUTES.SUGGEST_TOOL_SKILL}>Suggest Tool/Skill</Nav.Link>
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_TEAM_INVITATIONS_BUTTON}
+                          as={NavLink} to={ROUTES.TEAM_INVITATIONS}>Your Invitations</Nav.Link>
+              </>
+            )}
+            {isAdmin && (
+              <>
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_CONFIGURE_HACC}
+                          as={NavLink} to={ROUTES.CONFIGURE_HACC}>Configure HACC</Nav.Link>
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_UPDATE_MP}
+                          as={NavLink} to={ROUTES.UPDATE_MP}>Update Minor Participants Status ({uncompliantMinors})</Nav.Link>
+                <Nav.Link as={NavLink} to={ROUTES.LIST_SUGGESTIONS}>Suggestions List ({suggestionCount})</Nav.Link>
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_LIST_PARTICIPANTS_ADMIN}
+                          as={NavLink}
+                          to={ROUTES.LIST_PARTICIPANTS_ADMIN}
+                          key='list-participants-admin'>List Participants ({numParticipants})</Nav.Link>
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON}
+                          as={NavLink} to={ROUTES.VIEW_TEAMS}>View Team ({teamCount})</Nav.Link>
+                <Nav.Link id = {COMPONENT_IDS.SIDEBAR_ALL_TEAM_INVITATIONS_NAV}
+                          as={NavLink}
+                          to={ROUTES.ALL_TEAM_INVITATIONS}
+                          key={ROUTES.ALL_TEAM_INVITATIONS}>View All Team Invitations</Nav.Link>
+                <Nav.Link as={NavLink} to={ROUTES.DUMP_DATABASE}>Dump Database</Nav.Link>
+              </>
+            )}
+            {currentUser ? (
+              <>
+                <Nav.Link as={NavLink} to={ROUTES.SIGN_OUT}>Sign Out</Nav.Link>
+                <Nav.Link as={NavLink} to={ROUTES.DELETE_ACCOUNT}>Delete Account</Nav.Link>
+              </>
+            ) : (
+              <Nav.Link as={NavLink} id={COMPONENT_IDS.SIDEBAR_SIGN_IN} to={ROUTES.SIGN_IN}>Sign In</Nav.Link>
+            )}
+          </Nav>
+        </Offcanvas.Body>
+      </Offcanvas>
+      {children}
+    </Container>
+  );
 };
 
-// withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker
-const SideBarContainer = withTracker(() => ({
-  currentUser: Meteor.user() ? Meteor.user().username : '',
-}))(SideBar);
+SideBar.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
-// Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter
-export default withRouter(SideBarContainer);
+export default withRouter(SideBar);
