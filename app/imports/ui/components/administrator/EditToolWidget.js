@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Col, Card, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import { AutoForm, ErrorsField, SubmitField, TextField, LongTextField } from 'uniforms-bootstrap5';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -10,7 +10,6 @@ import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 import { ROUTES } from '../../../startup/client/route-constants';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
 
 const EditToolWidget = () => {
 
@@ -21,7 +20,7 @@ const EditToolWidget = () => {
   });
   const documentId = useParams();
   const { doc } = useTracker(() => {
-    const document = Challenges.findOne(documentId);
+    const document = Tools.findOne(documentId);
     return {
       doc: document,
     };
@@ -56,19 +55,19 @@ const EditToolWidget = () => {
   return (
       <Container>
         <Col>
-          <Row className='h2Title'>
-            <h2 className='textCenter'>Edit Tool</h2>
+          <Row className='title'>
+            <h2>Edit Tool</h2>
           </Row>
           <AutoForm schema={formSchema} onSubmit={data => submit(data)} model={doc}>
             <Container className={'teamCreate'}>
-              <Card>
-                <Card.Body className='cardStyle'>
+              <Row>
+                <Col className='cardStyle'>
                   <TextField name='name' id={COMPONENT_IDS.EDIT_TOOL_NAME} required/>
                   <LongTextField name='description' id={COMPONENT_IDS.EDIT_TOOL_DESCRIPTION} required/>
                   <SubmitField value='Submit' id={COMPONENT_IDS.EDIT_TOOL_SUBMIT}/>
                   <ErrorsField/>
-                </Card.Body>
-              </Card>
+                </Col>
+              </Row>
             </Container>
           </AutoForm>
         </Col>

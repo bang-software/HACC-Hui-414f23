@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
-import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
-import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
+import { PAGE_IDS } from '../../imports/ui/testIDs/pageIDs';
+import { COMPONENT_IDS } from '../../imports/ui/testIDs/componentIDs';
 
 class ManageHaccWidgetComponents {
   constructor() {
@@ -11,6 +11,11 @@ class ManageHaccWidgetComponents {
   /** Asserts that this page is currently displayed. */
   async isDisplayed(testController) {
     await testController.expect(this.pageSelector.exists).ok();
+  }
+
+  async clickCustomSwitched(testContoller) {
+    await testContoller.click(`#${COMPONENT_IDS.HACC_WIDGET_CUSTOM_SWITCH_TEAMS}`);
+    await testContoller.click(`#${COMPONENT_IDS.HACC_WIDGET_CUSTOM_SWITCH_CHALLENGES}`);
   }
 
   async gotoAddChallengePage(testController) {

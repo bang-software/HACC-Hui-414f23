@@ -1,41 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Grid, Header, List } from 'semantic-ui-react';
-import _ from 'lodash';
+import { Card, Container, Col, Row, Button } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
-import SkillItem from './SkillItem';
-import ToolItem from './ToolItem';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { LeavingTeams } from '../../../api/team/LeavingTeamCollection';
 import { defineMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
+import { Tools } from '../../../api/tool/ToolCollection';
+import { Skills } from '../../../api/skill/SkillCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-class TeamCard extends React.Component {
-  buildTheTeam() {
-    const { team } = this.props;
-    const teamID = team._id;
+const TeamCard = ({ team, participantID }) => {
+  const buildTheTeam = () => {
+    const teamBTT = team;
+    const teamID = teamBTT._id;
     const tCs = TeamChallenges.find({ teamID }).fetch();
-    const challengeTitles = _.map(tCs, (tc) => Challenges.findDoc(tc.challengeID).title);
-    team.challenges = challengeTitles;
-    team.skills = TeamSkills.find({ teamID }).fetch();
-    team.tools = TeamTools.find({ teamID }).fetch();
-    const teamPs = TeamParticipants.find({ teamID }).fetch();
-    team.members = _.map(teamPs, (tp) => Participants.getFullName(tp.participantID));
-    return team;
-  }
+    const challengeTitles = tCs.map((tc) => Challenges.findDoc(tc.challengeID).title);
+    teamBTT.challenges = challengeTitles;
+    teamBTT.skills = TeamSkills.find({ teamID }).fetch().map((skill) => Skills.findDoc(skill.skillID).name);
+    teamBTT.tools = TeamTools.find({ teamID }).fetch().map((tool) => Tools.findDoc(tool.toolID).name);
 
-  handleLeaveTeam(e, inst) {
-    console.log(e, inst);
-    const { team } = inst;
+    const teamPs = TeamParticipants.find({ teamID }).fetch();
+    teamBTT.members = teamPs.map((tp) => Participants.getFullName(tp.participantID));
+    return teamBTT;
+  };
+
+  const handleLeaveTeam = (e, inst) => {
+    const { teamHLT } = inst;
     const pDoc = Participants.findDoc({ userID: Meteor.userId() });
     let collectionName = LeavingTeams.getCollectionName();
     const definitionData = {
       username: pDoc.username,
-      team: team._id,
+      team: teamHLT._id,
     };
     defineMethod.call({ collectionName, definitionData }, (error) => {
       if (error) {
@@ -51,49 +51,49 @@ class TeamCard extends React.Component {
         console.error('failed to remove from team', err);
       }
     });
-  }
+  };
 
-  render() {
-    const team = this.buildTheTeam();
-    const isOwner = team.owner === this.props.participantID;
-    return (
-        <Card fluid>
-          <Card.Content>
-            <Card.Header>{team.name}</Card.Header>
-            <Card.Description>
-              <Grid container stackable columns={5}>
-                <Grid.Column>
-                  <Header size="tiny">Challenges</Header>
-                  {team.challenges.join(', ')}
-                </Grid.Column>
-                <Grid.Column>
-                  <Header size="tiny">Desired Skills</Header>
-                  <List bulleted>
-                    {team.skills.map((item) => <SkillItem item={item} key={item._id} />)}
-                  </List>
-                </Grid.Column>
-                <Grid.Column>
-                  <Header size="tiny">Desired Tools</Header>
-                  <List bulleted>
-                    {team.tools.map((item) => <ToolItem item={item} key={item._id} />)}
-                  </List>
-                </Grid.Column>
-                <Grid.Column>
-                  <Header size="tiny">Members</Header>
-                  <List>
-                    {team.members.map((member, index) => <List.Item key={`${index}${member}`}>{member}</List.Item>)}
-                  </List>
-                </Grid.Column>
-                <Grid.Column>
-                  <Button team={team} disabled={isOwner} color="red" onClick={this.handleLeaveTeam}>Leave team</Button>
-                </Grid.Column>
-              </Grid>
-            </Card.Description>
-          </Card.Content>
-        </Card>
-    );
-  }
-}
+  const builtTeam = buildTheTeam();
+  const isOwner = builtTeam.owner === participantID;
+  return (
+      <Card id={COMPONENT_IDS.TEAM_CARD}>
+        <Card.Body>
+          <Card.Title>
+            <h4 className="mb-2 fw-bold">{builtTeam.name}</h4>
+          </Card.Title>
+          <Container>
+            <Row>
+              <Col>
+                <h6 className="mb-2 fw-bold">Challenges</h6>
+                {builtTeam.challenges.join(', ')}
+              </Col>
+              <Col>
+                <h6 className="mb-2 fw-bold">Desired Skills</h6>
+                <ul>
+                  {builtTeam.skills.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              </Col>
+              <Col>
+                <h6 className="mb-2 fw-bold">Desired Tools</h6>
+                <ul>
+                  {builtTeam.tools.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              </Col>
+              <Col>
+                <h6 className="mb-2 fw-bold">Members</h6>
+                <ul>
+                  {builtTeam.members.map((member, index) => <li key={`${index}${member}`}>{member}</li>)}
+                </ul>
+              </Col>
+              <Col>
+                <Button team={builtTeam} disabled={isOwner} variant="danger" onClick={handleLeaveTeam}>Leave team</Button>
+              </Col>
+            </Row>
+          </Container>
+        </Card.Body>
+      </Card>
+  );
+};
 
 TeamCard.propTypes = {
   team: PropTypes.object.isRequired,

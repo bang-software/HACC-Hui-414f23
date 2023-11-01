@@ -1,14 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import {
-  Grid,
-  Header,
-  Item,
-  Icon, Segment,
-} from 'semantic-ui-react';
-import PropTypes from 'prop-types';
-import { withTracker } from 'meteor/react-meteor-data';
-import { _ } from 'lodash';
+import { useTracker } from 'meteor/react-meteor-data';
+import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -17,127 +10,111 @@ import YourTeamsCard from './YourTeamsCard';
 import MemberTeamCard from './MemberTeamCard';
 import { paleBlueStyle } from '../../styles';
 
-/**
- * Widget to list teams
- * @memberOf ui/pages
- */
-class YourTeamsWidget extends React.Component {
+const YourTeamsWidget = () => {
 
-  render() {
+  const data = useTracker(() => {
+    const participant = Participants.findOne({ userID: Meteor.userId() });
+    const participantID = participant?._id;
+    const teams = Teams.find({ owner: participantID }).fetch();
+    const teamParticipantsArray = TeamParticipants.find({ participantID }).fetch();
+    const memberTeamsIDs = [...new Set(teamParticipantsArray.map(item => item.teamID))];
+    const memberTeams = memberTeamsIDs.map(id => Teams.findOne(id));
+    const allParticipants = Participants.find({}).fetch();
+    const teamInvitations = TeamInvitations.find({}).fetch();
 
-    const allParticipants = this.props.participants;
+    return {
+      participant,
+      teams,
+      memberTeams,
+      allParticipants,
+      teamParticipantsArray,
+      teamInvitations,
+    };
+  });
 
-    function getTeamParticipants(teamID, teamParticipants) {
-      const data = [];
-      const participants = _.uniqBy(_.filter(teamParticipants, { teamID: teamID }), 'participantID');
-      // console.log(participants);
-      for (let i = 0; i < participants.length; i++) {
-        for (let j = 0; j < allParticipants.length; j++) {
-          if (participants[i].participantID === allParticipants[j]._id) {
-            data.push({
-              firstName: allParticipants[j].firstName,
-              lastName: allParticipants[j].lastName,
-            });
-          }
-        }
-      }
-      return data;
-    }
+  const getTeamParticipants = (teamID) => {
+    const filteredParticipants = data.teamParticipantsArray.filter(tp => tp.teamID === teamID);
+    return filteredParticipants.map(fp => {
+      const participantDetail = data.allParticipants.find(p => p._id === fp.participantID);
+      return {
+        firstName: participantDetail.firstName,
+        lastName: participantDetail.lastName,
+      };
+    });
+  };
 
-    if (!this.props.participant.isCompliant) {
-      return (
-          <div align={'center'}>
-            <Header as='h2' icon>
-              <Icon name='thumbs down outline' />
-              You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
-              &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
-              <Header.Subheader>
-                You can&apos;t be the owner of a team until you do. Please check back later.
-              </Header.Subheader>
-            </Header>
-          </div>
-      );
-    }
-    if (this.props.teams.length + this.props.memberTeams.length === 0) {
-      return (
-          <div align={'center'}>
-            <Header as='h2' icon>
-              <Icon name='users' />
-              You are not the owner or member of any teams
-              <Header.Subheader>
-                Please check back later.
-              </Header.Subheader>
-            </Header>
-          </div>
-      );
-    }
-
+  if (!data.participant?.isCompliant) {
     return (
-        <Grid container doubling relaxed stackable style={{ paddingBottom: 50 }}>
-          <Grid.Row centered>
-            <Header as='h2' textAlign="center" style={{ paddingBottom: '1rem' }}>
-              Your Teams
-            </Header>
-          </Grid.Row>
-          {this.props.teams.length === 0 ? '' : (
-              <Grid.Column width={15}>
-                <Segment style={paleBlueStyle}><Header as="h4" textAlign="center">Owner</Header>
-                  <Item.Group divided>
-                    {/* eslint-disable-next-line max-len */}
-                    {this.props.teams.map((teams) => <YourTeamsCard key={teams._id} teams={teams}
-                                                                    teamParticipants={getTeamParticipants(teams._id,
-                                                                        this.props.teamParticipants)}
-                                                                    teamInvitation={this.props.teamInvitation} />)}
-                  </Item.Group></Segment>
-              </Grid.Column>)
-          }
-          {this.props.memberTeams.length === 0 ? '' : (
-              <Grid.Column width={15}>
-                <Segment><Header as="h4" textAlign="center">Member</Header>
-                  <Item.Group divided>
-                    {this.props.memberTeams.map((team) => <MemberTeamCard key={team._id}
-                                                                          team={team}
-                                                                          teamParticipants={getTeamParticipants(
-                                                                              team._id,
-                                                                              this.props.teamParticipants,
-                                                                          )} />)}
-                  </Item.Group></Segment>
-              </Grid.Column>
-          )
-          }
-        </Grid>
+        <div className="text-center">
+          <h2>
+            <i className="fas fa-thumbs-down"></i>
+            You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
+            &nbsp;or we haven&apos;t received the signed form yet.
+          </h2>
+          <p>You can&apos;t be the owner of a team until you do. Please check back later.</p>
+        </div>
     );
   }
-}
 
-YourTeamsWidget.propTypes = {
-  participant: PropTypes.object.isRequired,
-  teams: PropTypes.array.isRequired,
-  memberTeams: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  teamParticipants: PropTypes.array.isRequired,
-  participants: PropTypes.array.isRequired,
-  teamInvitation: PropTypes.array.isRequired,
+  if (data.teams.length + data.memberTeams.length === 0) {
+    return (
+        <div className="text-center">
+          <h2>
+            <i className="fas fa-users"></i>
+            You are not the owner or member of any teams
+          </h2>
+          <p>Please check back later.</p>
+        </div>
+    );
+  }
 
+  return (
+      <Container>
+        <Row>
+          <h2 className="text-center mb-3">Your Teams</h2>
+        </Row>
+        {data.teams.length !== 0 && (
+            <Row>
+              <Col>
+                <Card style={paleBlueStyle}>
+                  <Card.Title><h4 className="card-header text-center">Owner</h4></Card.Title>
+                  <Card.Body>
+                    <ListGroup>
+                      {data.teams.map(team => (
+                          <ListGroup.Item key={team._id}>
+                            <YourTeamsCard
+                                key={team._id}
+                                teams={team}
+                                teamParticipants={getTeamParticipants(team._id)}
+                                teamInvitation={data.teamInvitations}/>
+                          </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+        )}
+        {data.memberTeams.length !== 0 && (
+            <Row>
+              <Col>
+                <Card>
+                  <Card.Title><h4 className="card-header text-center">Member</h4></Card.Title>
+                  <Card.Body>
+                    <ListGroup>
+                      {data.memberTeams.map(team => (
+                          <ListGroup.Item key={team._id}>
+                            <MemberTeamCard key={team._id} team={team} teamParticipants={getTeamParticipants(team._id)}/>
+                          </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+        )}
+      </Container>
+  );
 };
 
-export default withTracker(() => {
-  const participant = Participants.findDoc({ userID: Meteor.userId() });
-  const participantID = participant._id;
-  const teams = Teams.find({ owner: participantID }).fetch();
-  const memberTeams = _.map(_.uniqBy(TeamParticipants.find({ participantID }).fetch(), 'teamID'),
-    (tp) => Teams.findDoc(tp.teamID));
-  const participants = Participants.find({}).fetch();
-  const teamParticipants = TeamParticipants.find({}).fetch();
-  const teamInvitation = TeamInvitations.find({}).fetch();
-  // console.log(memberTeams);
-  return {
-    participant,
-    teams,
-    memberTeams,
-    participants,
-    teamParticipants,
-    teamInvitation,
-  };
-})(YourTeamsWidget);
+export default YourTeamsWidget;
