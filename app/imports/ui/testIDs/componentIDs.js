@@ -89,4 +89,5 @@ export const COMPONENT_IDS = {
   INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
   TEAM_CARD: 'team-card',
   MEMBER_TEAM_CARD: 'member_team_card',
+  TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
 };
