@@ -26,7 +26,7 @@ import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component
 import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
-import {yourTeamsCard} from './yourTeamsCard.component';
+import { yourTeamsCard } from './yourTeamsCard.component';
 
 /* global fixture:false, test:false */
 
@@ -161,7 +161,7 @@ test('Test that your teams page shows up', async (testController) => {
   await signinPage.signin(testController, credentialsD.username, credentialsD.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
-
+});
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
@@ -170,7 +170,14 @@ test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await listParticipantsAdminPage.isDisplayed(testController);
   await listParticipantsCardAdmin.isDisplayed(testController);
 });
-
+test('Test that ManageHacc page shows and toggles switches', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoConfigueHACC(testController);
+  // must be clicked twice to revert back to original state
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+  await manageHaccWidgetComponents.clickCustomSwitched(testController);
+});
 test('Test that AddChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
