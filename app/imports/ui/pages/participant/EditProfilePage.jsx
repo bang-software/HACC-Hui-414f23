@@ -2,13 +2,12 @@ import React from 'react';
 
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import EditProfileWidget from '../../components/participant/EditProfileWidget';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
-class EditProfilePage extends React.Component {
-  render() {
-    return (
-        <EditProfileWidget />
-    );
-  }
-}
+const EditProfilePage = () => (
+    <div id={PAGE_IDS.EDIT_PROFILE}>
+      <EditProfileWidget/>
+    </div>
+);
 
 export default withAllSubscriptions(EditProfilePage);

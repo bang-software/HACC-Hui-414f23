@@ -30,6 +30,7 @@ import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
 import { yourTeamsCard } from './yourTeamsCard.component';
 import { teamMembership } from './teamMembership.component';
+import { editProfilePage } from './editProfile.page';
 
 /* global fixture:false, test:false */
 
@@ -148,6 +149,9 @@ test('Test that profile page renders', async (testController) => {
   await agePage.under18(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
+  await profilePage.goToEditPage(testController);
+  await editProfilePage.isDisplayed(testController);
+  await navBar.gotoProfilePage(testController);
   await teamMembership.isDisplayed(testController);
   await teamCard.isDisplayed(testController);
 });
