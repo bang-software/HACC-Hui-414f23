@@ -16,6 +16,9 @@ export const COMPONENT_IDS = {
 
   HACC_WIDGET_VIEW_TEAMS_BUTTON: 'view-teams-button',
 
+  HACC_WIDGET_NAV_CHALLENGE: 'custom-nav-challenge',
+  HACC_WIDGET_NAV_SKILL: 'custom-nav-skill',
+  HACC_WIDGET_NAV_TOOl: 'custom-nav-tool',
   HACC_WIDGET_CUSTOM_SWITCH_TEAMS: 'custom-switch-teams',
   HACC_WIDGET_CUSTOM_SWITCH_CHALLENGES: 'custom-switch-challenges',
   HACC_WIDGET_ADD_CHALLENGE_BUTTON: 'add-challenge-button',
