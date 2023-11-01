@@ -1,9 +1,7 @@
-import React from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
+import React, { useState } from 'react';
+import { useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
-import { Form, Grid, Header, Segment } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import {
@@ -14,7 +12,7 @@ import {
   SelectField,
   SubmitField,
   TextField,
-} from 'uniforms-semantic';
+} from 'uniforms-bootstrap5';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -26,29 +24,42 @@ import { ParticipantSkills } from '../../../api/user/ParticipantSkillCollection'
 import { ParticipantTools } from '../../../api/user/ParticipantToolCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { demographicLevels } from '../../../api/level/Levels';
-import MultiSelectField from '../form-fields/MultiSelectField';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { ROUTES } from '../../../startup/client/route-constants';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-class EditProfileWidget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { redirectToReferer: false };
-    this.newSkillRef = React.createRef();
-    this.newSkillLevelRef = React.createRef();
-    this.newToolRef = React.createRef();
-    this.newToolLevelRef = React.createRef();
-  }
+const EditProfileWidget = () => {
+  const {
+    allChallenges,
+    allSkills,
+    allTools,
+    participant,
+    devChallenges,
+    devSkills,
+    devTools,
+  } = useTracker(() => {
+    const userId = Meteor.userId();
+    const part = Participants.findOne({ userID: userId });
+    const participantID = part?._id;
 
-  buildTheFormSchema() {
-    const challengeNames = _.map(this.props.allChallenges, (c) => c.title);
-    const skillNames = _.map(this.props.allSkills, (s) => s.name);
-    const toolNames = _.map(this.props.allTools, (t) => t.name);
+    return {
+      allChallenges: Challenges.find({}).fetch(),
+      allSkills: Skills.find({}).fetch(),
+      allTools: Tools.find({}).fetch(),
+      participant: part,
+      devChallenges: participantID ? ParticipantChallenges.find({ participantID }).fetch() : [],
+      devSkills: participantID ? ParticipantSkills.find({ participantID }).fetch() : [],
+      devTools: participantID ? ParticipantTools.find({ participantID }).fetch() : [],
+    };
+  }, []);
+  const [redirectToReferer, setRedirectToReferer] = useState(false);
+
+  const buildTheFormSchema = () => {
     const schema = new SimpleSchema({
       firstName: String,
       lastName: String,
       username: String,
-      demographicLevel: { type: String, allowedValues: demographicLevels, optional: true },
+      demographicLevel: { type: String, optional: true },
       linkedIn: { type: String, optional: true },
       gitHub: { type: String, optional: true },
       slackUsername: { type: String, optional: true },
@@ -58,35 +69,33 @@ class EditProfileWidget extends React.Component {
       lookingForTeam: { type: Boolean, optional: true },
       isCompliant: { type: Boolean, optional: true },
       challenges: { type: Array, optional: true },
-      'challenges.$': { type: String, allowedValues: challengeNames },
+      'challenges.$': { type: String },
       skills: { type: Array, optional: true },
-      'skills.$': { type: String, allowedValues: skillNames },
+      'skills.$': { type: String},
       tools: { type: Array, optional: true },
-      'tools.$': { type: String, allowedValues: toolNames },
+      'tools.$': { type: String},
     });
     return schema;
-  }
+  };
 
-  buildTheModel() {
-    const model = this.props.participant;
-    model.challenges = _.map(this.props.devChallenges, (challenge) => {
+  const buildTheModel = () => {
+    const model = participant;
+    model.challenges = devChallenges.map((challenge) => {
       const c = Challenges.findDoc(challenge.challengeID);
       return c.title;
     });
-    model.skills = _.map(this.props.devSkills, (skill) => {
-      // console.log(skill);
+    model.skills = devSkills.map((skill) => {
       const s = Skills.findDoc(skill.skillID);
       return s.name;
     });
-    model.tools = _.map(this.props.devTools, (tool) => {
+    model.tools = devTools.map((tool) => {
       const t = Tools.findDoc(tool.toolID);
       return t.name;
     });
     return model;
-  }
+  };
 
-  submitData(data) {
-    // console.log('submit', data);
+  const submitData = (data) => {
     const collectionName = Participants.getCollectionName();
     const updateData = {};
     updateData.id = data._id;
@@ -146,113 +155,94 @@ class EditProfileWidget extends React.Component {
         });
       }
     });
-    this.setState({ redirectToReferer: true });
-  }
+    setRedirectToReferer(true);
+  };
 
-  render() {
-    if (this.state.redirectToReferer) {
-      const from = { pathname: ROUTES.YOUR_PROFILE };
-      return <Redirect to={from} />;
-    }
-    const model = this.buildTheModel();
-    const schema = this.buildTheFormSchema();
-    const formSchema = new SimpleSchema2Bridge(schema);
-    return (
-        <div style={{ paddingBottom: '50px' }}>
-          <Grid container centered>
-            <Grid.Column>
-              <div style={{
-                backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
-                borderRadius: '2rem',
+  if (redirectToReferer) {
+    const from = { pathname: ROUTES.YOUR_PROFILE };
+    return <Redirect to={from}/>;
+  }
+  const model = buildTheModel();
+  const schema = buildTheFormSchema();
+  const formSchema = new SimpleSchema2Bridge(schema);
+  return (
+      <div style={{ paddingBottom: '50px' }}>
+        <Container>
+          <Col>
+            <div style={{
+              backgroundColor: '#E5F0FE', padding: '1rem 0rem', margin: '2rem 0rem',
+              borderRadius: '2rem',
+            }}>
+              <h3 className="text-center">Edit Profile</h3>
+            </div>
+            <AutoForm schema={formSchema} model={model} onSubmit={data => {
+              submitData(data);
+            }}>
+              <Card style={{
+                borderRadius: '1rem',
+                backgroundColor: '#E5F0FE',
               }}>
-                <Header as="h2" textAlign="center">Edit Profile</Header>
-              </div>
-              <AutoForm schema={formSchema} model={model} onSubmit={data => {
-                // console.log(data);
-                this.submitData(data);
-              }}>
-                <Segment style={{
-                  borderRadius: '1rem',
-                  backgroundColor: '#E5F0FE',
-                }}>
-                  <Form.Group widths="equal">
-                    <TextField name="username" disabled />
-                    <BoolField name="isCompliant" disabled />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <TextField name="firstName" />
-                    <TextField name="lastName" />
-                    <SelectField name="demographicLevel" />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <TextField name="linkedIn" />
-                    <TextField name="gitHub" />
-                    <TextField name="slackUsername" />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <TextField name="website" />
-                    <LongTextField name="aboutMe" />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <MultiSelectField name="challenges" />
-                    <MultiSelectField name="skills" />
-                    <MultiSelectField name="tools" />
-                  </Form.Group>
-                  <div align='center'>
+                <Card.Body>
+                  <Row>
+                    <Col>
+                      <TextField name="username" disabled/>
+                    </Col>
+                    <Col>
+                      <BoolField name="isCompliant" disabled/>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col><TextField name="firstName"/></Col>
+                    <Col><TextField name="lastName"/></Col>
+                    <Col><SelectField name="demographicLevel" options={demographicLevels}/></Col>
+                  </Row>
+                  <Row>
+                    <Col><TextField name="linkedIn"/></Col>
+                    <Col><TextField name="gitHub"/></Col>
+                    <Col><TextField name="slackUsername"/></Col>
+                  </Row>
+                  <Row>
+                    <Col><TextField name="website"/></Col>
+                    <Col><LongTextField name="aboutMe"/></Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <h6 className="fw-bold"> Challenges </h6>
+                      <SelectField
+                          id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
+                          multiple
+                          name="challenges"
+                          options={allChallenges.map(c => ({ label: c.title, value: c.title }))}
+                      />
+                    </Col>
+                    <Col>
+                      <h6 className="fw-bold"> Skills </h6>
+                      <SelectField
+                          multiple
+                          name="skills"
+                          options={allSkills.map(s => ({ label: s.name, value: s.name }))}
+                      /> </Col>
+                    <Col>
+                      <h6 className="fw-bold"> Tools </h6>
+                      <SelectField
+                        multiple
+                        name="tools"
+                        options={allTools.map(t => ({ label: t.name, value: t.name }))}
+                    /> </Col>
+                  </Row>
+                  <div className="text-center">
                     <SubmitField value='Submit'
                                  style={{
-                                   color: 'white', backgroundColor: '#DB2828',
                                    margin: '2rem 0rem',
                                  }}/>
                   </div>
-                  <ErrorsField />
-                </Segment>
-              </AutoForm>
-            </Grid.Column>
-          </Grid>
-        </div>
-    );
-  }
-}
-
-EditProfileWidget.propTypes = {
-  allChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  allTools: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  participant: PropTypes.object.isRequired,
-  devChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  devSkills: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  devTools: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
+                  <ErrorsField/>
+                </Card.Body>
+              </Card>
+            </AutoForm>
+          </Col>
+        </Container>
+      </div>
+  );
 };
-
-export default withTracker(() => {
-  const allChallenges = Challenges.find({}).fetch();
-  const allSkills = Skills.find({}).fetch();
-  const allTools = Tools.find({}).fetch();
-  const participant = Participants.findDoc({ userID: Meteor.userId() });
-  const participantID = participant._id;
-  const devChallenges = ParticipantChallenges.find({ participantID }).fetch();
-  const devSkills = ParticipantSkills.find({ participantID }).fetch();
-  const devTools = ParticipantTools.find({ participantID }).fetch();
-  return {
-    allChallenges,
-    allSkills,
-    allTools,
-    participant,
-    devChallenges,
-    devSkills,
-    devTools,
-  };
-})(EditProfileWidget);
+export default EditProfileWidget;
