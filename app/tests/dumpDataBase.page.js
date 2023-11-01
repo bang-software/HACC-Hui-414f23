@@ -9,7 +9,7 @@ class DumpDataBasePage {
   }
 
   async isDisplayed(testController) {
-    await testController.wait(30000).expect(this.pageSelector.exists).ok();
+    await testController.wait(5000).expect(this.pageSelector.exists).ok();
   }
 
   async clickDumpDownload(testController) {
