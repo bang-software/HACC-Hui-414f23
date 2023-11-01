@@ -8,7 +8,7 @@ class ListParticipantCard {
   }
 
   async isDisplayed(testController) {
-    await testController.wait(15000).expect(this.pageSelector.exists).ok();
+    await testController.wait(5000).expect(this.pageSelector.exists).ok();
   }
 }
 

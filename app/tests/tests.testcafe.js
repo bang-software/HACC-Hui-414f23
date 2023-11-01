@@ -30,6 +30,8 @@ import { yourTeamsCard } from './yourTeamsCard.component';
 import { dumpDataBasePage } from "./dumpDataBase.page";
 import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
+import { sideBar } from './sidebar.component';
+import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
 import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
 
@@ -85,6 +87,20 @@ const profileInfo = {
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 /** USER --------------------------------------------------------------------------------------------------*/
+test('Test sidebar user buttons', async (testController) => {
+  await testController.resizeWindow(475, 667);
+  await sideBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
+  await sideBar.gotoProfilePage(testController);
+  await profilePage.isDisplayed(testController);
+  await sideBar.gotoListParticipantsPage(testController);
+  await sideBar.gotoSuggestToolSkillPage(testController);
+  await suggestToolSkillPage.isDisplayed(testController);
+  await sideBar.gotoTeamInvitationsPage(testController);
+  await teamInvitationsPage.isDisplayed(testController);
+  await testController.resizeWindow(1024, 667);
+});
+
 test('Test that landing page shows up', async (testController) => {
   await landingPage.isDisplayed(testController);
 });
