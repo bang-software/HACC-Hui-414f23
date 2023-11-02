@@ -10,6 +10,9 @@ import {
 import {
   Container,
   Card,
+  Row,
+  Col,
+  Button
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { _ } from 'lodash';
@@ -41,8 +44,8 @@ class AllTeamInvitationCard extends React.Component {
       invitedMembers.push(Participants.getFullName(id));
     });
     return (
-        <Item onMouseEnter={changeBackground} onMouseLeave={onLeave}
-              style={{ padding: '0rem 2rem 0rem 2rem' }}>
+        <Card onMouseEnter={changeBackground} onMouseLeave={onLeave}
+              style={{ padding: '0rem 2rem 1rem 2rem' }}>
           <Modal closeIcon trigger={
             <Item.Content>
               <Item.Header>
@@ -109,7 +112,7 @@ class AllTeamInvitationCard extends React.Component {
               </Modal.Description>
             </Modal.Content>
           </Modal>
-        </Item>
+        </Card>
     );
   }
 }
