@@ -37,16 +37,16 @@ const InterestedParticipants = () => {
     const { developers, developerChallenges, developerSkills, developerTools, interestedDevs, teams, skills, challenges, tools }
         = useTracker(() => {
         const devs = Participants.find({}).fetch();
-        const devChallenges: ParticipantChallenges.find({}).fetch();
-        const devSkills: ParticipantSkills.find({}).fetch();
-        const devTools: ParticipantTools.find({}).fetch();
-        const interestedDevelopers: WantsToJoin.find({ teamID: documentId }).fetch();
-        const findTeams: Teams.find({ _id: documentId }).fetch();
-        const findSkills: Skills.find({}).fetch();
-        const findChallenges: Challenges.find({}).fetch();
-        const findTools: Tools.find({}).fetch();
+        const devChallenges = ParticipantChallenges.find({}).fetch();
+        const devSkills = ParticipantSkills.find({}).fetch();
+        const devTools = ParticipantTools.find({}).fetch();
+        const interestedDevelopers = WantsToJoin.find({ teamID: documentId }).fetch();
+        const findTeams = Teams.find({ _id: documentId }).fetch();
+        const findSkills = Skills.find({}).fetch();
+        const findChallenges = Challenges.find({}).fetch();
+        const findTools = Tools.find({}).fetch();
 
-        return{
+        return {
             developers: devs,
             developerChallenges: devChallenges,
             developerSkills: devSkills,
@@ -56,18 +56,19 @@ const InterestedParticipants = () => {
             skills: findSkills,
             challenges: findChallenges,
             tools: findTools,
-        }
-    }, [])
+        };
+    }, []);
+    // eslint-disable-next-line no-undef
     let url = window.location.href;
     url = url.split('/');
     const documentId = url[url.length - 1];
 
     const universalSkills = skills;
 
-    function getDeveloperSkills(developerID, developerSkills) {
+    function getDeveloperSkills(developerID, developerSkillsGDS) {
         const data = [];
-        const skills = developerSkills.filter(skill => skill.developerID === developerID);
-        for (let i = 0; i < skills.length; i++) {
+        const skillsGDS = developerSkillsGDS.filter(skill => skill.developerID === developerID);
+        for (let i = 0; i < skillsGDS.length; i++) {
             for (let j = 0; j < universalSkills.length; j++) {
                 if (skills[i].skillID === universalSkills[j]._id) {
                     data.push({ name: universalSkills[j].name });
@@ -93,10 +94,10 @@ const InterestedParticipants = () => {
 
     const universalTools = tools;
 
-    function getDeveloperTools(developerID, developerTools) {
+    function getDeveloperTools(developerID, developerToolsGDT) {
         const data = [];
-        const tools = developerTools.filter(tool => tool.developerID === developerID);
-        for (let i = 0; i < tools.length; i++) {
+        const toolsGDT = developerToolsGDT.filter(tool => tool.developerID === developerID);
+        for (let i = 0; i < toolsGDT.length; i++) {
             for (let j = 0; j < universalTools.length; j++) {
                 if (tools[i].toolID === universalTools[j]._id) {
                     data.push({ name: universalTools[j].name });
@@ -108,10 +109,10 @@ const InterestedParticipants = () => {
 
     const universalChallenges = challenges;
 
-    function getDeveloperChallenges(developerID, developerChallenges) {
+    function getDeveloperChallenges(developerID, developerChallengesGDC) {
         const data = [];
-        const challenges = developerChallenges.filter(challenge => challenge.developerID === developerID);
-        for (let i = 0; i < challenges.length; i++) {
+        const challengesGDC = developerChallengesGDC.filter(challenge => challenge.developerID === developerID);
+        for (let i = 0; i < challengesGDC.length; i++) {
             for (let j = 0; j < universalChallenges.length; j++) {
                 if (challenges[i].challengeID === universalChallenges[j]._id) {
                     data.push(universalChallenges[j].title);
