@@ -132,12 +132,12 @@ const InterestedParticipants = () => {
                 <Grid.Row>
                     <Grid.Column>
                         <Item.Group divided>
-                            {getInterestedDevelopers(interestedDevs).map((developers) => <InterestedParticipantCard
-                                    key={developers._id} developers={developers}
+                            {getInterestedDevelopers(interestedDevs).map((devs) => <InterestedParticipantCard
+                                    key={devs._id} developers={devs}
                                     teams={teams}
-                                    skills={getDeveloperSkills(developers._id, developerSkills)}
-                                    tools={getDeveloperTools(developers._id, developerTools)}
-                                    challenges={getDeveloperChallenges(developers._id, developerChallenges)}
+                                    skills={getDeveloperSkills(devs._id, developerSkills)}
+                                    tools={getDeveloperTools(devs._id, developerTools)}
+                                    challenges={getDeveloperChallenges(devs._id, developerChallenges)}
                                 />)}
                         </Item.Group>
                     </Grid.Column>
