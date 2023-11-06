@@ -23,7 +23,9 @@ class TeamParticipantCollection extends BaseCollection {
    * @param participant {String} participant slug or ID.
    * @return {String} the ID of the pair.
    */
-  define({ teamID, participantID }) {
+  define({ team, participant }) {
+    const teamID = Teams.getID(team);
+    const participantID = Participants.getID(participant);
     return this._collection.insert({ teamID, participantID });
   }
 
