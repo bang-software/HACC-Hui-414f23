@@ -22,7 +22,6 @@ class YourTeamsCard {
     async see_interested_participants(testController) {
         await this.isDisplayed(testController);
         await testController.click(`#${COMPONENT_IDS.SEE_INTERTESTED_PARTICIPANTS}`);
-        await this.isDisplayed(testController);
     }
 
     async open_edit_team_modal(testController) {
