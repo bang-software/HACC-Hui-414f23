@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Header, Message } from 'semantic-ui-react';
+import { Container, Header, Message } from 'semantic-ui-react';
+import { Row, Col } from 'react-bootstrap';
 import ListTeamExampleWidget from './ListTeamExampleWidget';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
@@ -43,35 +44,33 @@ const getTeamMembers = team => {
   const memberNames = teamParticipants.map(tp => Participants.getFullName(tp.participantID)); return memberNames;
 };
 
-class ListTeamsWidget extends React.Component {
-  render() {
+const ListTeamsWidget = ({ teams }) => {
     const closed = Teams.find({ open: false }).count();
-    return (
-        <Grid celled doubling stackable>
-          <Grid.Row columns={7} only='computer'>
-            <Grid.Column>
+    return (<Container>
+          <Row>
+            <Col>
               <Header>Name</Header>
-            </Grid.Column>
-            <Grid.Column>
+            </Col>
+            <Col>
               <Header>Challenges</Header>
-            </Grid.Column>
-            <Grid.Column>
+            </Col>
+            <Col>
               <Header>Desired Skills</Header>
-            </Grid.Column>
-            <Grid.Column>
+            </Col>
+            <Col>
               <Header>Desired Tools</Header>
-            </Grid.Column>
-            <Grid.Column>
+            </Col>
+            <Col>
               <Header>Devpost / Github</Header>
-            </Grid.Column>
-            <Grid.Column>
+            </Col>
+            <Col>
               <Header>Members</Header>
-            </Grid.Column>
-            <Grid.Column>
+            </Col>
+            <Col>
               <Header>Join?</Header>
-            </Grid.Column>
-          </Grid.Row>
-          {this.props.teams.map((team) => (
+            </Col>
+          </Row>
+          {teams.map((team) => (
               <ListTeamExampleWidget key={team._id}
                                      team={getTeam(team._id)}
                                      teamChallenges={getTeamChallenges(team)}
@@ -80,11 +79,10 @@ class ListTeamsWidget extends React.Component {
                                      teamMembers={getTeamMembers(team)}
               />
           ))}
-          <Grid.Row><Message negative>There are {closed} closed teams.</Message></Grid.Row>
-        </Grid>
+          <Row><Message negative>There are {closed} closed teams.</Message></Row>
+        </Container>
     );
-  }
-}
+};
 
 ListTeamsWidget.propTypes = {
   teams: PropTypes.arrayOf(PropTypes.object),

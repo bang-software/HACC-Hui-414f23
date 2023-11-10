@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid, Header, List } from 'semantic-ui-react';
-// import _ from 'lodash';
+import { Container, Row, Col } from 'react-bootstrap';
 import _ from 'underscore';
 import swal from 'sweetalert';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
@@ -68,62 +68,38 @@ class ListTeamExampleWidget extends React.Component {
   render() {
 
     return (
-        <Grid.Row columns={7} >
-          <Grid.Column>
+        <Row columns={7} >
+          <Col>
             <Header as="h3">{this.props.team.name}</Header>
-          </Grid.Column>
-          <Grid.Column only='computer'>
+          </Col>
+          <Col only='computer'>
             <List bulleted>
               {this.props.teamChallenges.map((c) => <List.Item key={c}>{c}</List.Item>)}
             </List>
-          </Grid.Column>
-          <Grid.Column only='tablet mobile'>
-            <Header>Challenges</Header>
-            <List bulleted>
-              {this.props.teamChallenges.map((c) => <List.Item key={c}>{c}</List.Item>)}
-            </List>
-          </Grid.Column>
-          <Grid.Column only='computer'>
+          </Col>
+          <Col only='computer'>
             <List bulleted>
               {this.props.teamSkills.map((s) => <List.Item key={s}>{s}</List.Item>)}
             </List>
-          </Grid.Column>
-          <Grid.Column only='tablet mobile'>
-            <Header>Desired Skills</Header>
-            <List bulleted>
-              {this.props.teamSkills.map((s) => <List.Item key={s}>{s}</List.Item>)}
-            </List>
-          </Grid.Column>
-          <Grid.Column only='computer'>
+          </Col>
+          <Col only='computer'>
             <List bulleted>
               {this.props.teamTools.map((t) => <List.Item key={t}>{t}</List.Item>)}
             </List>
-          </Grid.Column>
-          <Grid.Column only='tablet mobile'>
-            <Header>Desired Tools</Header>
-            <List bulleted>
-              {this.props.teamTools.map((t) => <List.Item key={t}>{t}</List.Item>)}
-            </List>
-          </Grid.Column>
-          <Grid.Column>
+          </Col>
+          <Col>
             <a href={this.props.team.devPostPage}>Devpost Page</a> <br />
             <a href={this.props.team.gitHubRepo}>GitHub repo</a>
-          </Grid.Column>
-          <Grid.Column only='computer'>
+          </Col>
+          <Col only='computer'>
             <List bulleted>
               {this.props.teamMembers.map((t) => <List.Item key={t}>{t}</List.Item>)}
             </List>
-          </Grid.Column>
-          <Grid.Column only='tablet mobile'>
-            <Header>Team Members</Header>
-            <List bulleted>
-              {this.props.teamMembers.map((t) => <List.Item key={t}>{t}</List.Item>)}
-            </List>
-          </Grid.Column>
-          <Grid.Column textAlign='center'>
+          </Col>
+          <Col textAlign='center'>
             {this.renderButton()}
-          </Grid.Column>
-        </Grid.Row>
+          </Col>
+        </Row>
     );
   }
 }
