@@ -27,4 +27,5 @@ export const PAGE_IDS = {
   DUMP_DATABASE: 'dump-database',
   NOT_FOUND: 'not-found',
   EDIT_PROFILE: 'edit-profile',
+  INTERESTED_PARTICIPANTS: 'interested-participants',
 };

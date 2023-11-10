@@ -27,14 +27,14 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
-import { dumpDataBasePage } from "./dumpDataBase.page";
+import { dumpDataBasePage } from './dumpDataBase.page';
 import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
 import { sideBar } from './sidebar.component';
-import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
 import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
 import { editTeam } from './editTeam.component';
+import { interestedParticipantsPage } from './interestedParticipants.page';
 
 /* global fixture:false, test:false */
 
@@ -103,6 +103,7 @@ test('Test sidebar user buttons', async (testController) => {
 });
 
 test('Test that landing page shows up', async (testController) => {
+  await testController.resizeWindow(1024, 667);
   await landingPage.isDisplayed(testController);
 });
 
@@ -173,7 +174,6 @@ test('Test that profile page renders', async (testController) => {
   await editProfilePage.isDisplayed(testController);
   await navBar.gotoProfilePage(testController);
   await teamMembership.isDisplayed(testController);
-  // await teamCard.isDisplayed(testController);
 });
 
 test('Test delete form renders', async (testController) => {
@@ -190,9 +190,17 @@ test('Test that your teams page and edit team form shows up', async (testControl
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
   await yourTeamsCard.isDisplayed(testController);
+  await memberTeamCard.isDisplayed(testController);
   await yourTeamsCard.open_edit_team_modal(testController);
   await editTeam.isDisplayed(testController);
-  // await memberTeamCard.isDisplayed(testController);
+});
+
+test('Test that interested participant page and cards show up', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsF.username, credentialsF.password);
+  await navBar.gotoYourTeams(testController);
+  await yourTeamsCard.see_interested_participants(testController);
+  await interestedParticipantsPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
