@@ -14,7 +14,6 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import ListSuggestionsCard from './ListSuggestionsCard';
 import ListSuggestionsFilter from './ListSuggestionsFilter';
-import SuggestToolSkillWidgetAdmin from '../../components/administrator/SuggestToolSkillWidgetAdmin';
 
 class ListSuggestionsWidget extends React.Component {
 
@@ -37,7 +36,6 @@ class ListSuggestionsWidget extends React.Component {
   }
 
   render() {
-
     if (this.props.suggestions.length === 0) {
       return (
           <div align={'center'}>
@@ -152,9 +150,6 @@ class ListSuggestionsWidget extends React.Component {
                       onChange={getType}
                   />
                 </div>
-              </div>
-              <div style={{ paddingTop: '2rem' }}>
-                <SuggestToolSkillWidgetAdmin />
               </div>
             </Segment>
           </Grid.Column>
