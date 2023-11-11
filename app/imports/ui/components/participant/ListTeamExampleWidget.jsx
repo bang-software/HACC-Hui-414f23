@@ -7,26 +7,69 @@ import swal from 'sweetalert';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
+import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
+import { TeamSkills } from '../../../api/team/TeamSkillCollection';
+import { TeamTools } from '../../../api/team/TeamToolCollection';
+import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
+import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { Skills } from '../../../api/skill/SkillCollection';
+import { Tools } from '../../../api/tool/ToolCollection';
 
-const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, teamMembers }) => {
-
-  const { ready, participant, requested, isAMember, collectionName } = useTracker(() => {
+const ListTeamExampleWidget = ({ team }) => {
+  const {
+    ready,
+    participant,
+    requested,
+    isAMember,
+    collectionName,
+    teamChallenges,
+    teamSkills,
+    teamTools,
+    teamMembers } = useTracker(() => {
     const sub1 = Participants.subscribe();
     const sub2 = WantsToJoin.subscribe();
+    const sub3 = TeamChallenges.subscribe();
+    const sub4 = TeamSkills.subscribe();
+    const sub5 = TeamTools.subscribe();
+    const sub6 = TeamParticipants.subscribe();
+    const sub7 = Challenges.subscribe();
+    const sub8 = Skills.subscribe();
+    const sub9 = Tools.subscribe();
+
+    const teamID = team._id;
+    const teamChallenges2 = TeamChallenges.find({ teamID }).fetch().map((tc) => Challenges.findDoc(tc.challengeID).title);
+    const teamSkills2 = TeamSkills.find({ teamID }).fetch().map((ts) => Skills.findDoc(ts.skillID).name);
+    const teamTools2 = TeamTools.find({ teamID }).fetch().map((tt) => Tools.findDoc(tt.toolID).name);
+    const teamMembers2 = TeamParticipants.find({ teamID }).fetch().map((tp) => Participants.getFullName(tp.participantID));
+
     const participant2 = Participants.findDoc({ userID: Meteor.userId() });
     const participantName = Participants.getFullName(participant2._id);
     const collectionName2 = WantsToJoin.getCollectionName();
-    const isAMember2 = teamMembers.includes(participantName);
+    const isAMember2 = teamMembers2.includes(participantName);
     const joinRequests = WantsToJoin.find({ teamID: team._id }).fetch();
     const joinSentUsers = joinRequests.map((jr) => jr.participantID);
+
     const requested2 = joinSentUsers.includes(participant2._id);
-    const rdy = sub1.ready() && sub2.ready();
+    const rdy =
+      sub1.ready() &&
+      sub2.ready() &&
+      sub3.ready() &&
+      sub4.ready() &&
+      sub5.ready() &&
+      sub6.ready() &&
+      sub7.ready() &&
+      sub8.ready() &&
+      sub9.ready();
     return {
       ready: rdy,
       participant: participant2,
       requested: requested2,
       isAMember: isAMember2,
       collectionName: collectionName2,
+      teamChallenges: teamChallenges2,
+      teamSkills: teamSkills2,
+      teamTools: teamTools2,
+      teamMembers: teamMembers2,
     };
   }, []);
 
@@ -66,7 +109,7 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
   return (ready ? (
     <Card>
       <Card.Header>
-        <h2 style={{ textAlign: 'center' }}>{team.name}</h2>
+        <h1 style={{ textAlign: 'center' }}>{team.name}</h1>
       </Card.Header>
       <Card.Body>
         <Row>
@@ -136,17 +179,5 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
 
 ListTeamExampleWidget.propTypes = {
   team: PropTypes.object.isRequired,
-  teamChallenges: PropTypes.arrayOf(
-      PropTypes.string,
-  ).isRequired,
-  teamSkills: PropTypes.arrayOf(
-      PropTypes.string,
-  ).isRequired,
-  teamTools: PropTypes.arrayOf(
-      PropTypes.string,
-  ).isRequired,
-  teamMembers: PropTypes.arrayOf(
-      PropTypes.string,
-  ).isRequired,
 };
 export default ListTeamExampleWidget;
