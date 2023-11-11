@@ -15,7 +15,7 @@ import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 
-const ListTeamExampleWidget = ({ team }) => {
+const ListTeamItem = ({ team }) => {
   const {
     ready,
     participant,
@@ -177,7 +177,7 @@ const ListTeamExampleWidget = ({ team }) => {
   ) : <Spinner/>);
 };
 
-ListTeamExampleWidget.propTypes = {
+ListTeamItem.propTypes = {
   team: PropTypes.object.isRequired,
 };
-export default ListTeamExampleWidget;
+export default ListTeamItem;

@@ -2,7 +2,7 @@ import React from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { Alert, Row, Container, Spinner } from 'react-bootstrap';
-import ListTeamExampleWidget from './ListTeamExampleWidget';
+import ListTeamItem from './ListTeamItem';
 import { Teams } from '../../../api/team/TeamCollection';
 
 const ListTeamsWidget = ({ teams }) => {
@@ -16,8 +16,8 @@ const ListTeamsWidget = ({ teams }) => {
       <Container>
         <Row>
           {teams.map((team) => (
-              <ListTeamExampleWidget key={team._id}
-                                     team={team}
+              <ListTeamItem key={team._id}
+                            team={team}
               />
           ))}
         </Row>

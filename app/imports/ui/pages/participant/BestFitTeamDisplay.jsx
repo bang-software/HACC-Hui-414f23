@@ -154,25 +154,26 @@ const BestTeam = () => {
     ];
 
     return (
-        <>
-          <Row>
-            <Col>
-              <h3>Please select a filter to reorder the teams: </h3>
-            </Col>
-            <Col>
-              <Form>
-                <Form.Group style={{ fontSize: `${20}px`, width: 'device-width' }}>
-                  <Form.Select
-                      onChange={_select}
-                  >
-                    {options.map((option) => <option key={option.key} value={option.value}>{option.text}</option>)}
-                  </Form.Select>
-                </Form.Group>
-              </Form>
-            </Col>
-          </Row>
-          <hr/>
-        </>
+        <Card>
+          <Card.Body>
+            <Row>
+              <Col>
+                <h3>Please select a filter to reorder the teams: </h3>
+              </Col>
+              <Col>
+                <Form>
+                  <Form.Group style={{ fontSize: `${20}px`, width: 'device-width' }}>
+                    <Form.Select
+                        onChange={_select}
+                    >
+                      {options.map((option) => <option key={option.key} value={option.value}>{option.text}</option>)}
+                    </Form.Select>
+                  </Form.Group>
+                </Form>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
     );
   };
 
@@ -204,9 +205,7 @@ const BestTeam = () => {
                 </h2>
                 <Card>
                   {renderDropDown()}
-                  <div style={{ paddingTop: '1rem', paddingBottom: '2rem' }}>
                     <ListTeamsWidget teams={teamsSelect}/>
-                  </div>
                 </Card>
               </Card.Body>
             </Card>
