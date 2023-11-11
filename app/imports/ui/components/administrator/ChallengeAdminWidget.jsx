@@ -38,11 +38,11 @@ const ChallengeAdminWidget = ({ challenge }) => {
         <td>{challenge.submissionDetail}</td>
         <td>{challenge.pitch}</td>
         <td>
-          <Button variant="primary">
-            <Link className='link-light'
-                  to={`/edit-challenge/${challenge._id}`}
-                  id={COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}>Edit</Link>
-          </Button>
+          <Link className='link-light'
+                to={`/edit-challenge/${challenge._id}`}
+                id={COMPONENT_IDS.EDIT_CHALLENGE_BUTTON}>
+            <Button variant="primary">Edit</Button>
+          </Link>
         </td>
         <td>
           <Button id={`${COMPONENT_IDS.DELETE_CHALLENGE_BUTTON}-${challenge._id}`}
