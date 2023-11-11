@@ -1,12 +1,18 @@
 import React from 'react';
+import { useTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import { Alert, Row, Container } from 'react-bootstrap';
+import { Alert, Row, Container, Spinner } from 'react-bootstrap';
 import ListTeamExampleWidget from './ListTeamExampleWidget';
 import { Teams } from '../../../api/team/TeamCollection';
 
 const ListTeamsWidget = ({ teams }) => {
-    const closed = Teams.find({ open: false }).count();
-    return (
+  const { ready, closed } = useTracker(() => {
+    const sub = Teams.subscribe();
+    const closed2 = Teams.find({ open: false }).count();
+    const rdy = sub.ready();
+    return { ready: rdy, closed: closed2 };
+  });
+    return (ready ? (
       <Container>
         <Row>
           {teams.map((team) => (
@@ -19,7 +25,7 @@ const ListTeamsWidget = ({ teams }) => {
           <Alert variant={'info'}>There are {closed} closed teams.</Alert>
         </Row>
       </Container>
-    );
+    ) : <Spinner/>);
 };
 
 ListTeamsWidget.propTypes = {
