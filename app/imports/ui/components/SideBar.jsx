@@ -45,7 +45,7 @@ const SideBar = ({ children }) => {
   // TODO: Fix styling of sidebar to keep consistency
   return (
   <Container fluid>
-      <Navbar borderless inverted fixed={'top'} expand={false} className={'mobileBar'} style={{ color: 'white' }}>
+      <Navbar fixed={'top'} expand={false} className={'mobileBar'} style={{ color: 'white' }}>
         <Navbar.Toggle id={COMPONENT_IDS.SIDEBAR_TOGGLE} aria-controls="offcanvasNavbar" onClick={() => setVisible(!visible)}/>
         <Navbar.Brand href="#" style={{ color: 'white' }}>HACC-Hui</Navbar.Brand>
       </Navbar>

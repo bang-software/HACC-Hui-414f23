@@ -35,6 +35,7 @@ import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
 import { editTeam } from './editTeam.component';
 import { interestedParticipantsPage } from './interestedParticipants.page';
+import { bestFitTeam } from './bestFitTeam.page';
 
 /* global fixture:false, test:false */
 
@@ -168,6 +169,8 @@ test('Test that profile page renders', async (testController) => {
   await signinPage.signin(testController, credentialsC.username, credentialsC.password);
   await agePage.isDisplayed(testController);
   await agePage.under18(testController);
+  await navBar.gotoBestFitTeam(testController);
+  await bestFitTeam.isDisplayed(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
   await profilePage.goToEditPage(testController);
