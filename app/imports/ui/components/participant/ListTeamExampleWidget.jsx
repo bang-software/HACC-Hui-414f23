@@ -7,8 +7,6 @@ import swal from 'sweetalert';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { defineMethod } from '../../../api/base/BaseCollection.methods';
-import { Teams } from '../../../api/team/TeamCollection';
-import { Slugs } from '../../../api/slug/SlugCollection';
 
 const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, teamMembers }) => {
 
@@ -28,24 +26,18 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
       participant: participant2,
       requested: requested2,
       isAMember: isAMember2,
-      collectionName: collectionName2
+      collectionName: collectionName2,
     };
   }, []);
-  // console.log(team.name);
 
-  const handleClick = (e, inst) => {
-    const collectionName2 = WantsToJoin.getCollectionName();
-    const teamDoc = Teams.findDoc(team._id);
-    const team2 = Slugs.getNameFromID(teamDoc.slugID);
-    const participant2 = Participants.findDoc({ userID: Meteor.userId() }).username;
+  const handleClick = () => {
 
     const teamName = team.name;
     const participantUsername = participant.username;
     const definitionData = {
-      team2,
-      participant2,
+      team: teamName,
+      participant: participantUsername,
     };
-    console.log(collectionName, definitionData);
 
     defineMethod.call({ collectionName, definitionData }, (error) => {
       if (error) {
@@ -81,7 +73,7 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
           <Col>
             <Card>
               <Card.Header>
-                <h3>Challenges</h3>
+                <h4>Challenges</h4>
               </Card.Header>
               <ListGroup>
                 {teamChallenges.map((c) => <ListGroup.Item key={c}>{c}</ListGroup.Item>)}
@@ -91,7 +83,7 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
           <Col>
             <Card>
               <Card.Header>
-                <h3>Desired Skills</h3>
+                <h4>Desired Skills</h4>
               </Card.Header>
               <ListGroup>
                 {teamSkills.map((s) => <ListGroup.Item key={s}>{s}</ListGroup.Item>)}
@@ -101,7 +93,7 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
           <Col>
             <Card>
               <Card.Header>
-                <h3>Desired Tools</h3>
+                <h4>Desired Tools</h4>
               </Card.Header>
             <ListGroup>
               {teamTools.map((t) => <ListGroup.Item key={t}>{t}</ListGroup.Item>)}
@@ -111,7 +103,7 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
           <Col>
             <Card>
               <Card.Header>
-                <h3>Devpost/Github</h3>
+                <h4>Devpost/Github</h4>
               </Card.Header>
               <ListGroup>
                 <ListGroup.Item>
@@ -126,7 +118,7 @@ const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, te
           <Col>
             <Card>
               <Card.Header>
-                <h3>Members</h3>
+                <h4>Members</h4>
               </Card.Header>
               <ListGroup>
                 {teamMembers.map((t) => <ListGroup.Item key={t}>{t}</ListGroup.Item>)}
