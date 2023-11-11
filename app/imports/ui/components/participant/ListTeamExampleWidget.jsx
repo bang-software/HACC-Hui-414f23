@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor';
+import { useTracker } from 'meteor/react-meteor-data';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid, Header, List } from 'semantic-ui-react';
-import { Container, Row, Col } from 'react-bootstrap';
-import _ from 'underscore';
+import { Card, Row, Col, ListGroup, Button, Spinner } from 'react-bootstrap';
 import swal from 'sweetalert';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -11,22 +10,40 @@ import { defineMethod } from '../../../api/base/BaseCollection.methods';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
 
-class ListTeamExampleWidget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { sent: false };
-    this.handleClick = this.handleClick.bind(this);
-  }
+const ListTeamExampleWidget = ({ team, teamChallenges, teamSkills, teamTools, teamMembers }) => {
 
-  handleClick(e, inst) {
-    console.log(e, inst);
-    const collectionName = WantsToJoin.getCollectionName();
-    const teamDoc = Teams.findDoc(inst.id);
-    const team = Slugs.getNameFromID(teamDoc.slugID);
-    const participant = Participants.findDoc({ userID: Meteor.userId() }).username;
+  const { ready, participant, requested, isAMember, collectionName } = useTracker(() => {
+    const sub1 = Participants.subscribe();
+    const sub2 = WantsToJoin.subscribe();
+    const participant2 = Participants.findDoc({ userID: Meteor.userId() });
+    const participantName = Participants.getFullName(participant2._id);
+    const collectionName2 = WantsToJoin.getCollectionName();
+    const isAMember2 = teamMembers.includes(participantName);
+    const joinRequests = WantsToJoin.find({ teamID: team._id }).fetch();
+    const joinSentUsers = joinRequests.map((jr) => jr.participantID);
+    const requested2 = joinSentUsers.includes(participant2._id);
+    const rdy = sub1.ready() && sub2.ready();
+    return {
+      ready: rdy,
+      participant: participant2,
+      requested: requested2,
+      isAMember: isAMember2,
+      collectionName: collectionName2
+    };
+  }, []);
+  // console.log(team.name);
+
+  const handleClick = (e, inst) => {
+    const collectionName2 = WantsToJoin.getCollectionName();
+    const teamDoc = Teams.findDoc(team._id);
+    const team2 = Slugs.getNameFromID(teamDoc.slugID);
+    const participant2 = Participants.findDoc({ userID: Meteor.userId() }).username;
+
+    const teamName = team.name;
+    const participantUsername = participant.username;
     const definitionData = {
-      team,
-      participant,
+      team2,
+      participant2,
     };
     console.log(collectionName, definitionData);
 
@@ -36,73 +53,95 @@ class ListTeamExampleWidget extends React.Component {
       } else {
 
         swal('Success', 'Join Request Sent', 'success');
-        this.setState({ sent: true });
-}
+      }
     });
-  }
+  };
 
-  renderButton() {
-    const participant = Participants.findDoc({ userID: Meteor.userId() });
-    const participantName = Participants.getFullName(participant._id);
-    const isAMember = _.includes(this.props.teamMembers, participantName);
-
-    const Joinrequests = WantsToJoin.find({ teamID: this.props.team._id }).fetch();
-    const Joinsentusers = _.pluck(Joinrequests, 'participantID');
-    const Requested = _.contains(Joinsentusers, participant._id);
+  const renderButton = () => {
 
     if (isAMember) {
-      return (<Button id={this.props.team._id} color="green"
-                      disabled={true} style={{ width: `${100}px`,
-        height: `${50}px`, textAlign: 'center' }} >You own the team</Button>);
+      return (<Button id={team._id}
+                      disabled={true} style={{ width: `${100}px`, textAlign: 'center' }} >You are a member of this team</Button>);
     }
-    if (this.state.sent || Requested) {
-      return (<Button id={this.props.team._id} color="green"
-                      disabled={true} style={{ width: `${100}px`,
-        height: `${50}px`, textAlign: 'center' }} >You sent the request</Button>);
+    if (requested) {
+      return (<Button id={team._id}
+                      disabled={true} style={{ width: `${100}px`, textAlign: 'center' }} >You sent the request</Button>);
     }
-    return (<Button id={this.props.team._id} color="green"
-                    onClick={this.handleClick} style={{ width: `${100}px`,
-      height: `${50}px`, textAlign: 'center' }} >Request to Join</Button>);
-  }
+    return (<Button id={team._id}
+                    onClick={handleClick} style={{ width: `${100}px`, textAlign: 'center' }} >Request to Join</Button>);
+  };
 
-  render() {
-
-    return (
-        <Row columns={7} >
+  return (ready ? (
+    <Card>
+      <Card.Header>
+        <h2 style={{ textAlign: 'center' }}>{team.name}</h2>
+      </Card.Header>
+      <Card.Body>
+        <Row>
           <Col>
-            <Header as="h3">{this.props.team.name}</Header>
-          </Col>
-          <Col only='computer'>
-            <List bulleted>
-              {this.props.teamChallenges.map((c) => <List.Item key={c}>{c}</List.Item>)}
-            </List>
-          </Col>
-          <Col only='computer'>
-            <List bulleted>
-              {this.props.teamSkills.map((s) => <List.Item key={s}>{s}</List.Item>)}
-            </List>
-          </Col>
-          <Col only='computer'>
-            <List bulleted>
-              {this.props.teamTools.map((t) => <List.Item key={t}>{t}</List.Item>)}
-            </List>
+            <Card>
+              <Card.Header>
+                <h3>Challenges</h3>
+              </Card.Header>
+              <ListGroup>
+                {teamChallenges.map((c) => <ListGroup.Item key={c}>{c}</ListGroup.Item>)}
+              </ListGroup>
+            </Card>
           </Col>
           <Col>
-            <a href={this.props.team.devPostPage}>Devpost Page</a> <br />
-            <a href={this.props.team.gitHubRepo}>GitHub repo</a>
+            <Card>
+              <Card.Header>
+                <h3>Desired Skills</h3>
+              </Card.Header>
+              <ListGroup>
+                {teamSkills.map((s) => <ListGroup.Item key={s}>{s}</ListGroup.Item>)}
+              </ListGroup>
+            </Card>
           </Col>
-          <Col only='computer'>
-            <List bulleted>
-              {this.props.teamMembers.map((t) => <List.Item key={t}>{t}</List.Item>)}
-            </List>
+          <Col>
+            <Card>
+              <Card.Header>
+                <h3>Desired Tools</h3>
+              </Card.Header>
+            <ListGroup>
+              {teamTools.map((t) => <ListGroup.Item key={t}>{t}</ListGroup.Item>)}
+            </ListGroup>
+            </Card>
           </Col>
-          <Col textAlign='center'>
-            {this.renderButton()}
+          <Col>
+            <Card>
+              <Card.Header>
+                <h3>Devpost/Github</h3>
+              </Card.Header>
+              <ListGroup>
+                <ListGroup.Item>
+                  <a href={team.devPostPage}>Devpost Page</a> <br />
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <a href={team.gitHubRepo}>GitHub repo</a>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card>
+          </Col>
+          <Col>
+            <Card>
+              <Card.Header>
+                <h3>Members</h3>
+              </Card.Header>
+              <ListGroup>
+                {teamMembers.map((t) => <ListGroup.Item key={t}>{t}</ListGroup.Item>)}
+              </ListGroup>
+            </Card>
+          </Col>
+          <Col style={{ textAlign: 'center' }}>
+            {renderButton()}
           </Col>
         </Row>
-    );
-  }
-}
+      </Card.Body>
+    </Card>
+  ) : <Spinner/>);
+};
+
 ListTeamExampleWidget.propTypes = {
   team: PropTypes.object.isRequired,
   teamChallenges: PropTypes.arrayOf(

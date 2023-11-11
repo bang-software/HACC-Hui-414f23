@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Header, Message } from 'semantic-ui-react';
-import { Row, Col } from 'react-bootstrap';
+import { Container, Header } from 'semantic-ui-react';
+import { Alert, Row, Col, Card } from 'react-bootstrap';
 import ListTeamExampleWidget from './ListTeamExampleWidget';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
@@ -12,8 +12,6 @@ import { Tools } from '../../../api/tool/ToolCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Teams } from '../../../api/team/TeamCollection';
-
-const getTeam = teamID => Teams.findDoc(teamID);
 
 const getTeamChallenges = team => {
   const teamID = team._id;
@@ -48,38 +46,48 @@ const ListTeamsWidget = ({ teams }) => {
     const closed = Teams.find({ open: false }).count();
     return (<Container>
           <Row>
-            <Col>
-              <Header>Name</Header>
-            </Col>
-            <Col>
-              <Header>Challenges</Header>
-            </Col>
-            <Col>
-              <Header>Desired Skills</Header>
-            </Col>
-            <Col>
-              <Header>Desired Tools</Header>
-            </Col>
-            <Col>
-              <Header>Devpost / Github</Header>
-            </Col>
-            <Col>
-              <Header>Members</Header>
-            </Col>
-            <Col>
-              <Header>Join?</Header>
-            </Col>
+            <Card>
+              <Card.Body>
+                <Row>
+                  <Col>
+                    <Header>Name</Header>
+                  </Col>
+                  <Col>
+                    <Header>Challenges</Header>
+                  </Col>
+                  <Col>
+                    <Header>Desired Skills</Header>
+                  </Col>
+                  <Col>
+                    <Header>Desired Tools</Header>
+                  </Col>
+                  <Col>
+                    <Header>Devpost / Github</Header>
+                  </Col>
+                  <Col>
+                    <Header>Members</Header>
+                  </Col>
+                  <Col>
+                    <Header>Join?</Header>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
           </Row>
-          {teams.map((team) => (
-              <ListTeamExampleWidget key={team._id}
-                                     team={getTeam(team._id)}
-                                     teamChallenges={getTeamChallenges(team)}
-                                     teamSkills={getTeamSkills(team)}
-                                     teamTools={getTeamTools(team)}
-                                     teamMembers={getTeamMembers(team)}
-              />
-          ))}
-          <Row><Message negative>There are {closed} closed teams.</Message></Row>
+          <Row>
+            {teams.map((team) => (
+                <ListTeamExampleWidget key={team._id}
+                                       team={team}
+                                       teamChallenges={getTeamChallenges(team)}
+                                       teamSkills={getTeamSkills(team)}
+                                       teamTools={getTeamTools(team)}
+                                       teamMembers={getTeamMembers(team)}
+                />
+            ))}
+          </Row>
+          <Row>
+            <Alert variant={'info'}>There are {closed} closed teams.</Alert>
+          </Row>
         </Container>
     );
 };
