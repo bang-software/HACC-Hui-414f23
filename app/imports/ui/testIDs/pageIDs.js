@@ -28,4 +28,5 @@ export const PAGE_IDS = {
   NOT_FOUND: 'not-found',
   EDIT_PROFILE: 'edit-profile',
   INTERESTED_PARTICIPANTS: 'interested-participants',
+  BEST_FIT_TEAM: 'best-fit-team',
 };

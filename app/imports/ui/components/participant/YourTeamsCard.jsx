@@ -20,7 +20,7 @@ import EditTeam from './EditTeam';
 const schema = new SimpleSchema({
   participants: {
     type: Array,
-    minCount: 1,
+    min: 1,
   },
   'participants.$': {
     type: Object,

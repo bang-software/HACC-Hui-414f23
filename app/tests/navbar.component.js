@@ -121,6 +121,14 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.UPDATE_MP}`);
   }
 
+  async gotoBestFitTeam(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.BEST_FIT_TEAM}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.BEST_FIT_TEAM}`);
+  }
+
   async gotoYourTeams(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`).visible;
     if (!visible) {

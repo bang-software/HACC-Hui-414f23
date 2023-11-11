@@ -107,7 +107,7 @@ export const COMPONENT_IDS = {
   SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON: 'sidebar-hacc-widget-view-teams-button',
   SIDEBAR_ALL_TEAM_INVITATIONS_NAV: 'sidebar-all-team-invitations-nav',
   SIDEBAR_CLOSE_BUTTON: 'sidebar-close-button',
-  
+
   DUMP_DATABASE: 'dump-database',
   DUMP_TEAM: 'dump-team',
   GOTO_DUMP_DATABASE: 'goto-dump-database',
@@ -118,4 +118,5 @@ export const COMPONENT_IDS = {
   EDIT_PROFILE_BUTTON: 'edit-profile-button',
   EDIT_TEAM_BUTTON: 'edit-team-button',
   EDIT_TEAM: 'edit-team',
+  BEST_FIT_TEAM: 'best-fit-team',
 };
