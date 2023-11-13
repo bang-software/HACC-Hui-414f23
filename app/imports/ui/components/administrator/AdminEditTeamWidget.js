@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import swal from 'sweetalert';
 import SimpleSchema from 'simpl-schema';
-import { withRouter } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
@@ -53,8 +53,6 @@ class AdminEditTeamWidget extends React.Component {
     updateData.gitHubRepo = gitHubRepo;
 
     const collectionName = Teams.getCollectionName();
-    console.log(updateData);
-    console.log(collectionName);
     updateMethod.call({ collectionName, updateData },
         (error) => {
           if (error) {
@@ -127,14 +125,16 @@ AdminEditTeamWidget.propTypes = {
 
 const AdminEditTeamCon = withTracker(({ match }) => {
   // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
-  const documentId = match.params._id;
+  const documentId = useParams();
   const team = Teams.findDoc(documentId);
   const members = _.map(TeamParticipants.find({ teamID: team._id }).fetch(),
       (tp) => Participants.findDoc(tp.participantID));
+  console.log(team);
+  console.log(members);
   return {
     team,
     members,
   };
 })(AdminEditTeamWidget);
 
-export default withRouter(AdminEditTeamCon);
+export default AdminEditTeamCon;
