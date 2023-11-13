@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import {
-  AutoForm, ErrorsField, SubmitField, TextField, LongTextField,
-  ListField, ListItemField, SelectField, RadioField,
+  AutoForm, SubmitField, TextField, LongTextField,
+  ListField, ListItemField, SelectField,
 } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
 import SimpleSchema from 'simpl-schema';
@@ -18,6 +18,8 @@ import { Participants } from '../../../api/user/ParticipantCollection';
 import { Slugs } from '../../../api/slug/SlugCollection';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import {Header, Icon} from "semantic-ui-react";
 // import RadioField from "../form-fields/RadioField";
 
 const CreateTeamWidget = () => {
@@ -32,13 +34,12 @@ const CreateTeamWidget = () => {
   const [errorModal, setErrorModal] = useState(false);
   const [isRegistered, setIsRegistered] = useState([]);
   const [notRegistered, setNotRegistered] = useState([]);
-  const [redirectToReferer, setRedirectToReferer] = useState(false);
 
   const buildTheFormSchema = () => {
     const schema = new SimpleSchema({
       open: {
         type: String,
-        label: 'Availability'
+        label: 'Availability',
       },
       name: { type: String, label: 'Team Name' },
       challenge: { type: String, optional: true },
@@ -67,10 +68,8 @@ const CreateTeamWidget = () => {
     return schema;
   };
   const submit = (formData, formRef) => {
-    // Reset state for registration status
     setIsRegistered([]);
     setNotRegistered([]);
-    console.log('Submit function called', formData);
     const owner = Fetchedparticipant.username;
     const { name, description, challenge, skills, tools, participants, devpostPage, affiliation } = formData;
     if (/^[a-zA-Z0-9-]*$/.test(name) === false) {
@@ -134,7 +133,7 @@ const CreateTeamWidget = () => {
     });
 
     // Sending invites to registered members
-    IsRegistered.forEach(email => {
+    isRegistered.forEach(email => {
       const newTeamID = Teams.findOne({ name: name })._id;
       const teamDoc = Teams.findDoc(newTeamID);
       const team = Slugs.getNameFromID(teamDoc.slugID);
@@ -159,6 +158,22 @@ const CreateTeamWidget = () => {
   const schema = buildTheFormSchema();
   const formSchema = new SimpleSchema2Bridge(schema);
   let fRef = null;
+
+  if (!Fetchedparticipant.isCompliant) {
+    return (
+        <Container fluid>
+          <Header as='h2' icon>
+            <Icon name='thumbs down outline' />
+            You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
+            &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
+            <Header.Subheader>
+              You cannot create a team until you do agree to the rules. Please check back later.
+            </Header.Subheader>
+          </Header>
+        </Container>
+    );
+  }
+
   return (
       <Container fluid className="mt-3">
         <Row>
@@ -170,7 +185,7 @@ const CreateTeamWidget = () => {
         }} schema={formSchema} model={model} onSubmit={data => submit(data, fRef)}>
           <Row>
             <Col>
-              <TextField name="name" />
+              <TextField name="name" id={COMPONENT_IDS.CREATE_TEAM_NAME}/>
             </Col>
             <Col>
               <SelectField
@@ -182,7 +197,7 @@ const CreateTeamWidget = () => {
               />
             </Col>
             <Col>
-              <LongTextField name="description" />
+              <LongTextField name="description" id={COMPONENT_IDS.CREATE_TEAM_DESCRIPTION}/>
             </Col>
           </Row>
           <Row>
@@ -198,10 +213,10 @@ const CreateTeamWidget = () => {
           </Row>
           <Row>
             <Col>
-              <TextField name="devpostPage" />
+              <TextField name="devpostPage" id={COMPONENT_IDS.CREATE_TEAM_DEVPOST}/>
             </Col>
             <Col>
-              <TextField name="affiliation" />
+              <TextField name="affiliation" id={COMPONENT_IDS.CREATE_TEAM_AFFILIATION}/>
             </Col>
           </Row>
           <Row>
@@ -214,7 +229,7 @@ const CreateTeamWidget = () => {
               </ListItemField>
             </ListField>
           </Row>
-          <SubmitField />
+          <SubmitField id={COMPONENT_IDS.CREATE_TEAM_SUBMIT}/>
         </AutoForm>
         <Modal show={errorModal} onHide={closeModal}>
           <Modal.Header closeButton>

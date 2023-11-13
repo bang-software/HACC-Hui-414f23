@@ -119,4 +119,10 @@ export const COMPONENT_IDS = {
   EDIT_TEAM_BUTTON: 'edit-team-button',
   EDIT_TEAM: 'edit-team',
   BEST_FIT_TEAM: 'best-fit-team',
+
+  CREATE_TEAM_NAME: 'create-team-name',
+  CREATE_TEAM_DESCRIPTION: 'create-team-description',
+  CREATE_TEAM_DEVPOST: 'create-team-devpost',
+  CREATE_TEAM_AFFILIATION: 'create-team-affiliation',
+  CREATE_TEAM_SUBMIT: 'create-team-submit',
 };
