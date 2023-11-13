@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
 const ViewTeam = ({ team, teamMembers, isCompliant }) => {
   const { participants: fetchedParticipants, teamChallenges: fetchedteamChallenges } = useTracker(() => {
@@ -63,7 +64,7 @@ const ViewTeam = ({ team, teamMembers, isCompliant }) => {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <Button as={Link} to={`/admin-edit-team/${team._id}`} variant="secondary">
+          <Button id={COMPONENT_IDS.EDIT_TEAM_BUTTON_ADMIN} as={Link} to={`/admin-edit-team/${team._id}`} variant="secondary">
             Edit
           </Button>
         </Modal.Footer>

@@ -118,5 +118,7 @@ export const COMPONENT_IDS = {
   EDIT_PROFILE_BUTTON: 'edit-profile-button',
   EDIT_TEAM_BUTTON: 'edit-team-button',
   EDIT_TEAM: 'edit-team',
+  EDIT_TEAM_BUTTON_ADMIN: 'edit-team-button',
+  EDIT_TEAM_SUBMIT_ADMIN: 'edit-team-submit-admin',
   BEST_FIT_TEAM: 'best-fit-team',
 };

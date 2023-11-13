@@ -16,7 +16,6 @@ import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
-
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { ROUTES } from '../../../startup/client/route-constants';
@@ -133,7 +132,7 @@ const AdminEditTeamPage = () => {
   const model = buildModel();
 
   return (
-      <Container>
+      <Container id={PAGE_IDS.EDIT_TEAM_PAGE_ADMIN}>
         <AutoForm id={COMPONENT_IDS.EDIT_TEAM} schema={formSchema} onSubmit={data => submit(data)} model={model}>
           <Container style={{
             borderRadius: '40px',
@@ -200,7 +199,7 @@ const AdminEditTeamPage = () => {
                 name="members"
                 options={memberNames.map(name => ({ label: name, value: name }))}
             />
-            <SubmitField value='Submit'/>
+            <SubmitField id={COMPONENT_IDS.EDIT_TEAM_SUBMIT_ADMIN} value='Submit'/>
             <ErrorsField/>
           </Container>
         </AutoForm>

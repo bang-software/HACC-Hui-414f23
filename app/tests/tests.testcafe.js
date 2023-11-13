@@ -277,6 +277,17 @@ test('Test that ViewTeams pages function', async (testController) => {
   await manageHaccWidgetComponents.isDisplayed(testController);
 });
 
+test('Test that admin teams page and edit team form shows up', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoYourTeams(testController);
+  await yourTeams.isDisplayed(testController);
+  await yourTeamsCard.isDisplayed(testController);
+  await memberTeamCard.isDisplayed(testController);
+  await yourTeamsCard.open_edit_team_modal(testController);
+  await editTeam.isDisplayed(testController);
+});
+
 test('Test that AllTeamInvitations pages function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
