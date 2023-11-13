@@ -22,7 +22,8 @@ const ViewTeam = ({ team, teamMembers, isCompliant }) => {
 
   return (
     <>
-      <Card style={{ padding: '1.0rem 1.5rem', cursor: 'pointer' }} onClick={() => setShowModal(true)}>
+      <Card id={COMPONENT_IDS.VIEW_TEAM_CARD}
+            style={{ padding: '1.0rem 1.5rem', cursor: 'pointer' }} onClick={() => setShowModal(true)}>
         <Card.Body>
           <Card.Title>
             {team.name} {isCompliant ? '✅' : '⚠️'}

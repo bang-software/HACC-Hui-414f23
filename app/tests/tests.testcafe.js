@@ -81,6 +81,10 @@ const editedTool = {
   description: 'The description of the edit tool',
 };
 
+const editedTeam = {
+  name: 'New team name',
+};
+
 const profileInfo = {
   linkedin: 'Linkedin.com/usr/test',
   aboutMe: 'Im a Garth Summey',
@@ -270,22 +274,20 @@ test('Test that EditTool page function', async (testController) => {
   await editToolPage.editTool(testController, editedTool);
 });
 
-test('Test that ViewTeams pages function', async (testController) => {
+test('Test that ViewTeams pages shows', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.gotoConfigueHACC(testController);
-  await manageHaccWidgetComponents.isDisplayed(testController);
+  await navBar.gotoViewTeamsPage(testController);
+  await viewTeamsPage.isDisplayed(testController);
 });
 
-test('Test that admin teams page and edit team form shows up', async (testController) => {
+test('Test that admin view team shows modal and edit team page shows', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.gotoYourTeams(testController);
-  await yourTeams.isDisplayed(testController);
-  await yourTeamsCard.isDisplayed(testController);
-  await memberTeamCard.isDisplayed(testController);
-  await yourTeamsCard.open_edit_team_modal(testController);
-  await editTeam.isDisplayed(testController);
+  await navBar.gotoViewTeamsPage(testController);
+  await viewTeamsPage.isDisplayed(testController);
+  await viewTeamsPage.viewTeam(testController);
+  await viewTeamsPage.editTeamAdmin(testController, editedTeam);
 });
 
 test('Test that AllTeamInvitations pages function', async (testController) => {
