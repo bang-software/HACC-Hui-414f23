@@ -36,6 +36,7 @@ import { editProfilePage } from './editProfile.page';
 import { editTeam } from './editTeam.component';
 import { interestedParticipantsPage } from './interestedParticipants.page';
 import { bestFitTeam } from './bestFitTeam.page';
+import {createTeamPage} from "./createTeam.page";
 
 /* global fixture:false, test:false */
 
@@ -85,6 +86,13 @@ const profileInfo = {
   linkedin: 'Linkedin.com/usr/test',
   aboutMe: 'Im a Garth Summey',
 };
+
+const teamInfo = {
+  name: 'bang-software',
+  description: 'nice team',
+  devpost: 'github.com',
+  affiliation: 'aff',
+}
 
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
@@ -204,6 +212,13 @@ test('Test that interested participant page and cards show up', async (testContr
   await navBar.gotoYourTeams(testController);
   await yourTeamsCard.see_interested_participants(testController);
   await interestedParticipantsPage.isDisplayed(testController);
+});
+
+test('Test that CreateTeam page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await createTeamPage.isDisplayed(testController);
+  // await createProfilePage.fillInfo(testController, profileInfo);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
