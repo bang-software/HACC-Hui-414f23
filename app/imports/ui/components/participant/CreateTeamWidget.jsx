@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
+import { Container, Row, Col, Modal, Button, Navbar } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm, SubmitField, TextField, LongTextField,
@@ -19,7 +19,6 @@ import { Slugs } from '../../../api/slug/SlugCollection';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
-import {Header, Icon} from "semantic-ui-react";
 // import RadioField from "../form-fields/RadioField";
 
 const CreateTeamWidget = () => {
@@ -157,19 +156,20 @@ const CreateTeamWidget = () => {
   const model = Fetchedparticipant;
   const schema = buildTheFormSchema();
   const formSchema = new SimpleSchema2Bridge(schema);
+  const disabled = !FetchedcanCreateTeams;
   let fRef = null;
 
   if (!Fetchedparticipant.isCompliant) {
     return (
         <Container fluid>
-          <Header as='h2' icon>
-            <Icon name='thumbs down outline' />
+          <Navbar as='h2' icon>
+            <Navbar name='thumbs down outline' />
             You have not agreed to the <a href="https://hacc.hawaii.gov/hacc-rules/">HACC Rules</a>
             &nbsp;or we&apos;ve haven&apos;t received the signed form yet.
-            <Header.Subheader>
+            <Navbar.Text>
               You cannot create a team until you do agree to the rules. Please check back later.
-            </Header.Subheader>
-          </Header>
+            </Navbar.Text>
+          </Navbar>
         </Container>
     );
   }
@@ -194,6 +194,7 @@ const CreateTeamWidget = () => {
                     { key: 'open', label: 'Open', value: 'Open' },
                     { key: 'close', label: 'Close', value: 'Close' },
                   ]}
+                  id={COMPONENT_IDS.CREATE_TEAM_OPEN}
               />
             </Col>
             <Col>
@@ -202,13 +203,27 @@ const CreateTeamWidget = () => {
           </Row>
           <Row>
             <Col>
-              <SelectField name="challenge" options={Fetchedchallenges.map(c => ({ label: c.title, value: c.title }))}/>
+              <SelectField
+                  name="challenge"
+                  options={Fetchedchallenges.map(c => ({ label: c.title, value: c.title }))}
+                  id={COMPONENT_IDS.CREATE_TEAM_CHALLENGE}
+              />
             </Col>
             <Col>
-              <SelectField name="skills" multiple options={Fetchedskills.map(s => ({ label: s.name, value: s.name }))}/>
+              <SelectField
+                  name="skills"
+                  multiple
+                  options={Fetchedskills.map(s => ({ label: s.name, value: s.name }))}
+                  id={COMPONENT_IDS.CREATE_TEAM_SKILLS}
+              />
             </Col>
             <Col>
-              <SelectField name="tools" multiple options={Fetchedtools.map(t => ({ label: t.name, value: t.name }))}/>
+              <SelectField
+                  name="tools"
+                  multiple
+                  options={Fetchedtools.map(t => ({ label: t.name, value: t.name }))}
+                  id={COMPONENT_IDS.CREATE_TEAM_TOOLS}
+              />
             </Col>
           </Row>
           <Row>
@@ -229,7 +244,10 @@ const CreateTeamWidget = () => {
               </ListItemField>
             </ListField>
           </Row>
-          <SubmitField id={COMPONENT_IDS.CREATE_TEAM_SUBMIT}/>
+          <SubmitField
+              id={COMPONENT_IDS.CREATE_TEAM_SUBMIT}
+              disabled={disabled}
+          />
         </AutoForm>
         <Modal show={errorModal} onHide={closeModal}>
           <Modal.Header closeButton>

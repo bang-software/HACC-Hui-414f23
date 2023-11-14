@@ -125,4 +125,8 @@ export const COMPONENT_IDS = {
   CREATE_TEAM_DEVPOST: 'create-team-devpost',
   CREATE_TEAM_AFFILIATION: 'create-team-affiliation',
   CREATE_TEAM_SUBMIT: 'create-team-submit',
+  CREATE_TEAM_OPEN: 'create-team-open',
+  CREATE_TEAM_CHALLENGE: 'create-team-challenge',
+  CREATE_TEAM_SKILLS: 'create-team-skills',
+  CREATE_TEAM_TOOLS: 'create-team-tools',
 };
