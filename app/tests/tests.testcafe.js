@@ -14,7 +14,6 @@ import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { viewTeamsPage } from './viewTeamsPage.page';
-import { suggestToolSkillPage } from './suggestToolSkillPage';
 import { profilePage } from './profilePage';
 import { listParticipantsPage } from './listParticipants.page';
 import { teamInvitationsPage } from './teamInvitationsPage';
