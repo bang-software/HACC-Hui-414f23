@@ -48,9 +48,6 @@ class ManageHaccWidgetComponents {
     await testController.click(`#${COMPONENT_IDS.EDIT_TOOL_BUTTON}`);
   }
 
-  async gotoViewTeamsPage(testController) {
-    await testController.click(`#${COMPONENT_IDS.HACC_WIDGET_VIEW_TEAMS_BUTTON}`);
-  }
 }
 
 export const manageHaccWidgetComponents = new ManageHaccWidgetComponents();

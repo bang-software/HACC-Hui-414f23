@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Col, Card, Row } from 'react-bootstrap';
 import { AutoForm, SelectField, ErrorsField, SubmitField, TextField, LongTextField, BoolField } from 'uniforms-bootstrap5';
-import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import Swal from 'sweetalert2';
@@ -12,20 +12,21 @@ import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Participants } from '../../../api/user/ParticipantCollection';
-import { Slugs } from '../../../api/slug/SlugCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 
 /**
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-const EditTeam = ({ team }) => {
+const EditTeam = () => {
 
-  const { challenges,
+  const { team,
+          challenges,
           skills,
           tools,
           members,
@@ -33,20 +34,12 @@ const EditTeam = ({ team }) => {
           allSkillNames,
           allToolNames,
           memberNames,
-          ready } = useTracker(() => {
-    const sub1 = Challenges.subscribe();
-    const sub2 = Skills.subscribe();
-    const sub3 = Tools.subscribe();
-    const sub4 = Participants.subscribe();
-    const sub5 = TeamChallenges.subscribe();
-    const sub6 = TeamSkills.subscribe();
-    const sub7 = TeamTools.subscribe();
-    const sub8 = TeamParticipants.subscribe();
-    const sub9 = Slugs.subscribe();
-    const challengeIDs = TeamChallenges.find({ teamID: team._id }).fetch().map((tc) => tc.challengeID);
-    const skillIDs = TeamSkills.find({ teamID: team._id }).fetch().map((ts) => ts.skillID);
-    const toolIDs = TeamTools.find({ teamID: team._id }).fetch().map((tt) => tt.toolID);
-    const memberIDs = TeamParticipants.find({ teamID: team._id }).fetch().map((tp) => tp.participantID);
+  } = useTracker(() => {
+    const team2 = Teams.findDoc(useParams());
+    const challengeIDs = TeamChallenges.find({ teamID: team2._id }).fetch().map((tc) => tc.challengeID);
+    const skillIDs = TeamSkills.find({ teamID: team2._id }).fetch().map((ts) => ts.skillID);
+    const toolIDs = TeamTools.find({ teamID: team2._id }).fetch().map((tt) => tt.toolID);
+    const memberIDs = TeamParticipants.find({ teamID: team2._id }).fetch().map((tp) => tp.participantID);
     const challenges2 = challengeIDs.map((challengeID) => Challenges.findDoc(challengeID));
     const skills2 = skillIDs.map((skillID) => Skills.findDoc(skillID));
     const tools2 = toolIDs.map((toolID) => Tools.findDoc(toolID));
@@ -55,9 +48,8 @@ const EditTeam = ({ team }) => {
     const allSkillNames2 = Skills.find().fetch().map((s) => s.name);
     const allToolNames2 = Tools.find().fetch().map((t) => t.name);
     const memberNames2 = members2.map((member) => member.username);
-    const ready2 = sub1.ready() && sub2.ready() && sub3.ready() && sub4.ready() &&
-      sub5.ready() && sub6.ready() && sub7.ready() && sub8.ready() && sub9.ready();
     return {
+      team: team2,
       challenges: challenges2,
       skills: skills2,
       tools: tools2,
@@ -66,7 +58,6 @@ const EditTeam = ({ team }) => {
       allSkillNames: allSkillNames2,
       allToolNames: allToolNames2,
       memberNames: memberNames2,
-      ready: ready2,
     };
   });
 
@@ -211,8 +202,4 @@ const EditTeam = ({ team }) => {
   );
 };
 
-EditTeam.propTypes = {
-  team: PropTypes.object.isRequired,
-};
-
-export default EditTeam;
+export default withAllSubscriptions(EditTeam);
