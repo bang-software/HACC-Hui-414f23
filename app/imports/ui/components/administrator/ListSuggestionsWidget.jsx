@@ -38,7 +38,7 @@ class ListSuggestionsWidget extends React.Component {
   render() {
     if (this.props.suggestions.length === 0) {
       return (
-          <div align={'center'}>
+          <div style={{ textAlign: 'center' }}>
             <Header as='h2' icon>
               <Icon name='users' />
               There are no suggestions at the moment.
@@ -59,8 +59,6 @@ class ListSuggestionsWidget extends React.Component {
     ];
 
     const sticky = {
-      position: '-webkit-sticky',
-      // eslint-disable-next-line no-dupe-keys
       position: 'sticky',
       top: '6.5rem',
     };
@@ -147,6 +145,7 @@ class ListSuggestionsWidget extends React.Component {
                       search
                       selection
                       options={typeOptions}
+                      defaultValue='All'
                       onChange={getType}
                   />
                 </div>
