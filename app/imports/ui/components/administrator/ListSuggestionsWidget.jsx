@@ -14,6 +14,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import ListSuggestionsCard from './ListSuggestionsCard';
 import ListSuggestionsFilter from './ListSuggestionsFilter';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
 class ListSuggestionsWidget extends React.Component {
 
@@ -36,19 +37,6 @@ class ListSuggestionsWidget extends React.Component {
   }
 
   render() {
-    if (this.props.suggestions.length === 0) {
-      return (
-          <div align={'center'}>
-            <Header as='h2' icon>
-              <Icon name='users' />
-              There are no suggestions at the moment.
-              <Header.Subheader>
-                Please check back later.
-              </Header.Subheader>
-            </Header>
-          </div>
-      );
-    }
 
     // eslint-disable-next-line no-unused-vars
     const sortBy = [
@@ -59,8 +47,6 @@ class ListSuggestionsWidget extends React.Component {
     ];
 
     const sticky = {
-      position: '-webkit-sticky',
-      // eslint-disable-next-line no-dupe-keys
       position: 'sticky',
       top: '6.5rem',
     };
@@ -116,6 +102,7 @@ class ListSuggestionsWidget extends React.Component {
     return (
         <Grid container doubling relaxed stackable
               style={{ paddingBottom: '4rem' }}
+              id={PAGE_IDS.LIST_SUGGESTIONS_ADMIN}
         >
           <Grid.Row centered>
             <Header as={'h2'} style={{ paddingTop: '2rem' }}>
@@ -147,6 +134,7 @@ class ListSuggestionsWidget extends React.Component {
                       search
                       selection
                       options={typeOptions}
+                      defaultValue='All'
                       onChange={getType}
                   />
                 </div>
@@ -154,16 +142,32 @@ class ListSuggestionsWidget extends React.Component {
             </Segment>
           </Grid.Column>
           <Grid.Column width={12}>
-            <Item.Group divided>
-              {this.state.result.map((suggestions) => <ListSuggestionsCard
-                  key={suggestions._id}
-                  type={suggestions.type}
-                  username={suggestions.username}
-                  name={suggestions.name}
-                  description={suggestions.description}
-                  suggestionObj={suggestions}
-              />)}
-            </Item.Group>
+            {
+              (this.props.suggestions.length === 0) ? (
+                  <div style={{ textAlign: 'center' }}>
+                    <Header as='h2' icon>
+                      <Icon name='users'/>
+                      There are no suggestions at the moment.
+                      <Header.Subheader>
+                        Please check back later.
+                      </Header.Subheader>
+                    </Header>
+                  </div>
+              ) : (
+                  <Item.Group className="d-flex flex-wrap">
+                    {this.state.result.map((suggestions) => (
+                        <div key={suggestions._id} className="col-4 mb-3">
+                          <ListSuggestionsCard
+                              type={suggestions.type}
+                              username={suggestions.username}
+                              name={suggestions.name}
+                              description={suggestions.description}
+                              suggestionObj={suggestions}
+                          />
+                        </div>
+                    ))}
+                  </Item.Group>
+              )}
           </Grid.Column>
         </Grid>
     );
