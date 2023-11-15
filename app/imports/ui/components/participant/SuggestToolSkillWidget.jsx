@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Container, Card } from 'react-bootstrap';
+import { Form, Container, Card, Row, Col } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm,
@@ -18,22 +18,21 @@ import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import { paleBlueStyle } from '../../styles';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-const schema = new SimpleSchema({
-  type: { type: String, allowedValues: ['Tool', 'Skill'], optional: false },
-  name: String,
-  description: String,
-});
+const SuggestToolSkillWidget = ({ participant }) => {
+  const schema = new SimpleSchema({
+    type: String,
+    name: String,
+    description: String,
+  });
 
-class SuggestToolSkillWidget extends React.Component {
-  submit(data, formRef) {
-    // console.log('CreateProfileWidget.submit', data);
+  const submit = (data, formRef) => {
     const collectionName = Suggestions.getCollectionName();
-    const newData = {};
-    const model = this.props.participant;
-    newData.username = model.username;
-    newData.name = data.name;
-    newData.type = data.type;
-    newData.description = data.description;
+    const newData = {
+      username: participant.username,
+      name: data.name,
+      type: data.type,
+      description: data.description,
+    };
 
     defineMethod.call({ collectionName: collectionName, definitionData: newData },
         (error) => {
@@ -44,40 +43,48 @@ class SuggestToolSkillWidget extends React.Component {
             formRef.reset();
           }
         });
-  }
+  };
 
-  render() {
-    let fRef = null;
-    const model = this.props.participant;
-    const formSchema = new SimpleSchema2Bridge(schema);
-    const firstname = model.firstName;
-    return (
-        <Container style={{ paddingBottom: '50px', paddingTop: '40px' }}>
-        <Card style = { paleBlueStyle }>
-          {/* eslint-disable-next-line max-len */}
-          <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>Hello {firstname}, please fill out the form to
-            suggest a new tool or skill. </h2>
-          <Card fluid>
-          <AutoForm ref={ref => {
-            fRef = ref;
-          }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
-            <Form.Group widths="equal" style={{ paddingRight: '10px', paddingLeft: '10px',
-              paddingTop: '10px', paddingBottom: '10px' }}>
-              <SelectField name="type" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_SELECT}/>
-              <TextField name="name" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_NAME}/>
-              <TextField name="description" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_DESCRIPTION}/>
-            </Form.Group>
-            <SubmitField style={{
-  display: 'block',
-  marginLeft: '10px', marginRight: 'auto', marginBottom: '10px',
-}} id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_SUBMIT}/>
-          </AutoForm>
+  let fRef = null;
+  const model = participant;
+  const formSchema = new SimpleSchema2Bridge(schema);
+  const firstname = model.firstName;
+  return (
+      <Container style={{ paddingBottom: '50px', paddingTop: '40px' }}>
+        <Card style={paleBlueStyle}>
+          <h2 style={{ textAlign: 'center', fontWeight: 'bold' }}>
+            Hello {firstname},What new tool or skill do you want to suggest?
+          </h2>
+          <Card>
+            <AutoForm ref={ref => {
+              fRef = ref;
+            }} schema={formSchema} onSubmit={data => submit(data, fRef)}>
+              <Form.Group widths="equal" style={{
+                paddingRight: '10px', paddingLeft: '10px',
+                paddingTop: '10px', paddingBottom: '10px',
+              }}>
+                <Row>
+                  <Col>
+                    <TextField name="name" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_NAME}/>
+                  </Col>
+                  <Col>
+                    <SelectField name="type" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_SELECT}
+                                 options={[{ label: 'Tool', value: 'Tool' }, { label: 'Skill', value: 'Skill' }]}
+                    />
+                  </Col>
+                </Row>
+                <TextField name="description" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_DESCRIPTION}/>
+              </Form.Group>
+              <SubmitField style={{
+                display: 'block',
+                marginLeft: '10px', marginRight: 'auto', marginBottom: '10px',
+              }} id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_SUBMIT}/>
+            </AutoForm>
           </Card>
         </Card>
-        </Container>
-    );
-  }
-}
+      </Container>
+  );
+};
 
 SuggestToolSkillWidget.propTypes = {
   participant: PropTypes.object.isRequired,
