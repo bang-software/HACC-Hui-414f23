@@ -36,6 +36,7 @@ import { editProfilePage } from './editProfile.page';
 import { editTeam } from './editTeam.component';
 import { interestedParticipantsPage } from './interestedParticipants.page';
 import { bestFitTeam } from './bestFitTeam.page';
+import { suggestionsListAdminPage } from './suggestionsListAdmin';
 
 /* global fixture:false, test:false */
 
@@ -229,12 +230,20 @@ test('Test that SuggestToolSkillWidget page functions', async (testController) =
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
+
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoListParticipantsAdminPage(testController);
   await listParticipantsAdminPage.isDisplayed(testController);
   await listParticipantsCardAdmin.isDisplayed(testController);
+});
+
+test('Test that SuggestionslistAdmin page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoSuggestionsListAdmin(testController);
+  await suggestionsListAdminPage.isDisplayed(testController);
 });
 
 test('Test that ManageHacc page shows and toggles switches', async (testController) => {
@@ -245,6 +254,7 @@ test('Test that ManageHacc page shows and toggles switches', async (testControll
   await manageHaccWidgetComponents.clickCustomSwitched(testController);
   await manageHaccWidgetComponents.clickCustomSwitched(testController);
 });
+
 test('Test that AddChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);

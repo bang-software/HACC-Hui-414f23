@@ -23,6 +23,7 @@ export const PAGE_IDS = {
   UPDATE_MP_COMPLIANT: 'update-mp-compliant',
   DELETE_FORM: 'delete-account',
   LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
+  LIST_SUGGESTIONS_ADMIN: 'list-suggestions-admin',
   ALL_TEAM_INVITATIONS: 'all-team-invitations',
   YOUR_TEAMS: 'your-teams',
   DUMP_DATABASE: 'dump-database',
