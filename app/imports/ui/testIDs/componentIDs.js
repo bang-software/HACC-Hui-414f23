@@ -124,4 +124,14 @@ export const COMPONENT_IDS = {
   EDIT_TEAM_BUTTON_ADMIN: 'edit-team-button',
   EDIT_TEAM_SUBMIT_ADMIN: 'edit-team-submit-admin',
   BEST_FIT_TEAM: 'best-fit-team',
+
+  CREATE_TEAM_NAME: 'create-team-name',
+  CREATE_TEAM_DESCRIPTION: 'create-team-description',
+  CREATE_TEAM_DEVPOST: 'create-team-devpost',
+  CREATE_TEAM_AFFILIATION: 'create-team-affiliation',
+  CREATE_TEAM_SUBMIT: 'create-team-submit',
+  CREATE_TEAM_OPEN: 'create-team-open',
+  CREATE_TEAM_CHALLENGE: 'create-team-challenge',
+  CREATE_TEAM_SKILLS: 'create-team-skills',
+  CREATE_TEAM_TOOLS: 'create-team-tools',
 };
