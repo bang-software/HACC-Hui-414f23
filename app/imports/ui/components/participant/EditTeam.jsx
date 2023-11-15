@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container, Col, Card, Row } from 'react-bootstrap';
-import { AutoForm, SelectField, ErrorsField, SubmitField, TextField, LongTextField, BoolField } from 'uniforms-bootstrap5';
-import { useParams } from 'react-router-dom';
+import { AutoForm, SelectField, ErrorsField, SubmitField, TextField, LongTextField } from 'uniforms-bootstrap5';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import Swal from 'sweetalert2';
 import { useTracker } from 'meteor/react-meteor-data';
+import PropTypes from 'prop-types';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
@@ -23,19 +23,20 @@ import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
  * Renders the Page for adding stuff. **deprecated**
  * @memberOf ui/pages
  */
-const EditTeam = () => {
+const EditTeam = ({ teamName }) => {
 
-  const { team,
-          challenges,
-          skills,
-          tools,
-          members,
-          allChallengeNames,
-          allSkillNames,
-          allToolNames,
-          memberNames,
+  const {
+    team,
+    challenges,
+    skills,
+    tools,
+    members,
+    allChallengeNames,
+    allSkillNames,
+    allToolNames,
+    memberNames,
   } = useTracker(() => {
-    const team2 = Teams.findDoc(useParams());
+    const team2 = Teams.findDoc({ name: teamName });
     const challengeIDs = TeamChallenges.find({ teamID: team2._id }).fetch().map((tc) => tc.challengeID);
     const skillIDs = TeamSkills.find({ teamID: team2._id }).fetch().map((ts) => ts.skillID);
     const toolIDs = TeamTools.find({ teamID: team2._id }).fetch().map((tt) => tt.toolID);
@@ -61,9 +62,12 @@ const EditTeam = () => {
     };
   });
 
-  function buildFormSchema() {
+  const buildFormSchema = () => {
     const schema = new SimpleSchema({
-      open: { type: Boolean },
+      open: {
+        type: String,
+        label: 'Availability',
+      },
       name: { type: String },
       challenges: { type: Array, optional: true },
       'challenges.$': { type: String },
@@ -79,19 +83,20 @@ const EditTeam = () => {
       affiliation: { type: String, optional: true },
     });
     return schema;
-  }
+  };
 
-  function buildModel() {
+  const buildModel = () => {
     const model = team;
+    model.open = team.open ? 'Open' : 'Close';
     model.challenges = challenges.map((c) => c.title);
     model.challenge = challenges[0];
     model.skills = skills.map((s) => s.name);
     model.tools = tools.map((t) => t.name);
     model.members = members.map((m) => m.username);
     return model;
-  }
+  };
 
-  function submit(data) {
+   const submit = (data) => {
     const collectionName = Teams.getCollectionName();
     const updateData = {};
 
@@ -101,7 +106,7 @@ const EditTeam = () => {
     updateData.gitHubRepo = data.gitHubRepo;
     updateData.devPostPage = data.devPostPage;
     updateData.affiliation = data.affiliation;
-    updateData.open = data.open;
+    updateData.open = data.open === 'Open';
     updateData.challenges = data.challenges.map((title) => Challenges.findDoc({ title })._id);
     updateData.skills = data.skills.map((name) => Skills.findDoc({ name })._id);
     updateData.tools = data.tools.map((name) => Tools.findDoc({ name })._id);
@@ -123,7 +128,7 @@ const EditTeam = () => {
         });
       }
     });
-  }
+  };
 
   const formSchema = new SimpleSchema2Bridge(buildFormSchema());
   const model = buildModel();
@@ -147,11 +152,12 @@ const EditTeam = () => {
                   <TextField name='name' />
                 </Col>
                 <Col>
-                  <BoolField
+                  <SelectField
                     name='open'
-                    label='Open'
-                    appearance='toggle' // Renders a material-ui Toggle
-                    style={{ paddingTop: '30px' }}
+                    options={[
+                      { key: 'open', label: 'Open', value: 'Open' },
+                      { key: 'close', label: 'Close', value: 'Close' },
+                    ]}
                   />
                 </Col>
               </Row>
@@ -200,6 +206,10 @@ const EditTeam = () => {
             </Container>
           </AutoForm>
   );
+};
+
+EditTeam.propTypes = {
+  teamName: PropTypes.string.isRequired,
 };
 
 export default withAllSubscriptions(EditTeam);

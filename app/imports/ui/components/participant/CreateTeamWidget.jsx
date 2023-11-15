@@ -94,17 +94,18 @@ const CreateTeamWidget = () => {
       setErrorModal(true);
     }
 
-    // const open = formData.open === 'Open';
     const open = formData.open === 'Open';
 
-    const skillsArr = skills.map((n) => {
+    const skillsArr = skills ? skills.map((n) => {
       const doc = Skills.findDoc({ name: n });
       return Slugs.getNameFromID(doc.slugID);
-    });
-    const toolsArr = tools.map((t) => {
+    }) : [];
+
+    const toolsArr = tools ? tools.map((t) => {
       const doc = Tools.findDoc({ name: t });
       return Slugs.getNameFromID(doc.slugID);
-    });
+    }) : [];
+
     const challengesArr = challenge ? [Slugs.getNameFromID(Challenges.findDoc({ title: challenge }).slugID)] : [];
 
     const collectionName = Teams.getCollectionName();
@@ -247,6 +248,7 @@ const CreateTeamWidget = () => {
           <SubmitField
               id={COMPONENT_IDS.CREATE_TEAM_SUBMIT}
               disabled={disabled}
+              value='Create Team'
           />
         </AutoForm>
         <Modal show={errorModal} onHide={closeModal}>
