@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import { AutoForm, ErrorsField, SubmitField, TextField, LongTextField, BoolField, SelectField } from 'uniforms-bootstrap5';
-import { Redirect, useParams } from 'react-router-dom';
+import React from 'react';
+import { Container, Col, Card, Row } from 'react-bootstrap';
+import { AutoForm, SelectField, ErrorsField, SubmitField, TextField, LongTextField, BoolField } from 'uniforms-bootstrap5';
+import { useParams } from 'react-router-dom';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import Swal from 'sweetalert2';
@@ -17,22 +17,23 @@ import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
-import { PAGE_IDS } from '../../testIDs/pageIDs';
-import { ROUTES } from '../../../startup/client/route-constants';
 import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 
-const AdminEditTeamPage = () => {
-  const [redirect, setRedirect] = useState(false);
-  const {
-    team,
-    challenges,
-    skills,
-    tools,
-    members,
-    allChallengeNames,
-    allSkillNames,
-    allToolNames,
-    memberNames,
+/**
+ * Renders the Page for adding stuff. **deprecated**
+ * @memberOf ui/pages
+ */
+const EditTeam = () => {
+
+  const { team,
+          challenges,
+          skills,
+          tools,
+          members,
+          allChallengeNames,
+          allSkillNames,
+          allToolNames,
+          memberNames,
   } = useTracker(() => {
     const team2 = Teams.findDoc(useParams());
     const challengeIDs = TeamChallenges.find({ teamID: team2._id }).fetch().map((tc) => tc.challengeID);
@@ -59,22 +60,26 @@ const AdminEditTeamPage = () => {
       memberNames: memberNames2,
     };
   });
-  const schema = new SimpleSchema({
-    open: { type: Boolean },
-    name: { type: String },
-    challenges: { type: Array, optional: true },
-    'challenges.$': { type: String },
-    skills: { type: Array, label: 'Skills', optional: true },
-    'skills.$': { type: String },
-    tools: { type: Array, label: 'Toolsets', optional: true },
-    'tools.$': { type: String },
-    members: { type: Array, optional: true },
-    'members.$': { type: String },
-    description: String,
-    gitHubRepo: { type: String, optional: true },
-    devPostPage: { type: String, optional: true },
-    affiliation: { type: String, optional: true },
-  });
+
+  function buildFormSchema() {
+    const schema = new SimpleSchema({
+      open: { type: Boolean },
+      name: { type: String },
+      challenges: { type: Array, optional: true },
+      'challenges.$': { type: String },
+      skills: { type: Array, label: 'Skills', optional: true },
+      'skills.$': { type: String },
+      tools: { type: Array, label: 'Toolsets', optional: true },
+      'tools.$': { type: String },
+      members: { type: Array, optional: true },
+      'members.$': { type: String },
+      description: String,
+      gitHubRepo: { type: String, optional: true },
+      devPostPage: { type: String, optional: true },
+      affiliation: { type: String, optional: true },
+    });
+    return schema;
+  }
 
   function buildModel() {
     const model = team;
@@ -86,9 +91,6 @@ const AdminEditTeamPage = () => {
     return model;
   }
 
-  /** On submit, insert the data.
-   * @param data {Object} the results from the form.
-   */
   function submit(data) {
     const collectionName = Teams.getCollectionName();
     const updateData = {};
@@ -119,92 +121,85 @@ const AdminEditTeamPage = () => {
           icon: 'success',
           text: 'Team updated.',
         });
-        setRedirect(true);
       }
     });
   }
 
-  if (redirect) {
-    return <Redirect to={ROUTES.VIEW_TEAMS}/>;
-  }
-
-  const formSchema = new SimpleSchema2Bridge(schema);
+  const formSchema = new SimpleSchema2Bridge(buildFormSchema());
   const model = buildModel();
 
   return (
-      <Container id={PAGE_IDS.EDIT_TEAM_PAGE_ADMIN}>
-        <AutoForm id={COMPONENT_IDS.EDIT_TEAM} schema={formSchema} onSubmit={data => submit(data)} model={model}>
-          <Container style={{
-            borderRadius: '40px',
-            backgroundColor: '#E5F0FE',
-          }} className={'editTeam'}>
-            <Col>
-              <h2 style={{ textAlign: 'center', paddingTop: '20px' }}>Edit Team</h2>
-              <Card>
-                <h4 style={{ textAlign: 'center', backgroundColor: '#F8F8F9', paddingTop: '10px', paddingBottom: '10px' }}>
-                  Team name and Devpost page have to use the same name
-                </h4>
-              </Card>
-            </Col>
-            <Row>
+          <AutoForm id={COMPONENT_IDS.EDIT_TEAM} schema={formSchema} onSubmit={data => submit(data)} model={model}>
+            <Container style={{
+              borderRadius: '40px',
+              backgroundColor: '#E5F0FE',
+            }} className={'editTeam'}>
               <Col>
-                <TextField name='name'/>
+                <h2 style={{ textAlign: 'center', paddingTop: '20px' }}>Edit Team</h2>
+                <Card>
+                  <h4 style={{ textAlign: 'center', backgroundColor: '#F8F8F9', paddingTop: '10px', paddingBottom: '10px' }}>
+                    Team name and Devpost page have to use the same name
+                  </h4>
+                </Card>
               </Col>
-              <Col>
-                <BoolField
+              <Row>
+                <Col>
+                  <TextField name='name' />
+                </Col>
+                <Col>
+                  <BoolField
                     name='open'
                     label='Open'
                     appearance='toggle' // Renders a material-ui Toggle
                     style={{ paddingTop: '30px' }}
-                />
-              </Col>
-            </Row>
-            <LongTextField name='description'/>
-            <Row>
-              <Col>
-                <SelectField
+                  />
+                </Col>
+              </Row>
+              <LongTextField name='description' />
+              <Row>
+                <Col>
+                  <SelectField
                     multiple
                     name="challenges"
                     options={allChallengeNames.map(name => ({ label: name, value: name }))}
-                />
-              </Col>
-              <Col>
-                <SelectField
+                  />
+                </Col>
+                <Col>
+                  <SelectField
                     multiple
                     name="skills"
                     options={allSkillNames.map(name => ({ label: name, value: name }))}
-                />
-              </Col>
-              <Col>
-                <SelectField
+                  />
+                </Col>
+                <Col>
+                  <SelectField
                     multiple
                     name="tools"
                     options={allToolNames.map(name => ({ label: name, value: name }))}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <TextField name="gitHubRepo" label="GitHub Repo"/>
-              </Col>
-              <Col>
-                <TextField name="devPostPage" label="Devpost Page"/>
-              </Col>
-              <Col>
-                <TextField name="affiliation"/>
-              </Col>
-            </Row>
-            <SelectField
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <TextField name="gitHubRepo" label="GitHub Repo"/>
+                </Col>
+                <Col>
+                  <TextField name="devPostPage" label="Devpost Page" />
+                </Col>
+                <Col>
+                  <TextField name="affiliation" />
+                </Col>
+              </Row>
+              <SelectField
                 multiple
                 name="members"
                 options={memberNames.map(name => ({ label: name, value: name }))}
-            />
-            <SubmitField id={COMPONENT_IDS.EDIT_TEAM_SUBMIT_ADMIN} value='Submit'/>
-            <ErrorsField/>
-          </Container>
-        </AutoForm>
-      </Container>
+              />
+              <SubmitField value='Submit'/>
+              <ErrorsField />
+            </Container>
+          </AutoForm>
   );
 };
 
-export default withAllSubscriptions(AdminEditTeamPage);
+export default withAllSubscriptions(EditTeam);

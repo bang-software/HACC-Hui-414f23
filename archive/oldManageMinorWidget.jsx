@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Header, Table } from 'semantic-ui-react';
+import { Grid, Header, Segment, Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import ListMinorWidget from './ListMinorWidget';

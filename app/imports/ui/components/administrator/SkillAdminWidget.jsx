@@ -36,11 +36,11 @@ const SkillAdminWidget = ({ skill }) => {
           <td>{skill.name}</td>
           <td>{skill.description}</td>
           <td>
-            <Button variant="primary">
-              <Link className='link-light'
-                    to={`/edit-skill/${skill._id}`}
-                    id={COMPONENT_IDS.EDIT_SKILL_BUTTON}>Edit</Link>
-            </Button>
+            <Link className='link-light'
+                  to={`/edit-skill/${skill._id}`}
+                  id={COMPONENT_IDS.EDIT_SKILL_BUTTON}>
+              <Button variant="primary">Edit</Button>
+            </Link>
           </td>
           <td>
             <Button id={`${COMPONENT_IDS.DELETE_SKILL_BUTTON}-${skill._id}`}

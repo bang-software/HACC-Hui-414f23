@@ -1,10 +1,10 @@
 import { Selector } from 'testcafe';
 import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
 
-class SuggestToolSkillPage {
+class BestFitTeam {
   constructor() {
-    this.pageId = `#${PAGE_IDS.SUGGEST_TOOL_SKILL}`;
-    this.pageSelector = Selector(this.pageId);
+    this.componentId = `#${PAGE_IDS.BEST_FIT_TEAM}`;
+    this.pageSelector = Selector(this.componentId);
   }
 
   async isDisplayed(testController) {
@@ -12,4 +12,4 @@ class SuggestToolSkillPage {
   }
 }
 
-export const suggestToolSkillPage = new SuggestToolSkillPage();
+export const bestFitTeam = new BestFitTeam();

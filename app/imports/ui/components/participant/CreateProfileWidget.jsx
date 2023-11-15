@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm, BoolField,
   LongTextField, SelectField,
@@ -8,12 +8,10 @@ import {
   TextField,
 } from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import Swal from 'sweetalert2';
 import { Redirect } from 'react-router-dom';
-import Select from 'react-select';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -24,13 +22,17 @@ import { Slugs } from '../../../api/slug/SlugCollection';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
+const CreateProfileWidget = () => {
+  const { participant, challenges, skills, tools } = useTracker(() => ({
+      participant: Participants.findDoc({ userID: Meteor.userId() }),
+      challenges: Challenges.find({}).fetch(),
+      skills: Skills.find({}).fetch(),
+      tools: Tools.find({}).fetch(),
+    }));
+
   const [redirectToReferer, setRedirectToReferer] = useState(false);
 
   const buildTheFormSchema = () => {
-    const challengeNames = challenges.map((c) => c.title);
-    const skillNames = skills.map((s) => s.name);
-    const toolNames = tools.map((t) => t.name);
     const schema = new SimpleSchema({
       firstName: String,
       lastName: String,
@@ -45,11 +47,11 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
       lookingForTeam: { type: Boolean, optional: true },
       isCompliant: { type: Boolean, optional: true },
       challenges: { type: Array, optional: true },
-      'challenges.$': { type: String, allowedValues: challengeNames },
+      'challenges.$': { type: String },
       skills: { type: Array, optional: true },
-      'skills.$': { type: String, allowedValues: skillNames },
+      'skills.$': { type: String },
       tools: { type: Array, optional: true },
-      'tools.$': { type: String, allowedValues: toolNames },
+      'tools.$': { type: String },
     });
     return schema;
   };
@@ -156,33 +158,28 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
           </Row>
           <Row>
             <h6 className="fw-bold"> Challenges </h6>
-            <Select
+            <SelectField
                 id={COMPONENT_IDS.CREATE_PROFILE_CHALLENGES}
-                isMulti
+                multiple
                 name="challenges"
                 options={challenges.map(c => ({ label: c.title, value: c.title }))}
-                className="basic-multi-select"
-                classNamePrefix="select"
             />
           </Row>
           <Row>
             <Col>
               <h6 className="fw-bold"> Skills </h6>
-              <Select
-                  isMulti
-                  name="Skills"
+              <SelectField
+                  multiple
+                  name="skills"
                   options={skills.map(s => ({ label: s.name, value: s.name }))}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
               /> </Col>
             <Col>
-              <h6 className="fw-bold"> Tools </h6><Select
-                isMulti
-                name="Tools"
-                options={tools.map(t => ({ label: t.name, value: t.name }))}
-                className="basic-multi-select"
-                classNamePrefix="select"
-            /> </Col>
+              <h6 className="fw-bold"> Tools </h6>
+              <SelectField
+                  multiple
+                  name="tools"
+                  options={tools.map(t => ({ label: t.name, value: t.name }))}
+              /> </Col>
           </Row>
           <SubmitField id={COMPONENT_IDS.CREATE_PROFILE_SUBMIT}/>
         </AutoForm>
@@ -190,28 +187,4 @@ const CreateProfileWidget = ({ participant, skills, tools, challenges }) => {
   );
 };
 
-CreateProfileWidget.propTypes = {
-  participant: PropTypes.object.isRequired,
-  skills: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  challenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-  tools: PropTypes.arrayOf(
-      PropTypes.object,
-  ).isRequired,
-};
-
-export default withTracker(() => {
-  const participant = Participants.findDoc({ userID: Meteor.userId() });
-  const challenges = Challenges.find({}).fetch();
-  const skills = Skills.find({}).fetch();
-  const tools = Tools.find({}).fetch();
-  return {
-    participant,
-    challenges,
-    skills,
-    tools,
-  };
-})(CreateProfileWidget);
+export default CreateProfileWidget;

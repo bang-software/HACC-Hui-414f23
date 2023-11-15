@@ -13,9 +13,11 @@ export const COMPONENT_IDS = {
   PROFILE: 'profile',
   CONFIGURE_HACC: 'configure-hacc',
   UPDATE_MP: 'update-mp',
+  CREATE_TEAM: 'create-team',
 
-  HACC_WIDGET_VIEW_TEAMS_BUTTON: 'view-teams-button',
-
+  HACC_WIDGET_NAV_CHALLENGE: 'custom-nav-challenge',
+  HACC_WIDGET_NAV_SKILL: 'custom-nav-skill',
+  HACC_WIDGET_NAV_TOOl: 'custom-nav-tool',
   HACC_WIDGET_CUSTOM_SWITCH_TEAMS: 'custom-switch-teams',
   HACC_WIDGET_CUSTOM_SWITCH_CHALLENGES: 'custom-switch-challenges',
   HACC_WIDGET_ADD_CHALLENGE_BUTTON: 'add-challenge-button',
@@ -61,11 +63,13 @@ export const COMPONENT_IDS = {
   FILTER_NO_GITHUB: 'filter_no_github',
   FILTER_NONE: 'filter-none',
   DOWNLOAD_TEAM_CAPTAIN_EMAILS: 'download-team-captain-emails',
+
   SUGGEST_TOOL_SKILL_BUTTON: 'suggest-tool-skill-button',
   SUGGEST_TOOL_SKILL_SELECT: 'suggest-tool-skill-select',
   SUGGEST_TOOL_SKILL_NAME: 'suggest-tool-skill-name',
   SUGGEST_TOOL_SKILL_DESCRIPTION: 'suggest-tool-skill-description',
   SUGGEST_TOOL_SKILL_SUBMIT: 'suggest-tool-skill-submit',
+
   CREATE_PROFILE_LINKEDIN: 'create-profile-linkedin',
   CREATE_PROFILE_ABOUTME: 'create-profile-aboutme',
   CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
@@ -88,5 +92,48 @@ export const COMPONENT_IDS = {
   SEE_INTERTESTED_PARTICIPANTS: 'see-interested-participants',
   INVITE_PARTICIPANTS_TEXTFIELD: 'invite-participants-textfield',
   INVITE_PARTICIPANTS_SUBMIT: 'invite-participants-submit',
+
+  SIDEBAR: 'sidebar',
+  SIDEBAR_TOGGLE: 'sidebar-toggle',
+  SIDEBAR_SIGN_IN: 'sidebar-sign-in',
+
+  SIDEBAR_PROFILE: 'sidebar-profile',
+  SIDEBAR_YOUR_TEAMS_BUTTON: 'sidebar-your-teams-button',
+  SIDEBAR_LIST_PARTICIPANTS: 'sidebar-list-participants',
+  SIDEBAR_SUGGEST_TOOL_SKILL_BUTTON: 'sidebar-suggest-tool-skill-button',
+  SIDEBAR_TEAM_INVITATIONS_BUTTON: 'sidebar-team-invitations-button',
+
+  SIDEBAR_CONFIGURE_HACC: 'sidebar-configure-hacc',
+  SIDEBAR_UPDATE_MP: 'sidebar-update-mp',
+  SIDEBAR_LIST_PARTICIPANTS_ADMIN: 'sidebar-list-participants-admin',
+  SIDEBAR_VIEW_TEAMS_BUTTON: 'sidebar-view-teams-button',
+  SIDEBAR_ALL_TEAM_INVITATIONS_NAV: 'sidebar-all-team-invitations-nav',
+  SIDEBAR_CLOSE_BUTTON: 'sidebar-close-button',
+
+  DUMP_DATABASE: 'dump-database',
+  DUMP_TEAM: 'dump-team',
+  GOTO_DUMP_DATABASE: 'goto-dump-database',
+
   TEAM_CARD: 'team-card',
+  MEMBER_TEAM_CARD: 'member_team_card',
+  TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
+  EDIT_PROFILE_BUTTON: 'edit-profile-button',
+
+  VIEW_TEAMS_BUTTON: 'view-teams-button',
+  VIEW_TEAM_CARD: 'view-teams-card',
+  EDIT_TEAM_BUTTON: 'edit-team-button',
+  EDIT_TEAM: 'edit-team',
+  EDIT_TEAM_BUTTON_ADMIN: 'edit-team-button',
+  EDIT_TEAM_SUBMIT_ADMIN: 'edit-team-submit-admin',
+  BEST_FIT_TEAM: 'best-fit-team',
+
+  CREATE_TEAM_NAME: 'create-team-name',
+  CREATE_TEAM_DESCRIPTION: 'create-team-description',
+  CREATE_TEAM_DEVPOST: 'create-team-devpost',
+  CREATE_TEAM_AFFILIATION: 'create-team-affiliation',
+  CREATE_TEAM_SUBMIT: 'create-team-submit',
+  CREATE_TEAM_OPEN: 'create-team-open',
+  CREATE_TEAM_CHALLENGE: 'create-team-challenge',
+  CREATE_TEAM_SKILLS: 'create-team-skills',
+  CREATE_TEAM_TOOLS: 'create-team-tools',
 };

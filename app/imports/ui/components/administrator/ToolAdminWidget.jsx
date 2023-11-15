@@ -36,10 +36,12 @@ const ToolAdminWidget = ({ tool }) => {
           <td>{tool.name}</td>
           <td>{tool.description}</td>
           <td>
-            <Button variant="primary">
-              <Link className="link-light" to={`/edit-tool/${tool._id}`}
-                    id={COMPONENT_IDS.EDIT_TOOL_BUTTON}>Edit</Link>
-            </Button>
+            <Link className="link-light" to={`/edit-tool/${tool._id}`}
+                  id={COMPONENT_IDS.EDIT_TOOL_BUTTON}>
+              <Button variant="primary">
+                Edit
+              </Button>
+            </Link>
           </td>
           <td>
             <Button id={`${COMPONENT_IDS.DELETE_TOOL_BUTTON}-${tool._id}`}

@@ -16,7 +16,6 @@ export const ROUTES = {
   CREATE_TEAM: '/create-team',
   EDIT_TEAM: '/edit-team/:_id',
   DELETE_TEAM: '/delete-team',
-  LIST_TEAMS: '/list-teams',
   DELETE_ACCOUNT: '/delete-account',
   HELP_PAGE: '/help-page',
   CONFIGURE_HACC: '/configure-hacc',
@@ -39,6 +38,5 @@ export const ROUTES = {
   VIEW_TEAMS: '/view-teams',
   BEST_FIT: '/best-fit-teams',
   UPDATE_MP: '/update-minor-participants',
-  SHOW_MINOR: '/show-minor',
   ALL_TEAM_INVITATIONS: '/all-team-invitations',
 };

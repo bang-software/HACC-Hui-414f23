@@ -20,6 +20,7 @@
     "react-bootstrap": "^2.8.0",
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^16.14.0",
+    "react-icons": "^4.11.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "react-select": "^5.7.5",
@@ -67,7 +68,7 @@
     "test-acceptance-development-edge": "testcafe edge tests/*.testcafe.js",
     "test-acceptance-development": "testcafe chrome tests/*.testcafe.js",
     "test-acceptance-development-single": "testcafe chrome tests/*.testcafe.js -t \"Test that sign up and sign out work\"",
-    "test-acceptance-development-single-edge": "testcafe edge tests/*.testcafe.js -t \"Test that ManageHacc page shows and toggles switches\"",
+    "test-acceptance-development-single-edge": "testcafe edge tests/*.testcafe.js -t \"Test that SuggestToolSkillWidget page functions\"",
     "test-acceptance-ci": "testcafe chrome:headless tests/*.testcafe.js -q --app \"meteor npm run start\"",
     "unimported": "npx unimported",
     "test-all": "meteor reset && meteor npm run lint && meteor npm run unimported && meteor npm run test-unit && meteor npm run test-integration && meteor npm run test-acceptance-ci"

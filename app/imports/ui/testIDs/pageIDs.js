@@ -13,6 +13,7 @@ export const PAGE_IDS = {
   EDIT_SKILL_PAGE: 'edit-skill-page',
   EDIT_TOOL_PAGE: 'edit-tool-page',
   VIEW_TEAMS_PAGE: 'view-teams-page',
+  EDIT_TEAM_PAGE_ADMIN: 'edit-team-page-admin',
   PARTICIPATION_FORM: 'participation-form',
   CREATE_PROFILE: 'create-profile',
   SUGGEST_TOOL_SKILL: 'suggest-tool-skill',
@@ -24,4 +25,10 @@ export const PAGE_IDS = {
   LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
   ALL_TEAM_INVITATIONS: 'all-team-invitations',
   YOUR_TEAMS: 'your-teams',
+  DUMP_DATABASE: 'dump-database',
+  NOT_FOUND: 'not-found',
+  EDIT_PROFILE: 'edit-profile',
+  INTERESTED_PARTICIPANTS: 'interested-participants',
+  BEST_FIT_TEAM: 'best-fit-team',
+  CREATE_TEAM: 'create-team',
 };

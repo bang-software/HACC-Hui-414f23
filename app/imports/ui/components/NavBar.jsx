@@ -72,12 +72,14 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.YOUR_PROFILE}
                               key='edit-profile'>Profile</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.CREATE_TEAM}
+                              as={NavLink}
                               activeClassName="active"
                               disabled={!isCompliant}
                               to={ROUTES.CREATE_TEAM}
                               key='team-creation'>Create Team</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.BEST_FIT_TEAM}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.BEST_FIT}
                               key='list-teams'>Open Teams ({numTeams})</Nav.Link>,
@@ -124,7 +126,7 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.LIST_PARTICIPANTS_ADMIN}
                               key='list-participants-admin'>List Participants ({numParticipants})</Nav.Link>,
-                    <Nav.Link id={COMPONENT_IDS.HACC_WIDGET_VIEW_TEAMS_BUTTON}
+                    <Nav.Link id={COMPONENT_IDS.VIEW_TEAMS_BUTTON}
                               as={NavLink}
                               activeClassName="active"
                               to={ROUTES.VIEW_TEAMS}
@@ -134,7 +136,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.ALL_TEAM_INVITATIONS}
                               key={ROUTES.ALL_TEAM_INVITATIONS}>View All Team Invitations</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.GOTO_DUMP_DATABASE}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.DUMP_DATABASE}
                               key={ROUTES.DUMP_DATABASE}>Dump Database</Nav.Link>,

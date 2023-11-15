@@ -63,6 +63,14 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.PROFILE}`);
   }
 
+  async gotoCreateTeamPage(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.CREATE_TEAM}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.CREATE_TEAM}`);
+  }
+
   /** Feeling Hungry Page */
   async gotoConfigueHACC(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.CONFIGURE_HACC}`).visible;
@@ -97,6 +105,14 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.LIST_PARTICIPANTS_ADMIN}`);
   }
 
+  async gotoViewTeamsPage(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.VIEW_TEAMS_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.VIEW_TEAMS_BUTTON}`);
+  }
+
   async gotoAllTeamInvitationsPage(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.ALL_TEAM_INVITATIONS_NAV}`).visible;
     if (!visible) {
@@ -121,12 +137,28 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.UPDATE_MP}`);
   }
 
+  async gotoBestFitTeam(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.BEST_FIT_TEAM}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.BEST_FIT_TEAM}`);
+  }
+
   async gotoYourTeams(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`).visible;
     if (!visible) {
       await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
     await testController.click(`#${COMPONENT_IDS.YOUR_TEAMS_BUTTON}`);
+  }
+
+  async gotoDumpDataBase(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.GOTO_DUMP_DATABASE}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.GOTO_DUMP_DATABASE}`);
   }
 }
 

@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
 import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
 
-class HelpPage {
+class EditProfilePage {
   constructor() {
-    this.pageId = `#${PAGE_IDS.HELP_PAGE}`;
+    this.pageId = `#${PAGE_IDS.EDIT_PROFILE}`;
     this.pageSelector = Selector(this.pageId);
   }
 
@@ -12,4 +12,4 @@ class HelpPage {
   }
 }
 
-export const helpPage = new HelpPage();
+export const editProfilePage = new EditProfilePage();
