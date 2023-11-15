@@ -76,6 +76,7 @@ export const COMPONENT_IDS = {
   LIST_PARTICIPANTS_CARD_ADMIN: 'list-partcipants-card-admin',
   TEAM_INVITATIONS_BUTTON: 'team-invitations-button',
   ALL_TEAM_INVITATIONS_NAV: 'all-team-invitations-button',
+  ALL_TEAM_INVITATIONS_CARD_ADMIN: 'all-team-invitations-card',
   DELETE_ACCOUNT_NAV: 'delete-account-navbar',
   DELETE_ACCOUNT_TEXT: 'delete-account-textfield',
   DELETE_ACCOUNT_SELECT: 'delete-account-select',

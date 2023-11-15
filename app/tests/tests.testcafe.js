@@ -28,6 +28,7 @@ import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
 import { teamCard } from './teamCard.component';
+import { allTeamInvitationsCardAdmin } from './allTeamInvitationsCardAdmin.component';
 
 /* global fixture:false, test:false */
 
@@ -240,6 +241,7 @@ test('Test that AllTeamInvitations pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoAllTeamInvitationsPage(testController);
   await allTeamInvitationsPage.isDisplayed(testController);
+  await allTeamInvitationsCardAdmin.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {
