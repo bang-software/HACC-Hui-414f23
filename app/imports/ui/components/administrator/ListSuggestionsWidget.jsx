@@ -1,183 +1,106 @@
-import React from 'react';
-import {
-  Grid,
-  Header,
-  Item,
-  Icon,
-  Segment,
-  Input,
-  Dropdown,
-} from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
-import { withTracker } from 'meteor/react-meteor-data';
+import { Container, Row, Col, Card, Form, DropdownButton, Dropdown } from 'react-bootstrap';
+import { FaUsers } from 'react-icons/fa';
+import { useTracker } from 'meteor/react-meteor-data';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import ListSuggestionsCard from './ListSuggestionsCard';
 import ListSuggestionsFilter from './ListSuggestionsFilter';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
 
-class ListSuggestionsWidget extends React.Component {
+const ListSuggestionsWidget = () => {
+  const { suggestions } = useTracker(() => ({
+    suggestions: Suggestions.find({}).fetch(),
+  }), []);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: '',
-      type: [],
-      result: _.orderBy(this.props.suggestions, ['name'], ['asc']),
-    };
-  }
+  const [search, setSearch] = useState('');
+  const [type, setType] = useState([]);
+  const [result, setResult] = useState([...suggestions].sort((a, b) => a.name.localeCompare(b.name)));
 
-  componentWillReceiveProps(nextProps) {
-    // eslint-disable-next-line max-len
-    if ((_.orderBy(nextProps.suggestions, ['name'], ['asc'])) !== (_.orderBy(this.props.suggestions, ['name'], ['asc']))) {
-      this.setState({
-        result: _.orderBy(nextProps.suggestions, ['name'], ['asc']),
-      });
-    }
-  }
+  useEffect(() => {
+    setResult([...suggestions].sort((a, b) => a.name.localeCompare(b.name)));
+  }, [suggestions]);
 
-  render() {
+  const filters = new ListSuggestionsFilter();
 
-    // eslint-disable-next-line no-unused-vars
-    const sortBy = [
-      { key: 'teams', text: 'teams', value: 'teams' },
-      { key: 'challenges', text: 'challenges', value: 'challenges' },
-      { key: 'skills', text: 'skills', value: 'skills' },
-      { key: 'tools', text: 'tools', value: 'tools' },
-    ];
+  const setFilters = () => {
+    const searchResults = filters.filterBySearch(suggestions, search);
+    const typeResults = filters.typeResults(searchResults, type);
+    const sorted = filters.sortBy(typeResults, 'names');
+    setResult(sorted);
+  };
 
-    const sticky = {
-      position: 'sticky',
-      top: '6.5rem',
-    };
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+    setFilters();
+  };
 
-    const filters = new ListSuggestionsFilter();
+  const [selectedType, setSelectedType] = useState('All'); // State to store the selected type for display
 
-    const setFilters = () => {
-      const searchResults = filters.filterBySearch(this.props.suggestions, this.state.search);
-      const typeResults = filters.typeResults(searchResults, this.state.type);
-      const sorted = filters.sortBy(typeResults, 'names');
-      this.setState({
-        result: sorted,
-      }, () => {
-      });
-    };
+  const getType = (value) => {
+    setType(value);
+    setSelectedType(value); // Update the selected type for display
+    setFilters();
+  };
 
-    const handleSearchChange = (event) => {
-      this.setState({
-        search: event.target.value,
-      }, () => {
-        setFilters();
-      });
-    };
+  const typeOptions = ['All', 'Tool', 'Skill'];
 
-    const getType = (event, { value }) => {
-      this.setState({
-        type: value,
-      }, () => {
-        setFilters();
-      });
-    };
-
-    const typeOptions = [
-      {
-        key: 'All',
-        text: 'All',
-        value: 'All',
-      },
-      {
-        key: 'Tool',
-        text: 'Tool',
-        value: 'Tool',
-      },
-      {
-        key: 'Skill',
-        text: 'Skill',
-        value: 'Skill',
-      },
-    ];
-
-    // console.log(this.props.suggestions);
-
-    return (
-        <Grid container doubling relaxed stackable
-              style={{ paddingBottom: '4rem' }}
-              id={PAGE_IDS.LIST_SUGGESTIONS_ADMIN}
-        >
-          <Grid.Row centered>
-            <Header as={'h2'} style={{ paddingTop: '2rem' }}>
-              Suggestions
-            </Header>
-          </Grid.Row>
-          <Grid.Column width={4}>
-            <Segment style={sticky}>
-              <div style={{ paddingTop: '2rem' }}>
-                <Header>
-                  <Header.Content>
-                    Total Suggestions: {this.state.result.length}
-                  </Header.Content>
-                </Header>
-              </div>
-              <div style={{ paddingTop: '2rem' }}>
-                <Input icon='search'
-                       iconPosition='left'
-                       placeholder='Search...'
-                       onChange={handleSearchChange}
-                       fluid
-                />
-
-                <div style={{ paddingTop: '2rem' }}>
-                  <Header>Suggestion Types</Header>
-                  <Dropdown
-                      placeholder='Types'
-                      fluid
-                      search
-                      selection
-                      options={typeOptions}
-                      defaultValue='All'
-                      onChange={getType}
+  return (
+    <Container fluid style={{ paddingBottom: '4rem' }} id={PAGE_IDS.LIST_SUGGESTIONS_ADMIN}>
+      <Row style={{ paddingTop: '2rem' }}>
+        <h2 className="text-center">Suggestions</h2>
+      </Row>
+      <Row>
+        <Col style={{ paddingLeft: '7rem' }} md={4}>
+          <Card style={{ position: 'sticky', top: '6.5rem' }}>
+            <Card.Body>
+              <Card.Title>Total Suggestions: {result.length}</Card.Title>
+              <Form.Control
+                type="search"
+                placeholder="Search..."
+                onChange={handleSearchChange}
+              />
+              <h5 style={{ paddingTop: '2rem' }}>Suggestion Types</h5>
+              <DropdownButton title={selectedType} onSelect={getType}>
+                {typeOptions.map((option) => (
+                  <Dropdown.Item key={option} eventKey={option}>{option}</Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={8}>
+          {suggestions.length === 0 ? (
+            <div style={{ textAlign: 'center' }}>
+              <FaUsers size={60} />
+              <h2>
+                There are no suggestions at the moment.
+              </h2>
+              <p>Please check back later.</p>
+            </div>
+          ) : (
+            <Row>
+              {result.map((suggestion) => (
+                <Col key={suggestion._id} md={4} className="mb-3">
+                  <ListSuggestionsCard
+                    type={suggestion.type}
+                    username={suggestion.username}
+                    name={suggestion.name}
+                    description={suggestion.description}
+                    suggestionObj={suggestion}
                   />
-                </div>
-              </div>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column width={12}>
-            {
-              (this.props.suggestions.length === 0) ? (
-                  <div style={{ textAlign: 'center' }}>
-                    <Header as='h2' icon>
-                      <Icon name='users'/>
-                      There are no suggestions at the moment.
-                      <Header.Subheader>
-                        Please check back later.
-                      </Header.Subheader>
-                    </Header>
-                  </div>
-              ) : (
-                  <Item.Group className="d-flex flex-wrap">
-                    {this.state.result.map((suggestions) => (
-                        <div key={suggestions._id} className="col-4 mb-3">
-                          <ListSuggestionsCard
-                              type={suggestions.type}
-                              username={suggestions.username}
-                              name={suggestions.name}
-                              description={suggestions.description}
-                              suggestionObj={suggestions}
-                          />
-                        </div>
-                    ))}
-                  </Item.Group>
-              )}
-          </Grid.Column>
-        </Grid>
-    );
-  }
-}
+                </Col>
+              ))}
+            </Row>
+          )}
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 ListSuggestionsWidget.propTypes = {
   suggestions: PropTypes.array.isRequired,
 };
 
-export default withTracker(() => ({
-  suggestions: Suggestions.find({}).fetch(),
-}))(ListSuggestionsWidget);
+export default ListSuggestionsWidget;
