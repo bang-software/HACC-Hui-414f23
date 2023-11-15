@@ -10,6 +10,7 @@ class EditTeam {
     async isDisplayed(testController) {
         await testController.wait(5000).expect(this.pageSelector.exists).ok();
     }
+
 }
 
 export const editTeam = new EditTeam();

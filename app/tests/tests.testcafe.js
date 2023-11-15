@@ -13,6 +13,8 @@ import { editChallengePage } from './manage_hacc_tests/editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage.page';
+import { viewTeamsPage } from './viewTeamsPage.page';
+import { suggestToolSkillPage } from './suggestToolSkillPage';
 import { profilePage } from './profilePage';
 import { listParticipantsPage } from './listParticipants.page';
 import { teamInvitationsPage } from './teamInvitationsPage';
@@ -78,6 +80,20 @@ const editedSkill = {
 const editedTool = {
   name: 'New tool name',
   description: 'The description of the edit tool',
+};
+
+const suggestSkill = {
+  name: 'New skill name',
+  description: 'The description of the edit skill',
+};
+
+const suggestTool = {
+  name: 'New tool name',
+  description: 'The description of the edit tool',
+};
+
+const editedTeam = {
+  name: 'New team name',
 };
 
 const profileInfo = {
@@ -220,6 +236,14 @@ test('Test that CreateTeam page renders', async (testController) => {
   // await createProfilePage.fillInfo(testController, profileInfo);
 });
 
+test('Test that SuggestToolSkillWidget page functions', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsF.username, credentialsF.password);
+  await navBar.gotoSuggestToolSkill(testController);
+  await suggestToolSkillPage.suggestSkill(testController, suggestSkill);
+  await suggestToolSkillPage.suggestTool(testController, suggestTool);
+});
+
 /** ADMIN -------------------------------------------------------------------------------------------------*/
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
@@ -228,6 +252,7 @@ test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await listParticipantsAdminPage.isDisplayed(testController);
   await listParticipantsCardAdmin.isDisplayed(testController);
 });
+
 test('Test that ManageHacc page shows and toggles switches', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -284,11 +309,20 @@ test('Test that EditTool page function', async (testController) => {
   await editToolPage.editTool(testController, editedTool);
 });
 
-test('Test that ViewTeams pages function', async (testController) => {
+test('Test that ViewTeams pages shows', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.gotoConfigueHACC(testController);
-  await manageHaccWidgetComponents.isDisplayed(testController);
+  await navBar.gotoViewTeamsPage(testController);
+  await viewTeamsPage.isDisplayed(testController);
+});
+
+test('Test that admin view team shows modal and edit team page shows', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoViewTeamsPage(testController);
+  await viewTeamsPage.isDisplayed(testController);
+  await viewTeamsPage.viewTeam(testController);
+  await viewTeamsPage.editTeamAdmin(testController, editedTeam);
 });
 
 test('Test that AllTeamInvitations pages function', async (testController) => {

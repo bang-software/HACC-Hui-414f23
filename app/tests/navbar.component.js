@@ -105,6 +105,14 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.LIST_PARTICIPANTS_ADMIN}`);
   }
 
+  async gotoViewTeamsPage(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.VIEW_TEAMS_BUTTON}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.VIEW_TEAMS_BUTTON}`);
+  }
+
   async gotoAllTeamInvitationsPage(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.ALL_TEAM_INVITATIONS_NAV}`).visible;
     if (!visible) {

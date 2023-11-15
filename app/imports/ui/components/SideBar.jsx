@@ -88,7 +88,7 @@ const SideBar = ({ children }) => {
                           as={NavLink}
                           to={ROUTES.LIST_PARTICIPANTS_ADMIN}
                           key='list-participants-admin'>List Participants ({numParticipants})</Nav.Link>
-                <Nav.Link id={COMPONENT_IDS.SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON}
+                <Nav.Link id={COMPONENT_IDS.SIDEBAR_VIEW_TEAMS_BUTTON}
                           as={NavLink} to={ROUTES.VIEW_TEAMS}>View Team ({teamCount})</Nav.Link>
                 <Nav.Link id = {COMPONENT_IDS.SIDEBAR_ALL_TEAM_INVITATIONS_NAV}
                           as={NavLink}

@@ -86,8 +86,8 @@ class SideBar {
 
   async gotoHACCWidgetViewTeamsPage(testController) {
     await this.open(testController);
-    await testController.expect(`#${COMPONENT_IDS.SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON}`)
-      .ok().click(`#${COMPONENT_IDS.SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON}`);
+    await testController.expect(`#${COMPONENT_IDS.SIDEBAR_VIEW_TEAMS_BUTTON}`)
+      .ok().click(`#${COMPONENT_IDS.SIDEBAR_VIEW_TEAMS_BUTTON}`);
     await this.close(testController);
   }
 

@@ -15,8 +15,6 @@ export const COMPONENT_IDS = {
   UPDATE_MP: 'update-mp',
   CREATE_TEAM: 'create-team',
 
-  HACC_WIDGET_VIEW_TEAMS_BUTTON: 'view-teams-button',
-
   HACC_WIDGET_NAV_CHALLENGE: 'custom-nav-challenge',
   HACC_WIDGET_NAV_SKILL: 'custom-nav-skill',
   HACC_WIDGET_NAV_TOOl: 'custom-nav-tool',
@@ -65,11 +63,13 @@ export const COMPONENT_IDS = {
   FILTER_NO_GITHUB: 'filter_no_github',
   FILTER_NONE: 'filter-none',
   DOWNLOAD_TEAM_CAPTAIN_EMAILS: 'download-team-captain-emails',
+
   SUGGEST_TOOL_SKILL_BUTTON: 'suggest-tool-skill-button',
   SUGGEST_TOOL_SKILL_SELECT: 'suggest-tool-skill-select',
   SUGGEST_TOOL_SKILL_NAME: 'suggest-tool-skill-name',
   SUGGEST_TOOL_SKILL_DESCRIPTION: 'suggest-tool-skill-description',
   SUGGEST_TOOL_SKILL_SUBMIT: 'suggest-tool-skill-submit',
+
   CREATE_PROFILE_LINKEDIN: 'create-profile-linkedin',
   CREATE_PROFILE_ABOUTME: 'create-profile-aboutme',
   CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
@@ -105,7 +105,7 @@ export const COMPONENT_IDS = {
   SIDEBAR_CONFIGURE_HACC: 'sidebar-configure-hacc',
   SIDEBAR_UPDATE_MP: 'sidebar-update-mp',
   SIDEBAR_LIST_PARTICIPANTS_ADMIN: 'sidebar-list-participants-admin',
-  SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON: 'sidebar-hacc-widget-view-teams-button',
+  SIDEBAR_VIEW_TEAMS_BUTTON: 'sidebar-view-teams-button',
   SIDEBAR_ALL_TEAM_INVITATIONS_NAV: 'sidebar-all-team-invitations-nav',
   SIDEBAR_CLOSE_BUTTON: 'sidebar-close-button',
 
@@ -117,8 +117,13 @@ export const COMPONENT_IDS = {
   MEMBER_TEAM_CARD: 'member_team_card',
   TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
   EDIT_PROFILE_BUTTON: 'edit-profile-button',
+
+  VIEW_TEAMS_BUTTON: 'view-teams-button',
+  VIEW_TEAM_CARD: 'view-teams-card',
   EDIT_TEAM_BUTTON: 'edit-team-button',
   EDIT_TEAM: 'edit-team',
+  EDIT_TEAM_BUTTON_ADMIN: 'edit-team-button',
+  EDIT_TEAM_SUBMIT_ADMIN: 'edit-team-submit-admin',
   BEST_FIT_TEAM: 'best-fit-team',
 
   CREATE_TEAM_NAME: 'create-team-name',
