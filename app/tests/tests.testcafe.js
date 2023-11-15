@@ -89,6 +89,7 @@ const suggestSkill = {
 const suggestTool = {
   name: 'New tool name',
   description: 'The description of the edit tool',
+};
 
 const editedTeam = {
   name: 'New team name',
