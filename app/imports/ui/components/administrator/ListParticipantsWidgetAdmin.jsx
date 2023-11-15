@@ -306,7 +306,7 @@ const ListParticipantsWidgetAdmin = () => {
                 {resultS.map((p) => <ListParticipantCardAdmin
                     key={p._id}
                     participantID={p._id}
-                    participants={p}
+                    participant={p}
                     skills={getParticipantSkills(p._id, participantSkills)}
                     tools={getParticipantTools(p._id, participantTools)}
                     challenges={getParticipantChallenges(p._id, participantChallenges)}

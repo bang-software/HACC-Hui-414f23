@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import * as Icon from 'react-bootstrap-icons';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, teams }) => {
+const ListParticipantCardAdmin = ({ participant, skills, tools, challenges, teams }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -17,7 +17,7 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
   const onLeave = (e) => {
     e.currentTarget.style.backgroundColor = 'transparent';
   };
-  const isMinor = participants.minor;
+  const isMinor = participant.minor;
   return (
       <div id={COMPONENT_IDS.LIST_PARTICIPANTS_CARD_ADMIN}>
         <Card onMouseEnter={changeBackground} onMouseLeave={onLeave} onClick={handleShow}
@@ -26,7 +26,7 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
             <Card.Title>
               <h4 style={{ color: '#263763', paddingTop: '1.5rem' }}>
                 <Icon.PersonFill size={30}/>
-                {participants.firstName} {participants.lastName}
+                {participant.firstName} {participant.lastName}
                 {teams.length === 0 ? (<div className="text-muted"> <Icon.SlashCircleFill color="red"/> No team </div>)
                     : ''}
                 {new Set(teams).size > 1 ? (<div><Icon.SlashCircleFill color="red"/> Multiple teams </div>)
@@ -36,7 +36,7 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
             </Card.Title>
             <Col>
               <h5>About Me</h5>
-              {participants.aboutMe}
+              {participant.aboutMe}
             </Col>
             <hr/>
             <Container>
@@ -62,11 +62,11 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
                 </Col>
                 <Col>
                   <b>Slack Username</b><br/>
-                  {participants.username}
+                  {participant.username}
                 </Col>
                 <Col>
                   <b>GitHub</b><br/>
-                  {participants.gitHub}
+                  {participant.gitHub}
                 </Col>
               </Row>
             </Container>
@@ -74,23 +74,23 @@ const ListParticipantCardAdmin = ({ participants, skills, tools, challenges, tea
         </Card>
         <Modal size="lg" show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title> {participants.firstName} {participants.lastName}
-              <br/> {participants.demographicLevel} </Modal.Title>
+            <Modal.Title> {participant.firstName} {participant.lastName}
+              <br/> {participant.demographicLevel} </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Container>
               <Row>
                 <Col><Icon.Github/>GitHub:<br/>
-                  <a href={participants.gitHub}>{participants.gitHub}</a>
+                  <a href={participant.gitHub}>{participant.gitHub}</a>
                 </Col>
                 <Col><Icon.Server/>Website:<br/>
-                  <a href={participants.website}>{participants.website}</a>
+                  <a href={participant.website}>{participant.website}</a>
                 </Col>
                 <Col><Icon.Linkedin/>LinkedIn:<br/>
-                  <a href={participants.linkedIn}>{participants.linkedIn}</a>
+                  <a href={participant.linkedIn}>{participant.linkedIn}</a>
                 </Col>
                 <Col><Icon.Slack/>Slack Username:<br/>
-                  <a href={participants.username}>{participants.username}</a>
+                  <a href={participant.username}>{participant.username}</a>
                 </Col>
               </Row>
             </Container>
@@ -135,7 +135,7 @@ ListParticipantCardAdmin.propTypes = {
   skills: PropTypes.array.isRequired,
   tools: PropTypes.array.isRequired,
   challenges: PropTypes.array.isRequired,
-  participants: PropTypes.object.isRequired,
+  participant: PropTypes.object.isRequired,
   teams: PropTypes.array.isRequired,
 };
 export default ListParticipantCardAdmin;
