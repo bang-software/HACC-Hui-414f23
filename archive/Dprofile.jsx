@@ -1,26 +1,20 @@
 import React from 'react';
-import { Grid, Header, Segment, Dropdown, Button, Loader, Checkbox } from 'semantic-ui-react';
+import { Button, Checkbox, Dropdown, Grid, Header, Loader, Segment } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
-import {
-  AutoForm,
-  ErrorsField,
-  LongTextField,
-  SubmitField,
-  TextField,
-} from 'uniforms-semantic';
+import { AutoForm, ErrorsField, LongTextField, SubmitField, TextField, } from 'uniforms-semantic';
 import _ from 'underscore';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { Participants } from '../../../api/user/ParticipantCollection';
-import { Skills } from '../../../api/skill/SkillCollection';
-import { Tools } from '../../../api/tool/ToolCollection';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
-import { ParticipantSkills } from '../../../api/user/ParticipantSkillCollection';
-import { ParticipantTools } from '../../../api/user/ParticipantToolCollection';
-import { updateMethod } from '../../../api/base/BaseCollection.methods';
+import { Participants } from '../app/imports/api/user/ParticipantCollection';
+import { Skills } from '../app/imports/api/skill/SkillCollection';
+import { Tools } from '../app/imports/api/tool/ToolCollection';
+import { Challenges } from '../app/imports/api/challenge/ChallengeCollection';
+import { ParticipantSkills } from '../app/imports/api/user/ParticipantSkillCollection';
+import { ParticipantTools } from '../app/imports/api/user/ParticipantToolCollection';
+import { updateMethod } from '../app/imports/api/base/BaseCollection.methods';
 // Create a schema to specify the structure of the data to appear in the form.
 const schema = new SimpleSchema({
 
