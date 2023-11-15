@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Card, Form, DropdownButton, Dropdown } from 'react-bootstrap';
+import { FaUsers } from 'react-icons/fa';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import ListSuggestionsCard from './ListSuggestionsCard';
@@ -34,8 +35,11 @@ const ListSuggestionsWidget = () => {
     setFilters();
   };
 
-  const getType = (event) => {
-    setType(event.target.value);
+  const [selectedType, setSelectedType] = useState('All'); // State to store the selected type for display
+
+  const getType = (value) => {
+    setType(value);
+    setSelectedType(value); // Update the selected type for display
     setFilters();
   };
 
@@ -47,7 +51,7 @@ const ListSuggestionsWidget = () => {
         <h2 className="text-center">Suggestions</h2>
       </Row>
       <Row>
-        <Col md={4}>
+        <Col style={{ paddingLeft: '7rem' }} md={4}>
           <Card style={{ position: 'sticky', top: '6.5rem' }}>
             <Card.Body>
               <Card.Title>Total Suggestions: {result.length}</Card.Title>
@@ -57,7 +61,7 @@ const ListSuggestionsWidget = () => {
                 onChange={handleSearchChange}
               />
               <h5 style={{ paddingTop: '2rem' }}>Suggestion Types</h5>
-              <DropdownButton title="Types" onSelect={getType}>
+              <DropdownButton title={selectedType} onSelect={getType}>
                 {typeOptions.map((option) => (
                   <Dropdown.Item key={option} eventKey={option}>{option}</Dropdown.Item>
                 ))}
@@ -68,10 +72,11 @@ const ListSuggestionsWidget = () => {
         <Col md={8}>
           {suggestions.length === 0 ? (
             <div style={{ textAlign: 'center' }}>
+              <FaUsers size={60} />
               <h2>
                 There are no suggestions at the moment.
-                <p>Please check back later.</p>
               </h2>
+              <p>Please check back later.</p>
             </div>
           ) : (
             <Row>
