@@ -75,6 +75,7 @@ export const COMPONENT_IDS = {
   CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
   CREATE_PROFILE_SUBMIT: 'create-profile-submit',
   LIST_PARTICIPANTS: 'list-participants',
+  LIST_PARTICIPANTS_DROPDOWN: 'list participants dropdown',
   LIST_PARTICIPANTS_CARD: 'list-participants-card',
   LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
   LIST_PARTICIPANTS_CARD_ADMIN: 'list-partcipants-card-admin',
@@ -83,6 +84,7 @@ export const COMPONENT_IDS = {
 
   TEAM_INVITATIONS_BUTTON: 'team-invitations-button',
   ALL_TEAM_INVITATIONS_NAV: 'all-team-invitations-button',
+  ALL_TEAM_INVITATIONS_CARD_ADMIN: 'all-team-invitations-card',
   DELETE_ACCOUNT_NAV: 'delete-account-navbar',
   DELETE_ACCOUNT_TEXT: 'delete-account-textfield',
   DELETE_ACCOUNT_SELECT: 'delete-account-select',

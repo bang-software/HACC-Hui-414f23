@@ -27,6 +27,8 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
+import { teamCard } from './teamCard.component';
+import { allTeamInvitationsCardAdmin } from './allTeamInvitationsCardAdmin.component';
 import { dumpDataBasePage } from './dumpDataBase.page';
 import { memberTeamCard } from './memberTeamCard.component';
 import { sideBar } from './sidebar.component';
@@ -144,7 +146,7 @@ test('Test that CreateProfile page renders', async (testController) => {
 
 test('Test that ListParticipants page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await signinPage.signin(testController, credentialsF.username, credentialsF.password);
   await navBar.gotoListParticipantsPage(testController);
   await listParticipantsPage.isDisplayed(testController);
   await listParticipantsCard.isDisplayed(testController);
@@ -339,6 +341,7 @@ test('Test that AllTeamInvitations pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoAllTeamInvitationsPage(testController);
   await allTeamInvitationsPage.isDisplayed(testController);
+  // await allTeamInvitationsCardAdmin.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {
