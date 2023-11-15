@@ -22,3 +22,7 @@ export const greyStyle = {
 export const whiteStyle = {
   backgroundColor: '#FFFFFF',
 };
+
+export const darkGreyStyle = {
+  backgroundColor: '#393B44',
+};

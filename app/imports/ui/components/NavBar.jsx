@@ -72,7 +72,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.YOUR_PROFILE}
                               key='edit-profile'>Profile</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.CREATE_TEAM}
+                              as={NavLink}
                               activeClassName="active"
                               disabled={!isCompliant}
                               to={ROUTES.CREATE_TEAM}

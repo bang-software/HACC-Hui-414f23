@@ -31,4 +31,5 @@ export const PAGE_IDS = {
   EDIT_PROFILE: 'edit-profile',
   INTERESTED_PARTICIPANTS: 'interested-participants',
   BEST_FIT_TEAM: 'best-fit-team',
+  CREATE_TEAM: 'create-team',
 };
