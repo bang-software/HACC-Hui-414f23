@@ -105,7 +105,7 @@ const YourTeamsWidget = () => {
                           <ListGroup.Item key={team._id}>
                             <YourTeamsCard
                                 key={team._id}
-                                teams={team}
+                                team={team}
                                 teamParticipants={getTeamParticipants(team._id)}
                                 teamInvitation={data.teamInvitations}/>
                           </ListGroup.Item>

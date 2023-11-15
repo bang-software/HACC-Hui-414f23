@@ -33,12 +33,12 @@ const schema = new SimpleSchema({
 });
 
 const YourTeamsCard = ({
-                        teams,
+                        team,
                         teamParticipants,
                         teamInvitation,
                        }) => {
   const [open, setOpen] = useState(false);
-  const [editTeamShow, setEditTeamShow] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState('');
 
   const fRef = useRef(null);
 
@@ -91,18 +91,18 @@ const YourTeamsCard = ({
         return;
       }
       if (typeof TeamParticipants.findOne({
-        teamID: teams._id,
+        teamID: team._id,
         developerID: participantDoc._id,
       }) !== 'undefined') {
         swal('Error',
-            `Sorry, participant ${participantList[i]} is already in ${teams.name}!`,
+            `Sorry, participant ${participantList[i]} is already in ${team.name}!`,
             'error');
         return;
       }
 
       // check to see if the invitation was already issued
       for (let j = 0; j < teamInvitation.length; j++) {
-        if (teamInvitation[j].teamID === teams._id &&
+        if (teamInvitation[j].teamID === team._id &&
             teamInvitation[j].participantID === participantDoc._id) {
           swal('Error',
               `Sorry, an invitation to ${participantList[i]} was already issued!`,
@@ -115,11 +115,11 @@ const YourTeamsCard = ({
     // if there are no errors, we can then add everyone
     for (let i = 0; i < participantList.length; i++) {
       // const collectionName = WantsToJoin.getCollectionName();
-      const teamDoc = Teams.findDoc(teams._id);
-      const team = Slugs.getNameFromID(teamDoc.slugID);
+      const teamDoc = Teams.findDoc(team._id);
+      const teamName = Slugs.getNameFromID(teamDoc.slugID);
       const participant = participantList[i];
       const definitionData = {
-        team,
+        team: teamName,
         participant,
       };
       const collectionName2 = TeamInvitations.getCollectionName();
@@ -129,26 +129,14 @@ const YourTeamsCard = ({
         } else {
           swal('Success',
               `You've successfully invited participant(s):\n\n ${participantList.join(', ')}
-              \nto ${teams.name}
+              \nto ${team.name}
               \n The participants can now look at 'Team Invitations' to accept it.`,
               'success');
         }
       });
     }
   };
-  function EditTeamModal(props) {
-    return (
-      <Modal {...props} className='modal-xl modal-dialog-scrollable'>
-        <Modal.Header closeButton />
-        <Modal.Body>
-          <EditTeam
-            team={teams}
-          />
-        </Modal.Body>
-      </Modal>
-    );
-  }
-  // let fRef = null;
+
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
       <Container fluid style={{ padding: '0rem 2rem 0rem 2rem' }} id={COMPONENT_IDS.YOUR_TEAMS_CARD}>
@@ -156,15 +144,15 @@ const YourTeamsCard = ({
           <Col>
             <h3 style={{ color: '#263763', paddingTop: '2rem' }}>
               <i className="fa fa-users fa-xs"></i> {/* Replacement for the <Icon> component */}
-              {teams?.name}
+              {team?.name}
             </h3>
           </Col>
         </Row>
         <Row>
           <Col>
-            GitHub: {teams.gitHubRepo}<br />
-            DevPost: {teams?.devPostPage}
-            <Image src={teams.image} rounded className="img-large"/>
+            GitHub: {team.gitHubRepo}<br />
+            DevPost: {team?.devPostPage}
+            <Image src={team.image} rounded className="img-large"/>
           </Col>
           <Col>
             <h4>Members</h4>
@@ -176,7 +164,7 @@ const YourTeamsCard = ({
           <Col>
             <Button variant="link" id={COMPONENT_IDS.SEE_INTERTESTED_PARTICIPANTS}>
               <Link
-                  to={`/interested-participants/${teams?._id}`}>
+                  to={`/interested-participants/${team?._id}`}>
                 See interested participants
               </Link>
             </Button>
@@ -199,7 +187,7 @@ const YourTeamsCard = ({
                 <AutoForm ref={fRef} schema={formSchema} onSubmit={data => submit(data, fRef.current)}>
                   <Row style={{ paddingTop: '20px' }}>
                     <Col>
-                      <h2 className="text-center">Who would you like to invite to {teams?.name}?</h2>
+                      <h2 className="text-center">Who would you like to invite to {team?.name}?</h2>
                       <h4 className="text-center" style={{ paddingBottom: '2rem', marginTop: '0rem' }}>
                         Please make sure the email you input is the same as the ones they have used to make their Slack account.
                       </h4>
@@ -231,18 +219,27 @@ const YourTeamsCard = ({
           </Col>
           <Col>
             <Button id={COMPONENT_IDS.EDIT_TEAM_BUTTON}
-                    onClick={(() => setEditTeamShow(true))}>
+                    onClick={() => setSelectedTeam(team._id)}>
               Edit Team
             </Button>
+            <Modal className='modal-xl modal-dialog-scrollable'
+                   show={selectedTeam === team._id}
+                   onHide={() => setSelectedTeam('')}>
+              <Modal.Header closeButton />
+              <Modal.Body>
+                <EditTeam
+                  teamName={team.name}
+                />
+              </Modal.Body>
+            </Modal>
           </Col>
         </Row>
-        <EditTeamModal show={editTeamShow} onHide={() => setEditTeamShow(false)} />
       </Container>
   );
 };
 
 YourTeamsCard.propTypes = {
-  teams: PropTypes.object.isRequired,
+  team: PropTypes.object.isRequired,
   teamParticipants: PropTypes.array.isRequired,
   teamInvitation: PropTypes.array.isRequired,
 };
