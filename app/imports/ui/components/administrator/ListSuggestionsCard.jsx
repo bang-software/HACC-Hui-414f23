@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Header,
-  Item,
-  Button,
-} from 'semantic-ui-react';
+import { Card, Button } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
@@ -12,9 +8,9 @@ import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 
-class ListSuggestionsCard extends React.Component {
+const ListSuggestionsCard = ({ type, username, name, description, suggestionObj }) => {
 
-  removeItem() {
+  const removeItem = () => {
     swal({
       title: 'Are you sure?',
       text: 'Once deleted, you will not be able to recover this suggestion!',
@@ -23,11 +19,10 @@ class ListSuggestionsCard extends React.Component {
       dangerMode: true,
     })
         .then((willDelete) => {
-          console.log(this.props.suggestionObj);
           if (willDelete) {
             removeItMethod.call({
               collectionName: Suggestions.getCollectionName(),
-              instance: this.props.suggestionObj._id,
+              instance: suggestionObj._id,
             }, (error) => (error ?
                 swal('Error', error.message, 'error') :
                 swal('Success', 'Suggestion removed', 'success')));
@@ -35,14 +30,13 @@ class ListSuggestionsCard extends React.Component {
             swal('You canceled the deletion!');
           }
         });
-  }
+  };
 
-  addSuggestion(type, name, description, instance) {
+  const addSuggestion = (atype, aname, adescription, instance) => {
     let collectionName;
-    console.log(type, name, description);
-    if (type.toLowerCase() === 'skill') {
+    if (atype.toLowerCase() === 'skill') {
       collectionName = Skills.getCollectionName();
-    } else if (type.toLowerCase() === 'tool') {
+    } else if (atype.toLowerCase() === 'tool') {
       collectionName = Tools.getCollectionName();
     } else {
       swal('Error', 'Undefined type of suggestion', 'error');
@@ -64,34 +58,28 @@ class ListSuggestionsCard extends React.Component {
       });
     });
     return true;
-  }
+  };
 
-  render() {
-    // console.log(this.props);
-    return (
-        <Item
-              style={{ padding: '0rem 2rem 2rem 2rem' }}>
-            <Item.Content>
-              <Item.Header>
-                <Header as={'h3'} style={{ color: '#263763', paddingTop: '2rem' }}>
-                  {this.props.name}
-                </Header>
-              </Item.Header>
-              <Item.Meta>
-                {this.props.type}
-              </Item.Meta>
-              <Item.Description>
-                {this.props.description}
-              </Item.Description>
-              <Item.Extra>Suggested By: {this.props.username} </Item.Extra>
-              <Button negative onClick={() => this.removeItem()}>Delete</Button>
-              <Button positive onClick={() => this.addSuggestion(this.props.type,
-                  this.props.name, this.props.description, this.props.suggestionObj._id)}>Add Suggestion</Button>
-            </Item.Content>
-        </Item>
-    );
-  }
-}
+  return (
+      <Card key={suggestionObj} style={{ width: '18rem', margin: '1rem' }}>
+        <Card.Body>
+          <Card.Title>{name}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">{type}</Card.Subtitle>
+          <Card.Text>{description}</Card.Text>
+          <Card.Text>Suggested By: {username}</Card.Text>
+          <Button variant="danger" onClick={() => removeItem(suggestionObj)}>
+            Delete
+          </Button>
+          <Button
+              variant="success"
+              onClick={() => addSuggestion(type, name, description, suggestionObj)}
+          >
+            Add Suggestion
+          </Button>
+        </Card.Body>
+      </Card>
+  );
+};
 
 ListSuggestionsCard.propTypes = {
   type: PropTypes.string.isRequired,
