@@ -16,7 +16,6 @@ export const ROUTES = {
   CREATE_TEAM: '/create-team',
   EDIT_TEAM: '/edit-team/:_id',
   DELETE_TEAM: '/delete-team',
-  LIST_TEAMS: '/list-teams',
   DELETE_ACCOUNT: '/delete-account',
   HELP_PAGE: '/help-page',
   CONFIGURE_HACC: '/configure-hacc',

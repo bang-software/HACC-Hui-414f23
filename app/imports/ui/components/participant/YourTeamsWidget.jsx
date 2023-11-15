@@ -9,6 +9,12 @@ import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import YourTeamsCard from './YourTeamsCard';
 import MemberTeamCard from './MemberTeamCard';
 import { paleBlueStyle } from '../../styles';
+import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { Skills } from '../../../api/skill/SkillCollection';
+import { Tools } from '../../../api/tool/ToolCollection';
+import { TeamSkills } from '../../../api/team/TeamSkillCollection';
+import { TeamTools } from '../../../api/team/TeamToolCollection';
+import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 
 const YourTeamsWidget = () => {
 
@@ -22,6 +28,14 @@ const YourTeamsWidget = () => {
     const allParticipants = Participants.find({}).fetch();
     const teamInvitations = TeamInvitations.find({}).fetch();
 
+    const allChallenges = Challenges.find({}).fetch();
+    const allSkills = Skills.find({}).fetch();
+    const allTools = Tools.find({}).fetch();
+    const allTeamSkills = TeamSkills.find({}).fetch();
+    const allTeamTools = TeamTools.find({}).fetch();
+    const allTeamChallenges = TeamChallenges.find({}).fetch();
+    const allTeamParticipants = TeamParticipants.find({}).fetch();
+
     return {
       participant,
       teams,
@@ -29,6 +43,13 @@ const YourTeamsWidget = () => {
       allParticipants,
       teamParticipantsArray,
       teamInvitations,
+      allChallenges,
+      allSkills,
+      allTools,
+      allTeamSkills,
+      allTeamTools,
+      allTeamChallenges,
+      allTeamParticipants,
     };
   });
 

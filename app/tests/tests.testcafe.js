@@ -26,11 +26,16 @@ import { listParticipantsCardAdmin } from './listParticipantsCardAdmin.component
 import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
+import { yourTeamsCard } from './yourTeamsCard.component';
+import { dumpDataBasePage } from './dumpDataBase.page';
 import { memberTeamCard } from './memberTeamCard.component';
 import { teamCard } from './teamCard.component';
-import { yourTeamsCard } from './yourTeamsCard.component';
+import { sideBar } from './sidebar.component';
 import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
+import { editTeam } from './editTeam.component';
+import { interestedParticipantsPage } from './interestedParticipants.page';
+import { bestFitTeam } from './bestFitTeam.page';
 
 /* global fixture:false, test:false */
 
@@ -39,6 +44,8 @@ const credentialsB = { username: 'john@foo.com', password: 'changeme' };
 const credentialsC = { username: 'arslan@foo.com', password: 'changeme', firstName: 'Arslan', lastName: 'Qiu' };
 const credentialsD = { username: 'gsummey@hotmail.com', password: 'changeme' };
 const credentialsE = { username: 'jenny@foo.com', password: 'changeme' };
+const credentialsF = { username: 'aung@foo.com', password: 'changeme' };
+
 const challenge = {
   title: 'Test Challenge',
   description: 'The description of the test challenge',
@@ -82,7 +89,22 @@ const profileInfo = {
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 /** USER --------------------------------------------------------------------------------------------------*/
+test('Test sidebar user buttons', async (testController) => {
+  await testController.resizeWindow(475, 667);
+  await sideBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsE.username, credentialsE.password);
+  await sideBar.gotoProfilePage(testController);
+  await profilePage.isDisplayed(testController);
+  await sideBar.gotoListParticipantsPage(testController);
+  await sideBar.gotoSuggestToolSkillPage(testController);
+  await suggestToolSkillPage.isDisplayed(testController);
+  await sideBar.gotoTeamInvitationsPage(testController);
+  await teamInvitationsPage.isDisplayed(testController);
+  await testController.resizeWindow(1024, 667);
+});
+
 test('Test that landing page shows up', async (testController) => {
+  await testController.resizeWindow(1024, 667);
   await landingPage.isDisplayed(testController);
 });
 
@@ -147,13 +169,14 @@ test('Test that profile page renders', async (testController) => {
   await signinPage.signin(testController, credentialsC.username, credentialsC.password);
   await agePage.isDisplayed(testController);
   await agePage.under18(testController);
+  await navBar.gotoBestFitTeam(testController);
+  await bestFitTeam.isDisplayed(testController);
   await navBar.gotoProfilePage(testController);
   await profilePage.isDisplayed(testController);
   await profilePage.goToEditPage(testController);
   await editProfilePage.isDisplayed(testController);
   await navBar.gotoProfilePage(testController);
   await teamMembership.isDisplayed(testController);
-  await teamCard.isDisplayed(testController);
 });
 
 test('Test delete form renders', async (testController) => {
@@ -164,13 +187,23 @@ test('Test delete form renders', async (testController) => {
   await deleteFormPage.isDisplayed(testController);
 });
 
-test('Test that your teams page shows up', async (testController) => {
+test('Test that your teams page and edit team form shows up', async (testController) => {
   await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await signinPage.signin(testController, credentialsF.username, credentialsF.password);
   await navBar.gotoYourTeams(testController);
   await yourTeams.isDisplayed(testController);
   await yourTeamsCard.isDisplayed(testController);
   await memberTeamCard.isDisplayed(testController);
+  await yourTeamsCard.open_edit_team_modal(testController);
+  await editTeam.isDisplayed(testController);
+});
+
+test('Test that interested participant page and cards show up', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsF.username, credentialsF.password);
+  await navBar.gotoYourTeams(testController);
+  await yourTeamsCard.see_interested_participants(testController);
+  await interestedParticipantsPage.isDisplayed(testController);
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
@@ -263,4 +296,11 @@ test('Test that UpdateMinorParticipantsCompliant page renders', async (testContr
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoUpdateMP(testController);
   await updateMPCompliant.isDisplayed(testController);
+});
+
+test('Test that Dump DataBase page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoDumpDataBase(testController);
+  await dumpDataBasePage.clickDumpDownload(testController);
 });

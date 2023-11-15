@@ -32,6 +32,10 @@ class TeamSkillCollection extends BaseCollection {
     return this._collection.insert({ teamID, skillID, skillLevel });
   }
 
+  defineWithIDs(teamID, skillID) {
+    return this._collection.insert({ teamID, skillID });
+  }
+
   /**
    * Updates the given tuple.
    * @param docID {String} the ID of the pair to update.
@@ -70,6 +74,10 @@ class TeamSkillCollection extends BaseCollection {
    */
   removeTeam(team) {
     const teamID = Teams.getID(team);
+    this._collection.remove({ teamID });
+  }
+
+  removeTeamByID(teamID) {
     this._collection.remove({ teamID });
   }
 

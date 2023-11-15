@@ -33,6 +33,10 @@ class TeamToolCollection extends BaseCollection {
     return this._collection.insert({ teamID, toolID, toolLevel });
   }
 
+  defineWithIDs(teamID, toolID) {
+    return this._collection.insert({ teamID, toolID });
+  }
+
   /**
    * Updates the given tuple.
    * @param docID {String} the ID of the tuple to update.
@@ -72,6 +76,10 @@ class TeamToolCollection extends BaseCollection {
    */
   removeTeam(team) {
     const teamID = Teams.getID(team);
+    this._collection.remove({ teamID });
+  }
+
+  removeTeamByID(teamID) {
     this._collection.remove({ teamID });
   }
 

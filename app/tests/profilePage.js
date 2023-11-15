@@ -9,7 +9,7 @@ class ProfilePage {
   }
 
   async isDisplayed(testController) {
-    await testController.wait(10000).expect(this.pageSelector.exists).ok();
+    await testController.wait(5000).expect(this.pageSelector.exists).ok();
   }
 
   async goToEditPage(testController) {

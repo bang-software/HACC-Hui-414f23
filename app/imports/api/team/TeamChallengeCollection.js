@@ -31,6 +31,10 @@ class TeamChallengeCollection extends BaseCollection {
     return this._collection.insert({ teamID, challengeID });
   }
 
+  defineWithIDs(teamID, challengeID) {
+    return this._collection.insert({ teamID, challengeID });
+  }
+
   /**
    * Updates the given team-challenge pair.
    * @param docID {String} the ID of the pair.
@@ -73,6 +77,10 @@ class TeamChallengeCollection extends BaseCollection {
    */
   removeTeam(team) {
     const teamID = Teams.getID(team);
+    this._collection.remove({ teamID });
+  }
+
+  removeTeamByID(teamID) {
     this._collection.remove({ teamID });
   }
 
