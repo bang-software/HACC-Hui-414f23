@@ -1,8 +1,7 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
-import { withTracker, useTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import { SubsManager } from 'meteor/meteorhacks:subs-manager';
-import { Loader } from 'semantic-ui-react';
+import { Spinner } from 'react-bootstrap';
 import { Challenges } from '../../api/challenge/ChallengeCollection';
 import { ChallengeInterests } from '../../api/challenge/ChallengeInterestCollection';
 import { Interests } from '../../api/interest/InterestCollection';
@@ -69,11 +68,10 @@ const withAllSubscriptions = (WrappedComponent) => {
       return handles.some((handle) => !handle.ready());
     });
 
-    return loading ? <Loader active>Getting data.</Loader> : <WrappedComponent {...props} />;
-  };
-
-  AllSubscriptionsHOC.propTypes = {
-    loading: PropTypes.bool,
+    return loading ?
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Getting data...</span>
+        </Spinner> : <WrappedComponent {...props} />;
   };
 
   return AllSubscriptionsHOC;
