@@ -75,6 +75,7 @@ export const COMPONENT_IDS = {
   CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
   CREATE_PROFILE_SUBMIT: 'create-profile-submit',
   LIST_PARTICIPANTS: 'list-participants',
+  LIST_PARTICIPANTS_DROPDOWN: 'list participants dropdown',
   LIST_PARTICIPANTS_CARD: 'list-participants-card',
   LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
   LIST_PARTICIPANTS_CARD_ADMIN: 'list-partcipants-card-admin',

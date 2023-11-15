@@ -9,7 +9,6 @@ import {
 } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { Teams } from '../../../api/team/TeamCollection';
@@ -37,7 +36,7 @@ const AllTeamInvitationCard = ({ teams, skills, tools, challenges, participants 
       invitations[i] = invitations[i].participantID;
     }
     const invitedMembers = [];
-    _.forEach(invitations, (id) => {
+    invitations.forEach((id) => {
       invitedMembers.push(Participants.getFullName(id));
     });
     return (
