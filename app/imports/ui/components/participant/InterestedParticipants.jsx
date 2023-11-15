@@ -129,15 +129,13 @@ const InterestedParticipants = () => {
           </h3>
         </Row>
         <Row>
-          <Card divided>
-            {getInterestedDevelopers(interestedDevs).map((devs) => <InterestedParticipantCard
-                key={devs._id} developers={devs}
-                teams={teams}
-                skills={getDeveloperSkills(devs._id, developerSkills)}
-                tools={getDeveloperTools(devs._id, developerTools)}
-                challenges={getDeveloperChallenges(devs._id, developerChallenges)}
-            />)}
-          </Card>
+          {getInterestedDevelopers(interestedDevs).map((devs) => <InterestedParticipantCard
+              key={devs._id} developers={devs}
+              teams={teams}
+              skills={getDeveloperSkills(devs._id, developerSkills)}
+              tools={getDeveloperTools(devs._id, developerTools)}
+              challenges={getDeveloperChallenges(devs._id, developerChallenges)}
+          />)}
         </Row>
       </Container>
   );
