@@ -5,8 +5,8 @@ import { FaUsers } from 'react-icons/fa';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import ListSuggestionsCard from './ListSuggestionsCard';
-import ListSuggestionsFilter from './ListSuggestionsFilter';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
+import * as filters from './ListSuggestionsFilter';
 
 const ListSuggestionsWidget = () => {
   const { suggestions } = useTracker(() => ({
@@ -20,8 +20,6 @@ const ListSuggestionsWidget = () => {
   useEffect(() => {
     setResult([...suggestions].sort((a, b) => a.name.localeCompare(b.name)));
   }, [suggestions]);
-
-  const filters = new ListSuggestionsFilter();
 
   const setFilters = () => {
     const searchResults = filters.filterBySearch(suggestions, search);
