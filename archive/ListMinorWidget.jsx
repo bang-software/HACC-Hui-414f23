@@ -3,8 +3,8 @@ import { Button, Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { Link } from 'react-router-dom';
-import { removeItMethod } from '../../../api/base/BaseCollection.methods';
-import { MinorParticipants } from '../../../api/user/MinorParticipantCollection';
+import { removeItMethod } from '../app/imports/api/base/BaseCollection.methods';
+import { MinorParticipants } from '../app/imports/api/user/MinorParticipantCollection';
 
 /** Renders a single row in the table. See pages/Listmenuitemss.jsx. */
 class ListMinorWidget extends React.Component {
