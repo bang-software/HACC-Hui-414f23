@@ -14,8 +14,6 @@ export const COMPONENT_IDS = {
   CONFIGURE_HACC: 'configure-hacc',
   UPDATE_MP: 'update-mp',
 
-  HACC_WIDGET_VIEW_TEAMS_BUTTON: 'view-teams-button',
-
   HACC_WIDGET_NAV_CHALLENGE: 'custom-nav-challenge',
   HACC_WIDGET_NAV_SKILL: 'custom-nav-skill',
   HACC_WIDGET_NAV_TOOl: 'custom-nav-tool',
@@ -106,7 +104,7 @@ export const COMPONENT_IDS = {
   SIDEBAR_CONFIGURE_HACC: 'sidebar-configure-hacc',
   SIDEBAR_UPDATE_MP: 'sidebar-update-mp',
   SIDEBAR_LIST_PARTICIPANTS_ADMIN: 'sidebar-list-participants-admin',
-  SIDEBAR_HACC_WIDGET_VIEW_TEAMS_BUTTON: 'sidebar-hacc-widget-view-teams-button',
+  SIDEBAR_VIEW_TEAMS_BUTTON: 'sidebar-view-teams-button',
   SIDEBAR_ALL_TEAM_INVITATIONS_NAV: 'sidebar-all-team-invitations-nav',
   SIDEBAR_CLOSE_BUTTON: 'sidebar-close-button',
 
@@ -118,7 +116,12 @@ export const COMPONENT_IDS = {
   MEMBER_TEAM_CARD: 'member_team_card',
   TEAM_MEMBERSHIP_WIDGET: 'team-membership-widget',
   EDIT_PROFILE_BUTTON: 'edit-profile-button',
+
+  VIEW_TEAMS_BUTTON: 'view-teams-button',
+  VIEW_TEAM_CARD: 'view-teams-card',
   EDIT_TEAM_BUTTON: 'edit-team-button',
   EDIT_TEAM: 'edit-team',
+  EDIT_TEAM_BUTTON_ADMIN: 'edit-team-button',
+  EDIT_TEAM_SUBMIT_ADMIN: 'edit-team-submit-admin',
   BEST_FIT_TEAM: 'best-fit-team',
 };

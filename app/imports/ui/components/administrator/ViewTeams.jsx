@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import { Container, Row, Col, Button, Form, Card, ListGroup } from 'react-bootstrap';
 import { Teams } from '../../../api/team/TeamCollection';
-import ViewTeamExample from './ViewTeam';
+import ViewTeam from './ViewTeam';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
@@ -134,7 +134,7 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
           <Col xs={8}>
             <ListGroup>
               {filteredTeams.map((team) => (
-                  <ViewTeamExample key={team._id}
+                  <ViewTeam key={team._id}
                                    team={team}
                                    teamMembers={getTeamMembers(team)}
                                    isCompliant={teamIsCompliant(team._id)}

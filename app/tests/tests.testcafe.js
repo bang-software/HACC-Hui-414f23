@@ -89,6 +89,9 @@ const suggestSkill = {
 const suggestTool = {
   name: 'New tool name',
   description: 'The description of the edit tool',
+
+const editedTeam = {
+  name: 'New team name',
 };
 
 const profileInfo = {
@@ -289,11 +292,20 @@ test('Test that EditTool page function', async (testController) => {
   await editToolPage.editTool(testController, editedTool);
 });
 
-test('Test that ViewTeams pages function', async (testController) => {
+test('Test that ViewTeams pages shows', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
-  await navBar.gotoConfigueHACC(testController);
-  await manageHaccWidgetComponents.isDisplayed(testController);
+  await navBar.gotoViewTeamsPage(testController);
+  await viewTeamsPage.isDisplayed(testController);
+});
+
+test('Test that admin view team shows modal and edit team page shows', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoViewTeamsPage(testController);
+  await viewTeamsPage.isDisplayed(testController);
+  await viewTeamsPage.viewTeam(testController);
+  await viewTeamsPage.editTeamAdmin(testController, editedTeam);
 });
 
 test('Test that AllTeamInvitations pages function', async (testController) => {

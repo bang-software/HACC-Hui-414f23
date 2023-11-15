@@ -1,4 +1,4 @@
-import { Selector , RequestLogger } from 'testcafe';
+import { Selector } from 'testcafe';
 import { PAGE_IDS } from '../imports/ui/testIDs/pageIDs';
 import { COMPONENT_IDS } from '../imports/ui/testIDs/componentIDs';
 
@@ -24,6 +24,16 @@ class ViewTeamsPage {
     await testController.click(`#${COMPONENT_IDS.FILTER_NO_GITHUB}`);
     await testController.click(`#${COMPONENT_IDS.FILTER_NONE}`);
   }
+
+  async viewTeam(testController) {
+    await testController.click(`#${COMPONENT_IDS.VIEW_TEAM_CARD}`);
+  }
+
+  async editTeamAdmin(testController, testcase) {
+    await testController.click(`#${COMPONENT_IDS.EDIT_TEAM_BUTTON_ADMIN}`);
+    await testController.click(`#${COMPONENT_IDS.EDIT_TEAM_SUBMIT_ADMIN}`);
+  }
+
 }
 
 export const viewTeamsPage = new ViewTeamsPage();
