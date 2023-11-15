@@ -13,6 +13,7 @@ export const COMPONENT_IDS = {
   PROFILE: 'profile',
   CONFIGURE_HACC: 'configure-hacc',
   UPDATE_MP: 'update-mp',
+  CREATE_TEAM: 'create-team',
 
   HACC_WIDGET_NAV_CHALLENGE: 'custom-nav-challenge',
   HACC_WIDGET_NAV_SKILL: 'custom-nav-skill',

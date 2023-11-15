@@ -12,6 +12,7 @@ import { helpPage } from './help.page';
 import { editChallengePage } from './manage_hacc_tests/editChallengePage.page';
 import { participationForm } from './participationForm.page';
 import { createProfilePage } from './createProfile.page';
+import { suggestToolSkillPage } from './suggestToolSkillPage.page';
 import { viewTeamsPage } from './viewTeamsPage.page';
 import { suggestToolSkillPage } from './suggestToolSkillPage';
 import { profilePage } from './profilePage';
@@ -29,13 +30,13 @@ import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
 import { dumpDataBasePage } from './dumpDataBase.page';
 import { memberTeamCard } from './memberTeamCard.component';
-import { teamCard } from './teamCard.component';
 import { sideBar } from './sidebar.component';
 import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
 import { editTeam } from './editTeam.component';
 import { interestedParticipantsPage } from './interestedParticipants.page';
 import { bestFitTeam } from './bestFitTeam.page';
+import { createTeamPage } from './createTeam.page';
 
 /* global fixture:false, test:false */
 
@@ -98,6 +99,13 @@ const editedTeam = {
 const profileInfo = {
   linkedin: 'Linkedin.com/usr/test',
   aboutMe: 'Im a Garth Summey',
+};
+
+const teamInfo = {
+  name: 'bang-software',
+  description: 'nice team',
+  devpost: 'github.com',
+  affiliation: 'aff',
 };
 
 fixture('meteor-application-template-react localhost test with default db')
@@ -218,6 +226,14 @@ test('Test that interested participant page and cards show up', async (testContr
   await navBar.gotoYourTeams(testController);
   await yourTeamsCard.see_interested_participants(testController);
   await interestedParticipantsPage.isDisplayed(testController);
+});
+
+test('Test that CreateTeam page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await navBar.gotoCreateTeamPage(testController);
+  await createTeamPage.isDisplayed(testController);
+  // await createProfilePage.fillInfo(testController, profileInfo);
 });
 
 test('Test that SuggestToolSkillWidget page functions', async (testController) => {
