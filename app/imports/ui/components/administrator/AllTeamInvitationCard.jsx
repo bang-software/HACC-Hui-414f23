@@ -47,66 +47,64 @@ class AllTeamInvitationCard extends React.Component {
         <Card onMouseEnter={changeBackground} onMouseLeave={onLeave}
               style={{ padding: '0rem 2rem 1rem 2rem' }}>
           <Modal closeIcon trigger={
-            <Item.Content>
-              <Item.Header>
-                <Header as={'h3'} style={{ color: '#263763', paddingTop: '2rem' }}>
-                  <Icon name='users' size='tiny'/>
+            <Card.Body>
+              <Card.Title>
+                <h3 style={{ color: '#263763', paddingTop: '2rem' }}>
+                  <Icon name='users' />
                   {this.props.teams.name}
-                </Header>
-              </Item.Header>
-              <Item.Meta>
-                <Item.Meta>
-                  <Grid doubling columns={5}>
-                    <Grid.Column>
+                </h3>
+              </Card.Title>
+                <Container>
+                  <Row doubling columns={5}>
+                    <Col>
                       <Image src={this.props.teams.image} rounded size='small'/>
-                      <Grid.Column floated={'left'} style={{ paddingBottom: '0.3rem' }}>
+                      <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
                         {this.props.challenges.slice(0, 3).map((challenge) => <p
                             style={{ color: 'rgb(89, 119, 199)' }}
                             key={challenge}>
                           {challenge}</p>)}
-                      </Grid.Column>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Skills</Header>
+                      </Col>
+                    </Col>
+                    <Col>
+                      <h5 style={{ fontWeight: 'bold' }}>Skills</h5>
                       {this.props.skills.slice(0, 3).map((skill) => <p key={skill}>
                         {skill}</p>)}
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Tools</Header>
+                    </Col>
+                    <Col>
+                      <h5 style={{ fontWeight: 'bold' }}>Tools</h5>
                       {this.props.tools.slice(0, 3).map((tool) => <p key={tool}>
                         {tool}</p>)}
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Member(s) Invited:</Header>
+                    </Col>
+                    <Col>
+                      <h5 style={{ fontWeight: 'bold' }}>Member(s) Invited:</h5>
                       {invitedMembers.slice(0, 3).map((members) => <p key={members}>
                         {members}</p>)}
-                    </Grid.Column>
-                  </Grid>
-                </Item.Meta>
-              </Item.Meta>
-            </Item.Content>
+                    </Col>
+                  </Row>
+                </Container>
+            </Card.Body>
           }>
             <Modal.Header>{this.props.teams.name}</Modal.Header>
             <Modal.Content image scrolling>
               <Image size='medium' src={this.props.teams.image} wrapped/>
               <Modal.Description>
-                <Header>Description</Header>
+                <h4>Description</h4>
                 <p>
                   {this.props.teams.description}
                 </p>
-                <Header>Challenges</Header>
+                <h4>Challenges</h4>
                 {this.props.challenges.map((challenge) => <p key={challenge}>
                   {challenge}</p>)}
-                <Header>Skills</Header>
+                <h4>Skills</h4>
                 {this.props.skills.map((skill) => <p key={skill}>
                   {skill}</p>)}
-                <Header>Tools</Header>
+                <h4>Tools</h4>
                 {this.props.tools.map((tool) => <p key={tool}>
                   {tool}</p>)}
-                <Header>Members</Header>
+                <h4>Members</h4>
                 {this.props.participants.map((participant) => <p key={participant}>
                   {participant.firstName} {participant.lastName}</p>)}
-                <Header>Member(s) Invited:</Header>
+                <h4>Member(s) Invited:</h4>
                 {invitedMembers.slice(0, 3).map((members) => <p key={members}>
                   {members}</p>)}
               </Modal.Description>
