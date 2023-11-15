@@ -69,7 +69,10 @@ const SuggestToolSkillWidget = ({ participant }) => {
                   </Col>
                   <Col>
                     <SelectField name="type" id={COMPONENT_IDS.SUGGEST_TOOL_SKILL_SELECT}
-                                 options={[{ label: 'Tool', value: 'Tool' }, { label: 'Skill', value: 'Skill' }]}
+                                 options={[
+                                   { label: 'Tool', value: 'Tool', id: 'tool-option-id' },
+                                   { label: 'Skill', value: 'Skill', id: 'skill-option-id' },
+                                 ]}
                     />
                   </Col>
                 </Row>
