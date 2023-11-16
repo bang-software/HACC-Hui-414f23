@@ -136,7 +136,8 @@ const ListParticipantsCard = ({ participants, challenges, skills, tools, partici
                           className="button icon"
                           style={{ backgroundColor: 'transparent' }}
                       >
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <Dropdown.Toggle variant="success"
+                        id={COMPONENT_IDS.LIST_PARTICIPANTS_DROPDOWN}>
                           Send Invitation
                         </Dropdown.Toggle>
                         <Dropdown.Menu>

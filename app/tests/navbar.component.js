@@ -63,6 +63,14 @@ class NavBar {
     await testController.click(`#${COMPONENT_IDS.PROFILE}`);
   }
 
+  async gotoCreateTeamPage(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.CREATE_TEAM}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.CREATE_TEAM}`);
+  }
+
   /** Feeling Hungry Page */
   async gotoConfigueHACC(testController) {
     const visible = await Selector(`#${COMPONENT_IDS.CONFIGURE_HACC}`).visible;
@@ -79,6 +87,14 @@ class NavBar {
       await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
     }
     await testController.click(`#${COMPONENT_IDS.SUGGEST_TOOL_SKILL_BUTTON}`);
+  }
+
+  async gotoSuggestionsListAdmin(testController) {
+    const visible = await Selector(`#${COMPONENT_IDS.LIST_SUGGESTIONS_NAV}`).visible;
+    if (!visible) {
+      await testController.click(`${COMPONENT_IDS.NAVBAR_TOGGLE}`);
+    }
+    await testController.click(`#${COMPONENT_IDS.LIST_SUGGESTIONS_NAV}`);
   }
 
   async gotoListParticipantsPage(testController) {

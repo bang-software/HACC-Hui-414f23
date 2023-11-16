@@ -13,6 +13,7 @@ export const COMPONENT_IDS = {
   PROFILE: 'profile',
   CONFIGURE_HACC: 'configure-hacc',
   UPDATE_MP: 'update-mp',
+  CREATE_TEAM: 'create-team',
 
   HACC_WIDGET_NAV_CHALLENGE: 'custom-nav-challenge',
   HACC_WIDGET_NAV_SKILL: 'custom-nav-skill',
@@ -74,11 +75,16 @@ export const COMPONENT_IDS = {
   CREATE_PROFILE_CHALLENGES: 'create-profile-challenges',
   CREATE_PROFILE_SUBMIT: 'create-profile-submit',
   LIST_PARTICIPANTS: 'list-participants',
+  LIST_PARTICIPANTS_DROPDOWN: 'list participants dropdown',
   LIST_PARTICIPANTS_CARD: 'list-participants-card',
   LIST_PARTICIPANTS_ADMIN: 'list-participants-admin',
   LIST_PARTICIPANTS_CARD_ADMIN: 'list-partcipants-card-admin',
+
+  LIST_SUGGESTIONS_NAV: 'list-suggestions-nav',
+
   TEAM_INVITATIONS_BUTTON: 'team-invitations-button',
   ALL_TEAM_INVITATIONS_NAV: 'all-team-invitations-button',
+  ALL_TEAM_INVITATIONS_CARD_ADMIN: 'all-team-invitations-card',
   DELETE_ACCOUNT_NAV: 'delete-account-navbar',
   DELETE_ACCOUNT_TEXT: 'delete-account-textfield',
   DELETE_ACCOUNT_SELECT: 'delete-account-select',
@@ -124,4 +130,14 @@ export const COMPONENT_IDS = {
   EDIT_TEAM_BUTTON_ADMIN: 'edit-team-button',
   EDIT_TEAM_SUBMIT_ADMIN: 'edit-team-submit-admin',
   BEST_FIT_TEAM: 'best-fit-team',
+
+  CREATE_TEAM_NAME: 'create-team-name',
+  CREATE_TEAM_DESCRIPTION: 'create-team-description',
+  CREATE_TEAM_DEVPOST: 'create-team-devpost',
+  CREATE_TEAM_AFFILIATION: 'create-team-affiliation',
+  CREATE_TEAM_SUBMIT: 'create-team-submit',
+  CREATE_TEAM_OPEN: 'create-team-open',
+  CREATE_TEAM_CHALLENGE: 'create-team-challenge',
+  CREATE_TEAM_SKILLS: 'create-team-skills',
+  CREATE_TEAM_TOOLS: 'create-team-tools',
 };

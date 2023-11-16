@@ -43,7 +43,6 @@ import UpdateMinorParticipantsCompliant from '../pages/administrator/UpdateMinor
 import HelpPage from '../pages/HelpPage';
 import InterestedParticipantPage from '../pages/participant/InterestedParticipantPage';
 import AllTeamInvitationsPage from '../pages/administrator/AllTeamInvitationsPage';
-import ShowMinorPage from '../pages/administrator/ShowMinorPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* global window */
@@ -89,7 +88,6 @@ const App = () => {
         <AdminProtectedRoute path={ROUTES.CONFIGURE_HACC} component={ConfigureHaccPage} />
         <AdminProtectedRoute path={ROUTES.ADD_CHALLENGE} component={AddChallenge} />
         <AdminProtectedRoute path={ROUTES.UPDATE_MP} component={UpdateMinorParticipantsCompliant} />
-        <AdminProtectedRoute path={ROUTES.SHOW_MINOR} component={ShowMinorPage} />
         <AdminProtectedRoute path={ROUTES.ADD_SKILL} component={AddSkill} />
         <AdminProtectedRoute path={ROUTES.ADD_TOOL} component={AddTool} />
         <AdminProtectedRoute path={ROUTES.EDIT_CHALLENGE} component={EditChallengePage}/>

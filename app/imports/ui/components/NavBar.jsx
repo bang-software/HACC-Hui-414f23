@@ -72,7 +72,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.YOUR_PROFILE}
                               key='edit-profile'>Profile</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.CREATE_TEAM}
+                              as={NavLink}
                               activeClassName="active"
                               disabled={!isCompliant}
                               to={ROUTES.CREATE_TEAM}
@@ -116,7 +117,8 @@ const NavBar = () => {
                               activeClassName="active"
                               to={ROUTES.UPDATE_MP}
                               key={ROUTES.UPDATE_MP}>Update Minor Participants Status</Nav.Link>,
-                    <Nav.Link as={NavLink}
+                    <Nav.Link id={COMPONENT_IDS.LIST_SUGGESTIONS_NAV}
+                              as={NavLink}
                               activeClassName="active"
                               to={ROUTES.LIST_SUGGESTIONS}
                               key={ROUTES.LIST_SUGGESTIONS}>Suggestions List ({suggestionCount})</Nav.Link>,

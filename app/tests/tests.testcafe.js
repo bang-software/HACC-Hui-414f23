@@ -27,15 +27,18 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
+import { teamCard } from './teamCard.component';
+import { allTeamInvitationsCardAdmin } from './allTeamInvitationsCardAdmin.component';
 import { dumpDataBasePage } from './dumpDataBase.page';
 import { memberTeamCard } from './memberTeamCard.component';
-import { teamCard } from './teamCard.component';
 import { sideBar } from './sidebar.component';
 import { teamMembership } from './teamMembership.component';
 import { editProfilePage } from './editProfile.page';
 import { editTeam } from './editTeam.component';
 import { interestedParticipantsPage } from './interestedParticipants.page';
 import { bestFitTeam } from './bestFitTeam.page';
+import { suggestionsListAdminPage } from './suggestionsListAdmin';
+import { createTeamPage } from './createTeam.page';
 
 /* global fixture:false, test:false */
 
@@ -100,6 +103,13 @@ const profileInfo = {
   aboutMe: 'Im a Garth Summey',
 };
 
+const teamInfo = {
+  name: 'bang-software',
+  description: 'nice team',
+  devpost: 'github.com',
+  affiliation: 'aff',
+};
+
 fixture('meteor-application-template-react localhost test with default db')
     .page('http://localhost:3400');
 /** USER --------------------------------------------------------------------------------------------------*/
@@ -136,7 +146,7 @@ test('Test that CreateProfile page renders', async (testController) => {
 
 test('Test that ListParticipants page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
-  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await signinPage.signin(testController, credentialsF.username, credentialsF.password);
   await navBar.gotoListParticipantsPage(testController);
   await listParticipantsPage.isDisplayed(testController);
   await listParticipantsCard.isDisplayed(testController);
@@ -220,6 +230,14 @@ test('Test that interested participant page and cards show up', async (testContr
   await interestedParticipantsPage.isDisplayed(testController);
 });
 
+test('Test that CreateTeam page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+  await navBar.gotoCreateTeamPage(testController);
+  await createTeamPage.isDisplayed(testController);
+  // await createProfilePage.fillInfo(testController, profileInfo);
+});
+
 test('Test that SuggestToolSkillWidget page functions', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsF.username, credentialsF.password);
@@ -229,12 +247,20 @@ test('Test that SuggestToolSkillWidget page functions', async (testController) =
 });
 
 /** ADMIN -------------------------------------------------------------------------------------------------*/
+
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoListParticipantsAdminPage(testController);
   await listParticipantsAdminPage.isDisplayed(testController);
   await listParticipantsCardAdmin.isDisplayed(testController);
+});
+
+test('Test that SuggestionslistAdmin page renders', async (testController) => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsA.username, credentialsA.password);
+  await navBar.gotoSuggestionsListAdmin(testController);
+  await suggestionsListAdminPage.isDisplayed(testController);
 });
 
 test('Test that ManageHacc page shows and toggles switches', async (testController) => {
@@ -245,6 +271,7 @@ test('Test that ManageHacc page shows and toggles switches', async (testControll
   await manageHaccWidgetComponents.clickCustomSwitched(testController);
   await manageHaccWidgetComponents.clickCustomSwitched(testController);
 });
+
 test('Test that AddChallenge page function', async (testController) => {
   await navBar.gotoSigninPage(testController);
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
@@ -314,6 +341,7 @@ test('Test that AllTeamInvitations pages function', async (testController) => {
   await signinPage.signin(testController, credentialsA.username, credentialsA.password);
   await navBar.gotoAllTeamInvitationsPage(testController);
   await allTeamInvitationsPage.isDisplayed(testController);
+  // await allTeamInvitationsCardAdmin.isDisplayed(testController);
 });
 
 test('Test that TeamInvitations page renders', async (testController) => {
