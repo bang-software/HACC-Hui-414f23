@@ -14,10 +14,10 @@ import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
-import ListParticipantsFilterAdmin from './ListParticipantsFilterAdmin';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
 import ListParticipantCardAdmin from './ListParticipantsCardAdmin';
+import * as filters from './ListParticipantsFilterAdmin.js';
 
 const ListParticipantsWidgetAdmin = () => {
   const {
@@ -66,8 +66,6 @@ const ListParticipantsWidgetAdmin = () => {
     position: 'sticky',
     top: '6.5rem',
   };
-
-  const filters = new ListParticipantsFilterAdmin();
 
   const setFilters = () => {
     const searchResults = filters.filterBySearch(participants, searchS);

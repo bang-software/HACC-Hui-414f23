@@ -13,7 +13,7 @@ import { Tools } from '../../../api/tool/ToolCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import ListParticipantsCard from './ListParticipantsCard';
-import ListParticipantsFilter from './ListParticipantsFilter';
+import * as filters from './ListParticipantsFilter';
 
 /**
  * Widget that list the participants from a user pov
@@ -60,8 +60,6 @@ const ListParticipantsWidget = () => {
     position: 'sticky',
     top: '6.5rem',
   };
-
-  const filters = new ListParticipantsFilter();
 
   const setFilters = () => {
     const searchResults = filters.filterBySearch(participants, searchS);
