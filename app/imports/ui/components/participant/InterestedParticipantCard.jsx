@@ -64,7 +64,7 @@ const InterestedParticipantCard = ({ teams, skills, tools, challenges, developer
 
   return (
       <>
-        <Card onMouseEnter={changeBackground} onMouseLeave={onLeave} onClick={handleShow}
+        <Card onMouseEnter={changeBackground} onMouseLeave={onLeave}
               style={{ padding: '0rem 2rem 0rem 2rem' }}>
           <Card.Body>
             <Card.Title>
@@ -94,6 +94,11 @@ const InterestedParticipantCard = ({ teams, skills, tools, challenges, developer
                 <Col>
                   <h4 className="fw-bold">Slack Username</h4>
                   {developers.username}
+                </Col>
+                <Col>
+                  <Button onClick={handleShow}>
+                    More Info
+                  </Button>
                 </Col>
                 <Col>
                   {!isAdded(teams[0]._id, developers._id) ? (

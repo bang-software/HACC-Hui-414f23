@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Card, Row } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { PeopleFill } from 'react-bootstrap-icons';
 import { Teams } from '../../../api/team/TeamCollection';
