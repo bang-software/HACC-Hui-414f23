@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Container, Row, Col, Card, Form, DropdownButton, Dropdown } from 'react-bootstrap';
 import { FaUsers } from 'react-icons/fa';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -96,9 +95,4 @@ const ListSuggestionsWidget = () => {
     </Container>
   );
 };
-
-ListSuggestionsWidget.propTypes = {
-  suggestions: PropTypes.array.isRequired,
-};
-
 export default ListSuggestionsWidget;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Container, Card, Row, Col } from 'react-bootstrap';
-import { withTracker } from 'meteor/react-meteor-data';
+import { useTracker } from 'meteor/react-meteor-data';
 import {
   AutoForm,
   SelectField,
@@ -8,7 +8,6 @@ import {
   TextField,
 } from 'uniforms-bootstrap5';
 import { Meteor } from 'meteor/meteor';
-import PropTypes from 'prop-types';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
 import swal from 'sweetalert';
@@ -18,7 +17,11 @@ import { Suggestions } from '../../../api/suggestions/SuggestionCollection';
 import { paleBlueStyle } from '../../styles';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-const SuggestToolSkillWidget = ({ participant }) => {
+const SuggestToolSkillWidget = () => {
+  const { participant } = useTracker(() => ({
+    participant: Participants.findDoc({ userID: Meteor.userId() }),
+  }));
+
   const schema = new SimpleSchema({
     type: String,
     name: String,
@@ -89,13 +92,4 @@ const SuggestToolSkillWidget = ({ participant }) => {
   );
 };
 
-SuggestToolSkillWidget.propTypes = {
-  participant: PropTypes.object.isRequired,
-};
-
-export default withTracker(() => {
-  const participant = Participants.findDoc({ userID: Meteor.userId() });
-  return {
-    participant,
-  };
-})(SuggestToolSkillWidget);
+export default SuggestToolSkillWidget;
