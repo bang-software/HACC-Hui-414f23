@@ -42,6 +42,16 @@ const ListParticipantsWidgetAdmin = () => {
     participants: Participants.find({}).fetch(),
   }));
 
+  const sortedParticipants = [...participants].sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
+
   const [searchS, setSearchS] = useState('');
   const [challengesS, setChallengesS] = useState([]);
   const [toolsS, setToolsS] = useState([]);
@@ -50,7 +60,7 @@ const ListParticipantsWidgetAdmin = () => {
   const [noTeamCheckboxS, setNoTeamCheckboxS] = useState(false);
   const [multipleTeamsCheckboxS, setMultipleTeamsCheckboxS] = useState(false);
   const [compliantCheckboxS, setCompliantCheckboxS] = useState(false);
-  const [resultS, setResultS] = useState(_.orderBy(participants, ['name'], ['asc']));
+  const [resultS, setResultS] = useState(sortedParticipants);
 
   const noParticipant = () => (
       <div style={{ textAlign: 'center' }}>
@@ -151,7 +161,7 @@ const ListParticipantsWidgetAdmin = () => {
 
   function getParticipantTeams(participantID, teamParticipantsGPT) {
     const data = [];
-    const teamsGPT = _.filter(teamParticipantsGPT, { participantID: participantID });
+    const teamsGPT = teamParticipantsGPT.filter(p => p.participantID === participantID );
     for (let i = 0; i < teamsGPT.length; i++) {
       for (let j = 0; j < universalTeams.length; j++) {
         if (teams[i].teamID === universalTeams[j]._id) {

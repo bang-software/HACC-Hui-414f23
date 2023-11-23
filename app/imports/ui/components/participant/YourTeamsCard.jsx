@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { AutoForm, TextField, ListField, ListItemField } from 'uniforms-bootstrap5';
@@ -58,11 +57,12 @@ const YourTeamsCard = ({
       }
     }
 
+    const difference = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
     // difference should be 0 if all the inputted participants are registered via slack
-    const notFoundParticipants = _.difference(participantList, foundParticipants);
+    const notFoundParticipants = difference(participantList, foundParticipants);
 
     // if they entered duplicates
-    if (_.uniq(participantList).length !== participantList.length) {
+    if (new Set(participantList).size !== participantList.length) {
       swal('Error',
           'Sorry, it seems like you entered a duplicate email.\n\nPlease check again.',
           'error');

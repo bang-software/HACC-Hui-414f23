@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Container, Card, Col, Row } from 'react-bootstrap';
@@ -79,7 +78,7 @@ const DeleteFormWidget = () => {
     ));
     const selector = { owner: participant._id };
     const ownedTeams = Teams.find(selector).fetch();
-    _.forEach(ownedTeams, (team) => {
+    ownedTeams.forEach((team) => {
       const selector2 = { teamID: team._id };
       const teamParticipants = TeamParticipants.find(selector2).fetch();
       if (teamParticipants.length === 1) {
