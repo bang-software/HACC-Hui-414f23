@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import PropTypes from 'prop-types';
+import { useTracker } from 'meteor/react-meteor-data';
 import moment from 'moment';
 import _ from 'lodash';
 import { ZipZap } from 'meteor/udondan:zipzap';
@@ -25,15 +24,16 @@ const getTeamMembers = (team) => {
   return _.uniq(memberNames);
 };
 
-const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) => {
+const ViewTeams = () => {
+  const { teams, teamChallenges, teamParticipants, participants } = useTracker(() => ({
+    teams: Teams.find({}, { sort: { name: 1 } }).fetch(),
+    teamChallenges: TeamChallenges.find({}).fetch(),
+    teamParticipants: TeamParticipants.find({}).fetch(),
+    participants: Participants.find({}).fetch(),
+  }));
+
   const [filteredTeams, setFilteredTeams] = useState(teams);
   const [filterValue, setFilterValue] = useState('None');
-  // console.log(filteredTeams);
-  const stickyStyle = {
-    position1: '-webkit-sticky',
-    position: 'sticky',
-    top: '6.5rem',
-  };
 
   const teamIsCompliant = (teamID) => {
     const tps = teamParticipants.filter(tp => tp.teamID === teamID);
@@ -116,7 +116,7 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
                     <Form.Label>Select a filter</Form.Label>
                     <Form.Check type="radio" name="checkboxRadioGroup" value="NonCompliant"
                                 checked={filterValue === 'NonCompliant'} onChange={handleChange}
-                                label="Non Compliant" id={COMPONENT_IDS.FILTER_NON_COMPLIANT} />
+                                label="Non Compliant" id={COMPONENT_IDS.FILTER_NON_COMPLIANT}/>
                     <Form.Check type="radio" name="checkboxRadioGroup" value="NoDevPost"
                                 checked={filterValue === 'NoDevPost'} onChange={handleChange}
                                 label="No devpost" id={COMPONENT_IDS.FILTER_NO_DEV_POST}/>
@@ -135,9 +135,9 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
             <ListGroup>
               {filteredTeams.map((team) => (
                   <ViewTeam key={team._id}
-                                   team={team}
-                                   teamMembers={getTeamMembers(team)}
-                                   isCompliant={teamIsCompliant(team._id)}
+                            team={team}
+                            teamMembers={getTeamMembers(team)}
+                            isCompliant={teamIsCompliant(team._id)}
                   />
               ))}
             </ListGroup>
@@ -146,31 +146,4 @@ const ViewTeams = ({ participants, teams, teamChallenges, teamParticipants }) =>
       </Container>
   );
 };
-
-ViewTeams.propTypes = {
-  participants: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  teams: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  teamChallenges: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-  teamParticipants: PropTypes.arrayOf(
-      PropTypes.object,
-  ),
-};
-
-export default withTracker(() => {
-  const teams = Teams.find({}, { sort: { name: 1 } }).fetch();
-  const teamChallenges = TeamChallenges.find({}).fetch();
-  const teamParticipants = TeamParticipants.find({}).fetch();
-  const participants = Participants.find({}).fetch();
-  return {
-    participants,
-    teams,
-    teamChallenges,
-    teamParticipants,
-  };
-})(ViewTeams);
+export default ViewTeams;

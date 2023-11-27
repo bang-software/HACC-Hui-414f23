@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
 import { defineMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
@@ -88,6 +87,4 @@ ListSuggestionsCard.propTypes = {
   description: PropTypes.string.isRequired,
   suggestionObj: PropTypes.object.isRequired,
 };
-export default withTracker(() => ({
-    suggestion: Suggestions.find({}).fetch(),
-  }))(ListSuggestionsCard);
+export default ListSuggestionsCard;
