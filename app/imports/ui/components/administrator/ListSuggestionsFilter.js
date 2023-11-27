@@ -77,9 +77,9 @@ export const typeResults = (suggestions, type) => {
 };
 
 /**
- * Supplies all the possible values to make it work with semantic UI's dropdown
+ * Supplies all the possible values to make it work with Bootstrap's dropdown
  * @param data The values
- * @returns {Array} Returns an array that can be used by semantic UI's dropdown
+ * @returns {Array} Returns an array that can be used by Bootstrap's dropdown
  */
 export const dropdownValues = (data, mapValue) => {
   let values = _.map(data, mapValue);
