@@ -125,14 +125,14 @@ class TeamCollection extends BaseSlugCollection {
    * @param docID {String} the ID of the team to remove.
    * @throws {Meteor.Error} if the team isn't defined.
    */
-  removeIt(docID) {
-    this.assertDefined(docID);
-    const team = this.findSlugByID(docID);
-    TeamChallenges.removeTeam(team);
-    TeamParticipants.removeTeam(team);
-    TeamSkills.removeTeam(team);
-    TeamTools.removeTeam(team);
-    this._collection.remove({ _id: docID });
+  removeIt(team) {
+    const teamID = team._id;
+    this.assertDefined(teamID);
+    TeamChallenges.removeTeamByID(teamID);
+    TeamParticipants.removeTeamByID(teamID);
+    TeamSkills.removeTeamByID(teamID);
+    TeamTools.removeTeamByID(teamID);
+    super.removeIt(teamID);
   }
 
   assertValidRoleForMethod(userId) {
