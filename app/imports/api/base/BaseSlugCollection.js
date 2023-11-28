@@ -83,6 +83,17 @@ class BaseSlugCollection extends BaseCollection {
     super.removeIt(doc);
   }
 
+  removeAll() {
+      const docs = this._collection.find().fetch();
+      docs.forEach((doc) => {
+        if (Slugs.isDefined(doc.slugID)) {
+          Slugs.removeIt(doc.slugID);
+        }
+      });
+
+      super.removeAll();
+  }
+
   /**
    * Return true if instance is a docID or a slug for this entity.
    * @param { String } instance A docID or a slug.
