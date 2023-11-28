@@ -75,6 +75,10 @@ class ChallengeCollection extends BaseSlugCollection {
     super.removeIt(docID);
   }
 
+  removeAll() {
+    super.removeAll();
+  }
+
   dumpOne(docID) {
     const doc = this.findDoc(docID);
     const { title, description, submissionDetail, pitch, interests } = doc;
