@@ -186,7 +186,6 @@ class ParticipantCollection extends BaseSlugCollection {
     this.assertDefined(docID);
     const username = this.findSlugByID(docID);
     const userID = this.findOne({ username }).userID;
-    console.log(userID);
     Meteor.users.allow({
       remove: () => true,
       fetch: [],

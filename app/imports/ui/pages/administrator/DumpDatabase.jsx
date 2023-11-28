@@ -102,10 +102,9 @@ const DumpDatabase = () => {
             <Button variant="success" id={COMPONENT_IDS.DUMP_TEAM} onClick={handleDumpTeamCSV}>Dump the Teams</Button>
           </Col>
           <Col>
-            <Form.Select>
+            <Form.Select onChange={(e) => setSelectedUser(e.target.value)}>
               <option>Select a user</option>
-              {allParticipants.map((participant) => <option key={participant._id}
-                                                            onClick={() => setSelectedUser(participant._id)}>
+              {allParticipants.map((participant) => <option key={participant._id} value={participant._id}>
                 {participant.username}
               </option>)}
             </Form.Select>
