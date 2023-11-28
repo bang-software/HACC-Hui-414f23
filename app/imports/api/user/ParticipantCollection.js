@@ -184,12 +184,25 @@ class ParticipantCollection extends BaseSlugCollection {
    */
   removeIt(docID) {
     this.assertDefined(docID);
-    const participant = this.findSlugByID(docID);
-    ParticipantChallenges.removeParticipant(participant);
-    ParticipantInterests.removeParticipant(participant);
-    ParticipantSkills.removeParticipant(participant);
-    ParticipantTools.removeParticipant(participant);
-    TeamParticipants.removeParticipant(participant);
+    const username = this.findSlugByID(docID);
+    const userID = this.findOne({ username }).userID;
+    console.log(userID);
+    Meteor.users.allow({
+      remove: () => true,
+      fetch: [],
+    });
+    Meteor.users.remove({ _id: userID }, function (error, result) {
+      if (error) {
+        console.log('Error removing user: ', error);
+      } else {
+        console.log(`Number of users removed: ${result}`);
+      }
+    });
+    ParticipantChallenges.removeParticipant(username);
+    ParticipantInterests.removeParticipant(username);
+    ParticipantSkills.removeParticipant(username);
+    ParticipantTools.removeParticipant(username);
+    TeamParticipants.removeParticipant(username);
     super.removeIt(docID);
   }
 
