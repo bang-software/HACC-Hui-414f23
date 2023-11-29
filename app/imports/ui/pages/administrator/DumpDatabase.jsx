@@ -11,6 +11,7 @@ import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
+import ResetDatabaseConfirmation from "../../components/administrator/ResetDatabaseConfirmation";
 
 export const databaseFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
 
@@ -133,6 +134,9 @@ const DumpDatabase = () => {
             <Button variant="danger" onClick={deleteAllTeams}>
               Delete All Teams
             </Button>
+          </Col>
+          <Col>
+            <ResetDatabaseConfirmation />
           </Col>
         </Row>
       </div>
