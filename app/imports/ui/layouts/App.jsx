@@ -36,7 +36,7 @@ import ListParticipantsPageAdmin from '../pages/administrator/ListParticipantsAd
 import TeamInvitationsPage from '../pages/participant/TeamInvitationsPage';
 import AdminEditTeamPage from '../pages/administrator/AdminEditTeamPage';
 import SideBar from '../components/SideBar';
-import ViewTeamsPage from '../pages/administrator/ViewTeamsPage';
+import ViewTeamsPage from '../pages/administrator/ViewTeams';
 import BestFitTeamDisplay from '../pages/participant/BestFitTeam';
 import UpdateMinorParticipantsCompliant from '../pages/administrator/UpdateMinorParticipantsCompliant';
 import HelpPage from '../pages/HelpPage';
