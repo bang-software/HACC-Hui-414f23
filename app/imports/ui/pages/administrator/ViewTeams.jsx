@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
-import moment from 'moment';
 import _ from 'lodash';
 import { ZipZap } from 'meteor/udondan:zipzap';
-import { Container, Row, Col, Button, Form, Card, ListGroup } from 'react-bootstrap';
-import { Teams } from '../../../api/team/TeamCollection';
-import ViewTeam from './ViewTeam';
+import moment from 'moment';
+import { Button, Card, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
+import { Teams } from '../../../api/team/TeamCollection';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
-import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
+import { databaseFileDateFormat } from './DumpDatabase';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
+import ViewTeam from '../../components/administrator/ViewTeam';
 
 const getTeamMembers = (team) => {
   const teamID = team._id;
@@ -78,8 +80,7 @@ const ViewTeams = () => {
     const zip = new ZipZap();
     const dir = 'hacchui-team-captains';
     const fileName = `${dir}/${moment().format(databaseFileDateFormat)}-team-captains.txt`;
-    const localTeams = filteredTeams;
-    const ownerIDs = localTeams.map(t => t.owner);
+    const ownerIDs = filteredTeams.map(t => t.owner);
     const emails = [];
     ownerIDs.forEach(id => {
       const pArr = participants.filter(p => p._id === id);
@@ -90,7 +91,7 @@ const ViewTeams = () => {
   };
 
   return (
-      <Container className="mt-5 mb-5">
+      <Container id={PAGE_IDS.VIEW_TEAMS_PAGE} className="mt-5 mb-5">
         <Row className="mb-4">
           <Col>
             <Card bg="light" className="text-center p-3 rounded">
@@ -146,4 +147,4 @@ const ViewTeams = () => {
       </Container>
   );
 };
-export default ViewTeams;
+export default withAllSubscriptions(ViewTeams);
