@@ -27,8 +27,6 @@ import { listParticipantsCard } from './listParticipantsCard.component';
 import { yourTeams } from './yourTeams.page';
 import { allTeamInvitationsPage } from './allTeamInvitations.page';
 import { yourTeamsCard } from './yourTeamsCard.component';
-import { teamCard } from './teamCard.component';
-import { allTeamInvitationsCardAdmin } from './allTeamInvitationsCardAdmin.component';
 import { dumpDataBasePage } from './dumpDataBase.page';
 import { memberTeamCard } from './memberTeamCard.component';
 import { sideBar } from './sidebar.component';
