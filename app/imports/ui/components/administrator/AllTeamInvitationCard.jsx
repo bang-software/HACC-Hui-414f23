@@ -18,7 +18,7 @@ const AllTeamInvitationCard = ({ teams, skills, tools, challenges, participants 
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
     const changeBackground = (e) => {
-      e.currentTarget.style.backgroundColor = '#fafafa';
+      e.currentTarget.style.backgroundColor = '#d6d6d6';
       e.currentTarget.style.cursor = 'pointer';
     };
 
@@ -52,19 +52,19 @@ const AllTeamInvitationCard = ({ teams, skills, tools, challenges, participants 
                 </h3>
               </Card.Title>
                 <Container>
-                  <Row doubling columns={5}>
+                  <Row columns={5}>
                     <Col>
                       <Image src={teams.image} rounded size='small'/>
                       <Col floated={'left'} style={{ paddingBottom: '0.3rem' }}>
-                        {challenges.slice(0, 3).map((challenge) => <p
+                        {challenges.slice(0, 3).map((challenge, i) => <p
                             style={{ color: 'rgb(89, 119, 199)' }}
-                            key={challenge}>
+                            key={challenge + i}>
                           {challenge}</p>)}
                       </Col>
                     </Col>
                     <Col>
                       <h5 style={{ fontWeight: 'bold' }}>Skills</h5>
-                      {skills.slice(0, 3).map((skill) => <p key={skill}>
+                      {skills.slice(0, 3).map((skill, i) => <p key={skill + i}>
                         {skill}</p>)}
                     </Col>
                     <Col>
@@ -74,7 +74,7 @@ const AllTeamInvitationCard = ({ teams, skills, tools, challenges, participants 
                     </Col>
                     <Col>
                       <h5 style={{ fontWeight: 'bold' }}>Member(s) Invited:</h5>
-                      {invitedMembers.slice(0, 3).map((members) => <p key={members}>
+                      {invitedMembers.slice(0, 3).map((members, i) => <p key={members + i}>
                         {members}</p>)}
                     </Col>
                   </Row>
@@ -83,24 +83,24 @@ const AllTeamInvitationCard = ({ teams, skills, tools, challenges, participants 
         </Card>
             <Modal show={show} onHide={handleClose}>
             <Modal.Title style = {{ padding: '1rem' }} >{teams.name}</Modal.Title>
-            <Modal.Dialog image scrolling>
-              <Image size='medium' src={teams.image} wrapped/>
+            <Modal.Dialog>
+              <Image size='medium' src={teams.image} />
               <Modal.Body>
                 <h2>Description</h2>
                 <p>
                   {teams.description}
                 </p>
                 <h2>Challenges</h2>
-                {challenges.map((challenge) => <p key={challenge}>
+                {challenges.map((challenge, i) => <p key={challenge + i}>
                   {challenge}</p>)}
                 <h2>Skills</h2>
-                {skills.map((skill) => <p key={skill}>
+                {skills.map((skill, i) => <p key={skill + i}>
                   {skill}</p>)}
                 <h2>Tools</h2>
-                {tools.map((tool) => <p key={tool}>
+                {tools.map((tool, i) => <p key={tool + i}>
                   {tool}</p>)}
                 <h2>Members</h2>
-                {participants.map((participant) => <p key={participant}>
+                {participants.map((participant, i) => <p key={participant + i}>
                   {participant.firstName} {participant.lastName}</p>)}
                 <h2>Member(s) Invited:</h2>
                 {invitedMembers.slice(0, 3).map((members) => <p key={members}>

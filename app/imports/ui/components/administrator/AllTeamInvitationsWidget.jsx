@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
@@ -74,7 +73,6 @@ const AllTeamInvitationsWidget = () => {
 
     function getTeamSkills(teamID, teamSkillsGTS) {
       const data = [];
-      // const skills = _.filter(teamSkills, { teamID: teamID });
       const skillsGTS = teamSkillsGTS.filter(skill => skill.teamID === teamID);
       for (let i = 0; i < skillsGTS.length; i++) {
         for (let j = 0; j < universalSkills.length; j++) {
@@ -122,7 +120,6 @@ const AllTeamInvitationsWidget = () => {
 
     function getTeamDevelopers(teamID, teamParticipantsGTD) {
       const data = [];
-      // const participants = _.filter(teamParticipants, { teamID: teamID });
       const participantsGTD = teamParticipantsGTD.filter(participant => participant.teamID === teamID);
       for (let i = 0; i < participantsGTD.length; i++) {
         for (let j = 0; j < allDevelopers.length; j++) {
@@ -165,20 +162,6 @@ const AllTeamInvitationsWidget = () => {
         </Container>
     );
     return teamInvitations.length === 0 ? noInvitations() : invitationsList();
-};
-
-AllTeamInvitationsWidget.propTypes = {
-  teamChallenges: PropTypes.array.isRequired,
-  teamSkills: PropTypes.array.isRequired,
-  skills: PropTypes.array.isRequired,
-  teamTools: PropTypes.array.isRequired,
-  teams: PropTypes.array.isRequired,
-  challenges: PropTypes.array.isRequired,
-  participants: PropTypes.array.isRequired,
-  tools: PropTypes.array.isRequired,
-  teamParticipants: PropTypes.array.isRequired,
-  teamInvitations: PropTypes.array.isRequired,
-
 };
 
 export default AllTeamInvitationsWidget;
