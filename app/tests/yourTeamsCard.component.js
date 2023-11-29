@@ -8,7 +8,7 @@ class YourTeamsCard {
     }
 
     async isDisplayed(testController) {
-        await testController.wait(5000).expect(this.pageSelector.exists).ok();
+        await testController.wait(1000).expect(this.pageSelector.exists).ok();
     }
 
     async invite_participants(testController, tool) {

@@ -58,7 +58,7 @@ const SideBar = ({ children }) => {
             aria-label="Close"
             onClick={() => setVisible(false)}
             id={COMPONENT_IDS.SIDEBAR_CLOSE_BUTTON}
-          ></button>
+          />
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav id={COMPONENT_IDS.SIDEBAR} className="flex-column">
