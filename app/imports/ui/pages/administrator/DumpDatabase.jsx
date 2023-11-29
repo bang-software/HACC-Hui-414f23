@@ -11,7 +11,8 @@ import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
-import ResetDatabaseConfirmation from "../../components/administrator/ResetDatabaseConfirmation";
+import ResetDatabaseConfirmation from '../../components/administrator/ResetDatabaseConfirmation';
+import DeleteConfirmation from '../../components/administrator/DeleteConfirmation';
 
 export const databaseFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
 
@@ -136,6 +137,7 @@ const DumpDatabase = () => {
             </Button>
           </Col>
           <Col>
+            <DeleteConfirmation collection={Challenges} name={'Challenges'} />
             <ResetDatabaseConfirmation />
           </Col>
         </Row>
