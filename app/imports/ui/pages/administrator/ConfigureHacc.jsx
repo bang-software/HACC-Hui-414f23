@@ -128,7 +128,7 @@ const ConfigureHacc = () => {
   );
   const ManageHaccChallengeList = () => (
       <div>
-        <div className="centerText d-flex justify-content-center">
+        <div className="centerText">
           <Col>
             <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton mx-3">
               <Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>

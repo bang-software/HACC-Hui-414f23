@@ -205,6 +205,23 @@ class ParticipantCollection extends BaseSlugCollection {
     super.removeIt(docID);
   }
 
+  removeAll() {
+      // Remove related data from other collections
+      this._collection.find().forEach((participant) => {
+        const username = this.findSlugByID(participant._id);
+        ParticipantChallenges.removeParticipant(username);
+        ParticipantInterests.removeParticipant(username);
+        ParticipantSkills.removeParticipant(username);
+        ParticipantTools.removeParticipant(username);
+        TeamParticipants.removeParticipant(username);
+
+        // Remove user account associated with the participant
+        const userID = participant.userID;
+        Meteor.users.remove({ _id: userID });
+      });
+      super.removeAll();
+  }
+
   /**
    * Returns an object representing the participant.
    * @param docID {String} the ID of the participant.
