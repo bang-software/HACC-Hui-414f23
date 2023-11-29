@@ -40,7 +40,7 @@ const DeleteConfirmation = ({ collection, name }) => {
 
     return (
         <>
-            <Button onClick={handleShowConfirm} variant="danger" size="md">Delete</Button>
+            <Button onClick={handleShowConfirm} variant="danger" size="md">{`Delete ${name}`}</Button>
             <Modal show={showConfirm} onHide={handleClose} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{`Are you sure you want to delete all the ${name}?`}</Modal.Title>
