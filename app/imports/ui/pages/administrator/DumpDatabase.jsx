@@ -29,6 +29,8 @@ const DumpDatabase = () => {
   }, []);
   const [selectedUser, setSelectedUser] = useState('None');
   const [selectedTeam, setSelectedTeam] = useState('None');
+  const [selectedChallenge, setSelectedChallenge] = useState('None');
+
   const handleClick = () => {
     dumpDatabaseMethod.call((error, result) => {
       if (error) {
@@ -91,6 +93,29 @@ const DumpDatabase = () => {
     allTeams.map((team) => deleteTeam(team._id));
   };
 
+  const deleteChallenge = (challengeID) => {
+    const collectionName2 = Challenges.getCollectionName();
+    const intID = Challenges.findDoc({
+      _id: challengeID });
+    removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
+      if (error) {
+        swal('Error', error.message, 'error');
+      } else {
+        swal('Success', 'Removed Challenge', 'success');
+      }
+    });
+  };
+
+  const deleteAllChallenges = () => {
+    allChallenges.map((challenge) => deleteChallenge(challenge._id));
+  };
+
+  const resetHACC = () => {
+    deleteAllUsers();
+    deleteAllTeams();
+    deleteAllChallenges();
+  };
+
   return (
       <div id={PAGE_IDS.DUMP_DATABASE}>
         <Row>
@@ -102,8 +127,6 @@ const DumpDatabase = () => {
             >
               Dump the Database
             </Button>
-          </Col>
-          <Col>
             <Button variant="success" id={COMPONENT_IDS.DUMP_TEAM} onClick={handleDumpTeamCSV}>Dump the Teams</Button>
           </Col>
           <Col>
@@ -132,6 +155,25 @@ const DumpDatabase = () => {
             </Button>
             <Button variant="danger" onClick={deleteAllTeams}>
               Delete All Teams
+            </Button>
+          </Col>
+          <Col>
+            <Form.Select onChange={(e) => setSelectedChallenge(e.target.value)}>
+              <option>Select a challenge</option>
+              {allChallenges.map((challenge) => <option key={challenge._id} value={challenge._id}>
+                {challenge.title}
+              </option>)}
+            </Form.Select>
+            <Button variant="danger" onClick={() => deleteChallenge(selectedChallenge)}>
+              Delete Challenge
+            </Button>
+            <Button variant="danger" onClick={deleteAllChallenges}>
+              Delete All Challenges
+            </Button>
+          </Col>
+          <Col>
+            <Button variant="danger" onClick={resetHACC}>
+              Reset HACC
             </Button>
           </Col>
         </Row>
