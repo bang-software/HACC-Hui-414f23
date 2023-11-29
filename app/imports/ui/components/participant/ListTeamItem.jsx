@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Row, Col, ListGroup, Button, Spinner } from 'react-bootstrap';
+import { Button, Card, Col, ListGroup, Row, Spinner } from 'react-bootstrap';
 import swal from 'sweetalert';
 import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
@@ -75,8 +75,8 @@ const ListTeamItem = ({ team }) => {
 
   const handleClick = () => {
 
-    const teamName = team.name;
-    const participantUsername = participant.username;
+    const teamName = team._id;
+    const participantUsername = participant._id;
     const definitionData = {
       team: teamName,
       participant: participantUsername,
