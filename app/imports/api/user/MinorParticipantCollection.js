@@ -1,5 +1,4 @@
 import SimpleSchema from 'simpl-schema';
-import _ from 'lodash';
 import BaseCollection from '../base/BaseCollection';
 import { Participants } from './ParticipantCollection';
 import { ROLE } from '../role/Role';
@@ -36,7 +35,7 @@ class MinorParticipantCollection extends BaseCollection {
   update(docID, { sentAdminDM }) {
     this.assertDefined(docID);
     const updateData = {};
-    if (_.isBoolean(sentAdminDM)) {
+    if (typeof sentAdminDM === 'boolean') {
       updateData.sentAdminDM = sentAdminDM;
     }
     this._collection.update(docID, { $set: updateData });

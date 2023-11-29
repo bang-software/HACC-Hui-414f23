@@ -1,12 +1,10 @@
-import { _ } from 'lodash';
-
-  /**
-   * Filters through the inputted data based on user input. If the search query is empty, it returns
-   * the entire dataset.
-   * @param data The data
-   * @param searchQuery The search query
-   * @returns {[]|*} Returns the filtered data
-   */
+/**
+ * Filters through the inputted data based on user input. If the search query is empty, it returns
+ * the entire dataset.
+ * @param data The data
+ * @param searchQuery The search query
+ * @returns {[]|*} Returns the filtered data
+ */
 export const filterBySearch = (data, searchQuery) => {
   if (searchQuery.length === 0) {
     return data;
@@ -55,7 +53,15 @@ const uniqBy = (arr, predicate) => {
  */
 export const sortBy = (data, value) => {
   if (value === 'participants') {
-    return _.orderBy(data, ['name'], ['asc']);
+    return data.sort((a, b) => {
+      if (a.lastName < b.lastName) {
+        return -1;
+      }
+      if (a.lastName > b.lastName) {
+        return 1;
+      }
+      return 0;
+    });
   }
   return data;
 };
@@ -217,7 +223,7 @@ export const filterByChallenge = (value, allChallenges, participantChallenge, pa
 export const filterNoTeam = (teamParticipants, allParticipants) => {
   const retVal = [];
   allParticipants.forEach((p, i) => {
-    const teams = _.filter(teamParticipants, { participantID: p._id });
+    const teams = teamParticipants.filter(participant => participant.participantID === p._id);
     if (teams.length === 0) {
       retVal.push(allParticipants[i]);
     }
@@ -281,10 +287,10 @@ export const filterByTeam = (value, allTeams, teamParticipants, allParticipants)
  */
 export const dropdownValues = (data, mapValue) => {
   let values = data.map((d) => d[mapValue]);
-  const categories = _.flattenDeep(values);
+  const categories = values.flat(Infinity);
   values = Array.from(new Set(categories));
 
-  let info = [];
+  const info = [];
 
   for (let i = 0; i < values.length; i++) {
     info.push({
@@ -294,6 +300,14 @@ export const dropdownValues = (data, mapValue) => {
     });
   }
 
-  info = _.orderBy(info, ['text'], ['asc']);
+  info.sort((a, b) => {
+    if (a.label < b.label) {
+      return -1;
+    }
+    if (a.label > b.label) {
+      return 1;
+    }
+    return 0;
+  });
   return info;
 };

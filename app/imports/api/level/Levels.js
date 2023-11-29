@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 
 /** @namespace api/level */
@@ -20,7 +19,7 @@ export const demographicLevel = [
  * @type {Array}
  * @memberOf api/level
  */
-export const demographicLevels = _.values(demographicLevel);
+export const demographicLevels = Object.values(demographicLevel);
 
 /**
  * The different skill and tool levels.
@@ -38,7 +37,7 @@ export const skillAndToolLevel = {
  * @type {Array}
  * @memberOf api/level
  */
-export const skillAndToolLevels = _.values(skillAndToolLevel);
+export const skillAndToolLevels = Object.values(skillAndToolLevel);
 
 /**
  * Returns a random demographic level.

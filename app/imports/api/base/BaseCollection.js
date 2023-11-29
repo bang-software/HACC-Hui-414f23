@@ -1,7 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import _ from 'lodash';
-import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { ROLE } from '../role/Role';
 /** @namespace api/base */
@@ -88,7 +86,7 @@ class BaseCollection {
    * @throws { Meteor.Error } If the document cannot be found.
    */
   findDoc(name) {
-    if (_.isNull(name) || _.isUndefined(name)) {
+    if (name === null || name === undefined) {
       throw new Meteor.Error(`${name} is not a defined ${this.type}`);
     }
     const doc = (
@@ -156,7 +154,7 @@ class BaseCollection {
    * @returns {boolean} True if name exists in this collection.
    */
   isDefined(name) {
-    if (_.isUndefined(name)) {
+    if (name === undefined) {
       return false;
     }
     return (
@@ -210,10 +208,15 @@ class BaseCollection {
           .map(docID => this.dumpOne(docID)),
     };
     // If a collection doesn't want to be dumped, it can just return null from dumpOne.
-    dumpObject.contents = _.without(dumpObject.contents, null);
+    const without = (arr, ...args) => arr.filter(item => !args.includes(item));
+    dumpObject.contents = without(dumpObject.contents, null);
     // sort the contents array by slug (if present)
     if (dumpObject.contents[0] && dumpObject.contents[0].slug) {
-      dumpObject.contents = _.sortBy(dumpObject.contents, obj => obj.slug);
+      dumpObject.contents.sort((a, b) => {
+        if (a.slug > b.slug) return 1;
+        if (a.slug < b.slug) return -1;
+        return 0;
+      });
     }
     return dumpObject;
   }
@@ -246,7 +249,7 @@ class BaseCollection {
    * @param dumpObjects The array of objects representing the definition of a document in this collection.
    */
   restoreAll(dumpObjects) {
-    _.forEach(dumpObjects, dumpObject => this.restoreOne(dumpObject));
+    dumpObjects.forEach(dumpObject => this.restoreOne(dumpObject));
   }
 
   assertRole(userId, roles) {

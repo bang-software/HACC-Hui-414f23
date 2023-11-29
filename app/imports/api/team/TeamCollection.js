@@ -1,5 +1,4 @@
 import SimpleSchema from 'simpl-schema';
-import _ from 'lodash';
 import BaseSlugCollection from '../base/BaseSlugCollection';
 import { slugify, Slugs } from '../slug/SlugCollection';
 import { TeamChallenges } from './TeamChallengeCollection';
@@ -69,16 +68,16 @@ class TeamCollection extends BaseSlugCollection {
     });
     // Connect the Slug to this Interest
     Slugs.updateEntityID(slugID, teamID);
-    _.forEach(challenges, (challenge) => TeamChallenges.define({ team, challenge }));
-    _.forEach(skills, (skill) => {
+    challenges.forEach((challenge) => TeamChallenges.define({ team, challenge }));
+    skills.forEach((skill) => {
       TeamSkills.define({ team, skill });
     });
-    _.forEach(tools, (tool) => {
+    tools.forEach((tool) => {
       // console.log('TeamCollection defining tools', t);
       TeamTools.define({ team, tool });
     });
-    _.forEach(participants, (participant) => TeamParticipants.define({ team, participant }));
-    if (!_.includes(participants, owner)) {
+    participants.forEach((participant) => TeamParticipants.define({ team, participant }));
+    if (!participants.includes(owner)) {
       TeamParticipants.define({ team, participant: owner });
     }
     return teamID;
@@ -152,12 +151,12 @@ class TeamCollection extends BaseSlugCollection {
     const { _id, name, description, owner, open, affiliation } = this.findDoc(docID);
     const selector = { teamID: _id };
     const teamChallenges = TeamChallenges.find(selector).fetch();
-    const challenges = _.map(teamChallenges, (tC) => Challenges.findSlugByID(tC.challengeID));
+    const challenges = teamChallenges.map((tC) => Challenges.findSlugByID(tC.challengeID));
     const teamParticipants = TeamParticipants.find(selector).fetch();
-    const participants = _.map(teamParticipants, (tD) => Participants.findSlugByID(tD.participantID));
+    const participants = teamParticipants.map((tD) => Participants.findSlugByID(tD.participantID));
     const ownerSlug = Participants.findSlugByID(owner);
     const teamSkills = TeamSkills.find(selector).fetch();
-    const skills = _.map(teamSkills, (tS) => {
+    const skills = teamSkills.map((tS) => {
       const skill = Skills.findSlugByID(tS.skillID);
       const skillLevel = tS.skillLevel;
       return {
@@ -166,7 +165,7 @@ class TeamCollection extends BaseSlugCollection {
       };
     });
     const teamTools = TeamTools.find(selector).fetch();
-    const tools = _.map(teamTools, (tT) => {
+    const tools = teamTools.map((tT) => {
       const tool = Tools.findSlugByID(tT.toolID);
       const toolLevel = tT.toolLevel;
       return {

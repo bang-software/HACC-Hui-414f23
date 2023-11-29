@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { SyncedCron } from 'meteor/littledata:synced-cron';
 import { WantsToJoin } from '../../api/team/WantToJoinCollection';
@@ -26,7 +25,7 @@ SyncedCron.add({
   },
   job() {
     const wantsToJoin = WantsToJoin.find({ sentDM: false }, {}).fetch();
-    _.forEach(wantsToJoin, (join) => {
+    wantsToJoin.forEach((join) => {
 
       if (!join.sentDM) {
         const { teamID, participantID } = join;
@@ -67,7 +66,7 @@ SyncedCron.add({
   },
   job() {
     const newMinors = MinorParticipants.find({ sentAdminDM: false }).fetch();
-    _.forEach(newMinors, (minor) => {
+    newMinors.forEach((minor) => {
       const docID = minor._id;
       const { participantID, parentFirstName, parentLastName, parentEmail } = minor;
       const minorFullName = Participants.getFullName(participantID);
@@ -88,7 +87,7 @@ SyncedCron.add({
   },
   job() {
     const teamInvite = TeamInvitations.find({}).fetch();
-    _.forEach(teamInvite, (join) => {
+    teamInvite.forEach((join) => {
       if (!join.sentDM) {
         const { teamID, participantID } = join;
         const developer = Participants.findDoc(participantID);
@@ -121,7 +120,7 @@ SyncedCron.add({
   },
   job() {
     const leaving = LeavingTeams.find({ sentOwnerDM: false }).fetch();
-    _.forEach(leaving, (l) => {
+    leaving.forEach((l) => {
       const participantName = Participants.getFullName(l.participantID);
       const team = Teams.findDoc(l.teamID);
       const participant = Participants.findDoc(team.owner).username;

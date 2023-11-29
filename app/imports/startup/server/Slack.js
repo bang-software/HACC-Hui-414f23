@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { App } from '@slack/bolt';
-import _ from 'lodash';
 import { isAdminEmail } from '../../api/user/helpers';
 import { Participants } from '../../api/user/ParticipantCollection';
 import { Administrators } from '../../api/user/AdministratorCollection';
@@ -36,18 +35,18 @@ if (!Meteor.isAppTest) {
         if (!Participants.isDefined({ username: email })) {
           let firstName = first_name;
           let lastName = last_name;
-          if (_.isNil(firstName)) {
+          if (firstName === null) {
             const names = real_name.split(' ');
             firstName = names[0];
           }
-          if (_.isNil(lastName)) {
+          if (lastName === null) {
             const names = real_name.split(' ');
             lastName = names[1];
           }
-          if (_.isNil(firstName) || firstName === '') {
+          if (firstName === null || firstName === '') {
             firstName = 'ChangeMe';
           }
-          if (_.isNil(lastName) || lastName === '') {
+          if (lastName === null || lastName === '') {
             lastName = 'ChangeMe';
           }
           const username = email;
@@ -73,18 +72,18 @@ if (!Meteor.isAppTest) {
         if (!Administrators.isDefined({ username: email })) {
           let firstName = first_name;
           let lastName = last_name;
-          if (_.isNil(firstName)) {
+          if (firstName === null) {
             const names = real_name.split(' ');
             firstName = names[0];
           }
-          if (_.isNil(lastName)) {
+          if (lastName === null) {
             const names = real_name.split(' ');
             lastName = names[1];
           }
-          if (_.isNil(firstName || firstName === '')) {
+          if ((firstName || firstName === '') === null) {
             firstName = 'ChangeMe';
           }
-          if (_.isNil(lastName || lastName === '')) {
+          if ((lastName || lastName === '') === null) {
             lastName = 'ChangeMe';
           }
           const username = email;

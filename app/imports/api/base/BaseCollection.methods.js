@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
-import _ from 'lodash';
 import { Roles } from 'meteor/alanning:roles';
 import { HACCHui } from '../hacc-hui/HACCHui';
 import { ROLE } from '../role/Role';
@@ -30,8 +29,12 @@ export const dumpDatabaseMethod = new ValidatedMethod({
     // Don't do the dump except on server side (disable client-side simulation).
     // Return an object with fields timestamp and collections.
     if (Meteor.isServer) {
-      const collections = _.sortBy(HACCHui.collectionLoadSequence.map((collection) => collection.dumpAll()),
-          (entry) => entry.name);
+      const collections = HACCHui.collectionLoadSequence.map(collection => collection.dumpAll())
+          .sort((a, b) => {
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+          });
       const timestamp = new Date();
       return { timestamp, collections };
     }
@@ -60,7 +63,7 @@ export const dumpTeamCSVMethod = new ValidatedMethod({
       result += headerArr.join('\t');
       result += '\r\n';
       const teams = Teams.find({}).fetch();
-      _.forEach(teams, (team) => {
+      teams.forEach((team) => {
         const teamID = team._id;
         const row = [team.name];
         const tcs = TeamChallenges.find({ teamID }).fetch();
@@ -86,11 +89,11 @@ export const dumpTeamCSVMethod = new ValidatedMethod({
       result += '\r\n';
       const allParticipants = Participants.find({}).fetch();
       const teamParticipants = TeamParticipants.find({}).fetch();
-      const teamParticipantIDs = _.uniq(_.map(teamParticipants, (tp) => tp.participantID));
-      const notOnTeams = _.filter(allParticipants, (p) => !_.includes(teamParticipantIDs, p._id));
-      const notOnTeamsNames = _.map(notOnTeams, (p) => Participants.getFullName(p._id));
+      const teamParticipantIDs = Array.from(new Set(teamParticipants.map((tp) => tp.participantID)));
+      const notOnTeams = allParticipants.filter(p => !teamParticipantIDs.includes(p._id));
+      const notOnTeamsNames = notOnTeams.map((p) => Participants.getFullName(p._id));
       result += `Participants Not On a Team (${notOnTeams.length})\r\n`;
-      _.forEach(notOnTeamsNames, (name) => {
+      notOnTeamsNames.forEach((name) => {
         result += `${name}\r\n`;
       });
       const timestamp = new Date();

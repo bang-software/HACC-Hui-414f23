@@ -1,5 +1,4 @@
 import SimpleSchema from 'simpl-schema';
-import _ from 'lodash';
 import BaseCollection from '../base/BaseCollection';
 import { Participants } from '../user/ParticipantCollection';
 import { Teams } from './TeamCollection';
@@ -33,7 +32,7 @@ class LeavingTeamCollection extends BaseCollection {
   update(docID, { sentOwnerDM }) {
     this.assertDefined(docID);
     const updateData = {};
-    if (_.isBoolean(sentOwnerDM)) {
+    if (typeof sentOwnerDM === 'boolean') {
       updateData.sentOwnerDM = sentOwnerDM;
     }
     this._collection.update(docID, { $set: updateData });

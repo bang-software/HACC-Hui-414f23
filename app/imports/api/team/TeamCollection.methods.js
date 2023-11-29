@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
-import _ from 'lodash';
 import { Teams } from './TeamCollection';
 import { Users } from '../user/UserCollection';
 import { ROLE } from '../role/Role';
@@ -27,7 +26,7 @@ export const getTeamsWithoutGitHubRepoMethod = new ValidatedMethod({
       }
     }
     if (Meteor.isServer) {
-      const teams = _.filter(Teams.find().fetch(), (team) => !team.gitHubRepo);
+      const teams = Teams.find().fetch().filter(team => !team.gitHubRepo);
       return teams;
     }
     return null;
@@ -54,7 +53,7 @@ export const getTeamsWithoutDevpostPageMethod = new ValidatedMethod({
       }
     }
     if (Meteor.isServer) {
-      const teams = _.filter(Teams.find().fetch(), (team) => !team.devPostPage);
+      const teams = Teams.find().fetch().filter((team) => !team.devPostPage);
       return teams;
     }
     return null;

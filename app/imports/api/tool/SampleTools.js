@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { faker } from '@faker-js/faker';
-import _ from 'lodash';
 import { Tools } from './ToolCollection';
 import { Slugs } from '../slug/SlugCollection';
 import { getRandomSkillAndToolLevel } from '../level/Levels';
@@ -39,7 +38,7 @@ export function makeSampleToolArray(numTools = 1) {
  */
 export function makeSampleToolSlugArray(numTools = 1) {
   const ids = makeSampleToolArray(numTools);
-  return _.map(ids, (id) => {
+  return ids.map((id) => {
     const doc = Tools.findDoc(id);
     return Slugs.getNameFromID(doc.slugID);
   });
@@ -47,7 +46,7 @@ export function makeSampleToolSlugArray(numTools = 1) {
 
 export function makeSampleToolLevelArray(numTools = 1) {
   const slugs = makeSampleToolSlugArray(numTools);
-  return _.map(slugs, (slug) => {
+  return slugs.map((slug) => {
         const retVal = {
           slug,
           toolLevel: getRandomSkillAndToolLevel(),
