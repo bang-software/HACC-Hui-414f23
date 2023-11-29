@@ -11,7 +11,6 @@ import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 import { ROUTES } from '../../../startup/client/route-constants';
-import DeleteConfirmation from '../../components/administrator/DeleteConfirmation';
 import ChallengeAdminWidget from '../../components/administrator/ChallengeAdminWidget';
 import SkillAdminWidget from '../../components/administrator/SkillAdminWidget';
 import ToolAdminWidget from '../../components/administrator/ToolAdminWidget';
@@ -130,9 +129,8 @@ const ConfigureHacc = () => {
       <div>
         <div className="centerText">
           <Col>
-            <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton mx-3">
-              <Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>
-            <DeleteConfirmation collection={Challenges} name={'Challenges'} />
+          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton mx-3">
+            <Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>
           </Col>
         </div>
         <Table>

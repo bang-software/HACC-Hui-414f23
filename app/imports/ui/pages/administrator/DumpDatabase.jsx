@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Form, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import moment from 'moment';
 import swal from 'sweetalert';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Meteor } from 'meteor/meteor';
 import { dumpDatabaseMethod, dumpTeamCSVMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
-import ResetDatabaseConfirmation from '../../components/administrator/ResetDatabaseConfirmation';
 import DeleteConfirmation from '../../components/administrator/DeleteConfirmation';
 
 export const databaseFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
@@ -21,16 +19,15 @@ const DumpDatabase = () => {
     allChallenges,
     allParticipants,
     allTeams,
-  } = useTracker(() => {
-    const userId = Meteor.userId();
-    return {
+  } = useTracker(() => ({
       allChallenges: Challenges.find({}).fetch(),
       allParticipants: Participants.find({}).fetch(),
       allTeams: Teams.find({}).fetch(),
-    };
-  }, []);
-  const [selectedUser, setSelectedUser] = useState('None');
-  const [selectedTeam, setSelectedTeam] = useState('None');
+    }), []);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedTeam, setSelectedTeam] = useState('');
+  const [selectedChallenge, setSelectedChallenge] = useState('');
+
   const handleClick = () => {
     dumpDatabaseMethod.call((error, result) => {
       if (error) {
@@ -60,16 +57,20 @@ const DumpDatabase = () => {
   };
 
   const deleteUser = (participantID) => {
-    const collectionName2 = Participants.getCollectionName();
-    const intID = Participants.findDoc({
-      _id: participantID });
-    removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
-      if (error) {
-        swal('Error', error.message, 'error');
-      } else {
-        swal('Success', 'Removed Participant', 'success');
-      }
-    });
+    if (participantID === '') {
+      swal('Error', 'Please select a participant', 'error');
+    } else {
+      setSelectedUser('');
+      const collectionName2 = Participants.getCollectionName();
+      const intID = Participants.findDoc({
+        _id: participantID,
+      });
+      removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+        }
+      });
+    }
   };
 
   const deleteAllUsers = () => {
@@ -77,68 +78,144 @@ const DumpDatabase = () => {
   };
 
   const deleteTeam = (teamID) => {
-    const collectionName2 = Teams.getCollectionName();
-    const intID = Teams.findDoc({
-      _id: teamID });
-    removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
-      if (error) {
-        swal('Error', error.message, 'error');
-      } else {
-        swal('Success', 'Removed Team', 'success');
-      }
-    });
+    if (teamID === '') {
+      swal('Error', 'Please select a team', 'error');
+    } else {
+      setSelectedTeam('');
+      const collectionName2 = Teams.getCollectionName();
+      const intID = Teams.findDoc({
+        _id: teamID });
+      removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+        }
+      });
+    }
   };
 
   const deleteAllTeams = () => {
     allTeams.map((team) => deleteTeam(team._id));
   };
 
+  const deleteChallenge = (challengeID) => {
+    if (challengeID === '') {
+      swal('Error', 'Please select a challenge', 'error');
+    } else {
+      setSelectedChallenge('');
+      const collectionName2 = Challenges.getCollectionName();
+      const intID = Challenges.findDoc({
+        _id: challengeID,
+      });
+      removeItMethod.call({ collectionName: collectionName2, instance: intID }, (error) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+        }
+      });
+    }
+  };
+
+  const deleteAllChallenges = () => {
+    allChallenges.map((challenge) => deleteChallenge(challenge._id));
+  };
+
+  const resetHACC = () => {
+    deleteAllUsers();
+    deleteAllTeams();
+    deleteAllChallenges();
+  };
+
   return (
       <div id={PAGE_IDS.DUMP_DATABASE}>
-        <Row>
-          <Col>
+        <Row >
+          <Col lg="2">
             <Button variant="success"
                     id={COMPONENT_IDS.DUMP_DATABASE}
                     onClick={handleClick}
-                    className="mb-3"
+                    className="mt-3 ms-3"
             >
               Dump the Database
             </Button>
           </Col>
-          <Col>
-            <Button variant="success" id={COMPONENT_IDS.DUMP_TEAM} onClick={handleDumpTeamCSV}>Dump the Teams</Button>
+          <Col lg="2">
+            <Button variant="success"
+                    id={COMPONENT_IDS.DUMP_TEAM}
+                    onClick={handleDumpTeamCSV}
+                    className="mt-3 ms-3">
+              Dump the Teams
+            </Button>
           </Col>
-          <Col>
-            <Form.Select onChange={(e) => setSelectedUser(e.target.value)}>
+        </Row>
+        <Row>
+          <Col lg="2">
+            <Form.Select onChange={(e) => setSelectedUser(e.target.value)} className="mt-3 ms-3">
               <option>Select a user</option>
               {allParticipants.map((participant) => <option key={participant._id} value={participant._id}>
                 {participant.username}
               </option>)}
             </Form.Select>
-            <Button variant="danger" onClick={() => deleteUser(selectedUser)}>
-              Delete User
-            </Button>
-            <Button variant="danger" onClick={deleteAllUsers}>
-              Delete All Users
-            </Button>
           </Col>
-          <Col>
-            <Form.Select onChange={(e) => setSelectedTeam(e.target.value)}>
+          <Col lg="2">
+            <DeleteConfirmation deleteFunction={() => deleteUser(selectedUser)}
+                                description={selectedUser === '' ? 'nothing' : Participants.findDoc({
+                                  _id: selectedUser,
+                                }).username}
+                                buttonLabel={'Delete User'}/>
+          </Col>
+          <Col lg="2">
+            <DeleteConfirmation deleteFunction={deleteAllUsers}
+                                description={'All users'}
+                                buttonLabel={'Delete All Users'}/>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg="2">
+            <Form.Select onChange={(e) => setSelectedTeam(e.target.value)} className="mt-3 ms-3">
               <option>Select a team</option>
               {allTeams.map((team) => <option key={team._id} value={team._id}>
                 {team.name}
               </option>)}
             </Form.Select>
-            <Button variant="danger" onClick={() => deleteTeam(selectedTeam)}>
-              Delete Team
-            </Button>
-            <Button variant="danger" onClick={deleteAllTeams}>
-              Delete All Teams
-            </Button>
           </Col>
-          <Col>
-            <DeleteConfirmation collection={Challenges} name={'Challenges'} />
-            <ResetDatabaseConfirmation />
+          <Col lg="2">
+            <DeleteConfirmation deleteFunction={() => deleteTeam(selectedTeam)}
+                                description={selectedTeam === '' ? 'nothing' : Teams.findDoc({
+                                  _id: selectedTeam,
+                                }).name}
+                                buttonLabel={'Delete Team'}/>
+          </Col>
+          <Col lg="2">
+            <DeleteConfirmation deleteFunction={deleteAllTeams}
+                                description={'All teams'}
+                                buttonLabel={'Delete All Teams'}/>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg="2">
+            <Form.Select onChange={(e) => setSelectedChallenge(e.target.value)} className="mt-3 ms-3">
+              <option>Select a challenge</option>
+              {allChallenges.map((challenge) => <option key={challenge._id} value={challenge._id}>
+                {challenge.title}
+              </option>)}
+            </Form.Select>
+          </Col>
+          <Col lg="2">
+            <DeleteConfirmation deleteFunction={() => deleteChallenge(selectedChallenge)}
+                                description={selectedChallenge === '' ? 'nothing' : Challenges.findDoc({
+                                  _id: selectedChallenge,
+                                }).title}
+                                buttonLabel={'Delete Challenge'}/>
+          </Col>
+          <Col lg="2">
+            <DeleteConfirmation deleteFunction={deleteAllChallenges}
+                                description={'All challenges'}
+                                buttonLabel={'Delete All Challenges'}/>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg="2">
+            <DeleteConfirmation deleteFunction={resetHACC}
+                                description={'All teams, challenges, participants, and their associated Meteor accounts'}
+                                buttonLabel={'Reset HACC'}/>
           </Col>
         </Row>
       </div>
