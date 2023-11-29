@@ -58,10 +58,14 @@ class BaseCollection {
    * A stricter form of remove that throws an error if the document or docID could not be found in this collection.
    * @param { String | Object } name A document or docID in this collection.
    */
-  removeIt(name) {
-    const doc = this.findDoc(name);
-    check(doc, Object);
-    this._collection.remove(doc._id);
+  removeIt(docID) {
+    this._collection.remove(docID);
+    return true;
+  }
+
+  // eslint-disable-next-line consistent-return
+  removeAll() {
+    this._collection.remove({});
     return true;
   }
 

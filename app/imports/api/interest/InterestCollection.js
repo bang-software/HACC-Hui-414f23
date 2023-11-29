@@ -82,6 +82,10 @@ class InterestCollection extends BaseSlugCollection {
     super.removeIt(docID);
   }
 
+  removeAll() {
+    super.removeAll();
+  }
+
   /**
    * Returns an object representing the given interest.
    * @param docID {string} the ID to get.

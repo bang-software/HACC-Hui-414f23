@@ -9,6 +9,7 @@ import swal from 'sweetalert';
 import SimpleSchema from 'simpl-schema';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { Meteor } from 'meteor/meteor';
+import { Redirect } from 'react-router-dom';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
@@ -19,6 +20,7 @@ import { Slugs } from '../../../api/slug/SlugCollection';
 import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import { ROUTES } from '../../../startup/client/route-constants';
 // import RadioField from "../form-fields/RadioField";
 
 const CreateTeamWidget = () => {
@@ -33,6 +35,7 @@ const CreateTeamWidget = () => {
   const [errorModal, setErrorModal] = useState(false);
   const [isRegistered, setIsRegistered] = useState([]);
   const [notRegistered, setNotRegistered] = useState([]);
+  const [redirect, setRedirect] = useState(false);
 
   const buildTheFormSchema = () => {
     const schema = new SimpleSchema({
@@ -127,6 +130,7 @@ const CreateTeamWidget = () => {
       } else {
         if (!errorModal) {
           swal('Success', 'Team created successfully', 'success');
+          setRedirect(true);
         }
         formRef.current.reset();
       }
@@ -175,6 +179,9 @@ const CreateTeamWidget = () => {
     );
   }
 
+  if (redirect) {
+    return <Redirect to={ROUTES.YOUR_TEAMS}/>;
+  }
   return (
       <Container fluid className="mt-3">
         <Row>

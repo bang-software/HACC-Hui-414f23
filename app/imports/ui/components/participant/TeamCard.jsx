@@ -30,23 +30,22 @@ const TeamCard = ({ team, participantID }) => {
   };
 
   const handleLeaveTeam = (e, inst) => {
-    const { teamHLT } = inst;
-    const pDoc = Participants.findDoc({ userID: Meteor.userId() });
-    let collectionName = LeavingTeams.getCollectionName();
-    const definitionData = {
-      username: pDoc.username,
-      team: teamHLT._id,
-    };
-    defineMethod.call({ collectionName, definitionData }, (error) => {
-      if (error) {
-        console.error('failed to define', error);
-      }
-    });
-    const teamPart = TeamParticipants.findDoc({ teamID: team._id, participantID: pDoc._id });
-    console.log(teamPart);
-    collectionName = TeamParticipants.getCollectionName();
-    const instance = teamPart._id;
-    removeItMethod.call({ collectionName, instance }, (err) => {
+    const teamID = e.target.value;
+    // const { teamHLT } = inst;
+    // const pDoc = Participants.findDoc({ userID: Meteor.userId() });
+    // let collectionName = LeavingTeams.getCollectionName();
+    // const definitionData = {
+    //   username: pDoc.username,
+    //   team: teamHLT._id,
+    // };
+    // defineMethod.call({ collectionName, definitionData }, (error) => {
+    //   if (error) {
+    //     console.error('failed to define', error);
+    //   }
+    // });
+    const teamParticipantID = TeamParticipants.findDoc({ teamID: teamID, participantID: participantID })._id;
+    const collectionName = TeamParticipants.getCollectionName();
+    removeItMethod.call({ collectionName, instance: teamParticipantID }, (err) => {
       if (err) {
         console.error('failed to remove from team', err);
       }
@@ -86,7 +85,7 @@ const TeamCard = ({ team, participantID }) => {
                 </ul>
               </Col>
               <Col>
-                <Button team={builtTeam} disabled={isOwner} variant="danger" onClick={handleLeaveTeam}>Leave team</Button>
+                <Button disabled={isOwner} variant="danger" value={team._id} onClick={handleLeaveTeam}>Leave team</Button>
               </Col>
             </Row>
           </Container>

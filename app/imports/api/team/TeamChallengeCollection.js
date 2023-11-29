@@ -77,7 +77,7 @@ class TeamChallengeCollection extends BaseCollection {
    */
   removeTeam(team) {
     const teamID = Teams.getID(team);
-    this._collection.remove({ teamID });
+    super.removeIt(teamID);
   }
 
   removeTeamByID(teamID) {
