@@ -41,7 +41,7 @@ import BestFitTeamDisplay from '../pages/participant/BestFitTeam';
 import UpdateMinorParticipantsCompliant from '../pages/administrator/UpdateMinorParticipantsCompliant';
 import HelpPage from '../pages/HelpPage';
 import InterestedParticipantPage from '../pages/participant/InterestedParticipantPage';
-import AllTeamInvitationsPage from '../pages/administrator/AllTeamInvitationsPage';
+import AllTeamInvitationsPage from '../pages/administrator/AllTeamInvitations';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* global window */
