@@ -50,7 +50,6 @@ const UnderParticipationForm = () => {
       type: USER_INTERACTIONS.MINOR_SIGNED_CONSENT,
       typeData: [firstName, lastName, parentFirstName, parentLastName, parentEmail],
     };
-    console.log(interactionData);
     userInteractionDefineMethod.call(interactionData, (error) => {
       if (error) {
         console.error('Could not define user interaction', error);

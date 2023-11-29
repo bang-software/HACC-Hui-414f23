@@ -64,8 +64,6 @@ const ListParticipantsWidget = () => {
   const [skillsS, setSkillsS] = useState([]);
   const [resultS, setResultS] = useState(sortedParticipants);
 
-  console.log(resultS);
-
   const sticky = {
     position1: '-webkit-sticky',
     position: 'sticky',

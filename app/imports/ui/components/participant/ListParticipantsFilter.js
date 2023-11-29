@@ -276,7 +276,6 @@ export const dropdownValues = (data, mapValue) => {
   }
 
   info.sort((a, b) => {
-    console.log(a);
     if (a.label < b.label) {
       return -1;
     }

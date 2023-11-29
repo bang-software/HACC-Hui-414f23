@@ -48,12 +48,10 @@ const UpdateMinorParticipantsWidget = ({ MinorParticipantsID }) => {
   });
 
   const download = () => {
-    console.log('download', MinorParticipantsList);
     let csv = 'Minor Participant Name, Participant email, Parent/Guardian Name (Parent/Guardian email)\n';
     MinorParticipantsList.forEach((m) => {
       csv = `${csv}${m.firstName} ${m.lastName},${m.username},${m.ParentName}\n`;
     });
-    console.log(csv);
     const zip = new ZipZap();
     const dir = 'hacchui-minor-participants';
     const fileName = `${dir}/${moment().format(databaseFileDateFormat)}-minor-participants.csv`;
@@ -62,9 +60,7 @@ const UpdateMinorParticipantsWidget = ({ MinorParticipantsID }) => {
   };
 
   const submitData = () => {
-    console.log('hi');
     let Error = false;
-    console.log(selected);
     selected.forEach((MP => {
       const collectionName = Participants.getCollectionName();
       const updateData = {

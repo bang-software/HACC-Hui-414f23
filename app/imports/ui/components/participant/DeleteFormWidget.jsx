@@ -40,7 +40,6 @@ const reasons = [
 const schema = new SimpleSchema({
   feedback: {
     type: String,
-    defaultValue: 'Other',
   },
   other: { type: String, required: false },
 });

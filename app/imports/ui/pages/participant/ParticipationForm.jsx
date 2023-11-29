@@ -36,7 +36,6 @@ export default function ParticipationForm() {
         type: USER_INTERACTIONS.SIGNED_CONSENT,
         typeData: [firstName, lastName],
       };
-      console.log(interactionData);
       userInteractionDefineMethod.call(interactionData, (error) => {
         if (error) {
           console.error('Could not define user interaction', error);
