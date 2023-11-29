@@ -68,7 +68,7 @@ const HelpPage = () => (
         </h1>
         <h3 style={{ textAlign: 'center' }}>
           <Link to='list-participants'>
-            <text>List Participants Page</text>
+            <p>List Participants Page</p>
           </Link>
         </h3>
         <p>
@@ -84,7 +84,7 @@ const HelpPage = () => (
           </h1>
           <h3 style={{ textAlign: 'center' }}>
             <Link to='your-teams'>
-              <text>Edit Teams Page</text>
+              <p>Edit Teams Page</p>
             </Link>
           </h3>
           <p>
@@ -102,7 +102,7 @@ const HelpPage = () => (
           </h1>
           <h3 style={{ textAlign: 'center' }}>
             <Link to='create-team'>
-              <text>Create Teams Page</text>
+              <p>Create Teams Page</p>
             </Link>
           </h3>
           <p>

@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Container, Col, Row, Button } from 'react-bootstrap';
-import { Meteor } from 'meteor/meteor';
 import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
 import { TeamTools } from '../../../api/team/TeamToolCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
-import { LeavingTeams } from '../../../api/team/LeavingTeamCollection';
-import { defineMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
+import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
@@ -29,7 +27,7 @@ const TeamCard = ({ team, participantID }) => {
     return teamBTT;
   };
 
-  const handleLeaveTeam = (e, inst) => {
+  const handleLeaveTeam = (e) => {
     const teamID = e.target.value;
     // const { teamHLT } = inst;
     // const pDoc = Participants.findDoc({ userID: Meteor.userId() });

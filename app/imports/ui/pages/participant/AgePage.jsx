@@ -11,7 +11,7 @@ import { COMPONENT_IDS } from '../../testIDs/componentIDs';
  */
 const AgePage = () => (
   <div id={PAGE_IDS.AGE_PAGE} style={{ backgroundColor: '#393B44' }}>
-    <div align={'center'} style={{ backgroundColor: '#24252B' }}>
+    <div style={{ textAlign: 'center', backgroundColor: '#24252B' }}>
       <h2 style={{ padding: '5rem 10rem 5rem 10rem', color: 'white' }}>
         Before we move onto making your profile, we need to verify your age.
         <br/>

@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect, useLocation } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
 import { Container, Form, Button, Row, Col, Alert, Card } from 'react-bootstrap';
-import { ROLE } from '../../api/role/Role';
 import { Participants } from '../../api/user/ParticipantCollection';
 import { ROUTES } from '../../startup/client/route-constants';
 import { COMPONENT_IDS } from '../testIDs/componentIDs';
@@ -15,7 +13,6 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [redirectToReferer, setRedirectToReferer] = useState(false);
-  const [role, setRole] = useState('');
 
   const location = useLocation();
   let pathname = ROUTES.LANDING;
@@ -31,13 +28,8 @@ const Signin = () => {
       if (err) {
         setError(err.reason);
       } else {
-        let currentRole = ROLE.PARTICIPANT;
-        if (Roles.userIsInRole(Meteor.userId(), ROLE.ADMIN)) {
-          currentRole = ROLE.ADMIN;
-        }
         setError('');
         setRedirectToReferer(true);
-        setRole(currentRole);
       }
     });
   };

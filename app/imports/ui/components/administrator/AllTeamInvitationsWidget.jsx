@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
@@ -165,20 +164,6 @@ const AllTeamInvitationsWidget = () => {
         </Container>
     );
     return teamInvitations.length === 0 ? noInvitations() : invitationsList();
-};
-
-AllTeamInvitationsWidget.propTypes = {
-  teamChallenges: PropTypes.array.isRequired,
-  teamSkills: PropTypes.array.isRequired,
-  skills: PropTypes.array.isRequired,
-  teamTools: PropTypes.array.isRequired,
-  teams: PropTypes.array.isRequired,
-  challenges: PropTypes.array.isRequired,
-  participants: PropTypes.array.isRequired,
-  tools: PropTypes.array.isRequired,
-  teamParticipants: PropTypes.array.isRequired,
-  teamInvitations: PropTypes.array.isRequired,
-
 };
 
 export default AllTeamInvitationsWidget;

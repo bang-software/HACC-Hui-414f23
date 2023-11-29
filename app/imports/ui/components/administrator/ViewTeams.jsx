@@ -39,7 +39,6 @@ const ViewTeams = () => {
     let compliant = true;
     tps.forEach(tp => {
       const participant = participants.filter(p => p._id === tp.participantID);
-      // console.log(participant);
       compliant = compliant && participant[0].isCompliant;
     });
     return compliant;
