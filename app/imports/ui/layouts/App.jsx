@@ -21,7 +21,7 @@ import AddSkill from '../pages/administrator/AddSkill';
 import AddTool from '../pages/administrator/AddTool';
 import DumpDatabase from '../pages/administrator/DumpDatabase';
 import EditProfilePage from '../pages/participant/EditProfilePage';
-import ConfigureHaccPage from '../pages/administrator/ConfigureHaccPage';
+import ConfigureHaccPage from '../pages/administrator/ConfigureHacc';
 import EditChallengePage from '../pages/administrator/EditChallenge';
 import EditToolPage from '../pages/administrator/EditTool';
 import EditSkillPage from '../pages/administrator/EditSkill';

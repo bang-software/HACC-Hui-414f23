@@ -7,7 +7,6 @@ import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-/** Renders a single row in the table. See pages/ManageHaccWidget.jsx. */
 const SkillAdminWidget = ({ skill }) => {
   const removeItem = (docID) => {
     swal({
