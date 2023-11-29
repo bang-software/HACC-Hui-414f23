@@ -32,7 +32,7 @@ import CreateProfilePage from '../pages/participant/CreateProfilePage';
 import SuggestToolSkillPage from '../pages/participant/SuggestToolSkillPage';
 import ListSuggestions from '../pages/administrator/ListSuggestions';
 import ListParticipantsPage from '../pages/participant/ListParticipantsPage';
-import ListParticipantsPageAdmin from '../pages/administrator/ListParticipantsPageAdmin';
+import ListParticipantsPageAdmin from '../pages/administrator/ListParticipantsAdmin';
 import TeamInvitationsPage from '../pages/participant/TeamInvitationsPage';
 import AdminEditTeamPage from '../pages/administrator/AdminEditTeamPage';
 import SideBar from '../components/SideBar';
