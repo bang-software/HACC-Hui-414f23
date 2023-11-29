@@ -1,5 +1,4 @@
 import SimpleSchema from 'simpl-schema';
-import { _ } from 'lodash';
 import BaseCollection from '../base/BaseCollection';
 import { Participants } from '../user/ParticipantCollection';
 import { Teams } from './TeamCollection';
@@ -45,7 +44,7 @@ class WantToJoinCollection extends BaseCollection {
     if (team) {
       updateData.teamID = Teams.getID(team);
     }
-    if (_.isBoolean(sentDM)) {
+    if (typeof sentDM === 'boolean') {
       updateData.sentDM = sentDM;
     }
     this._collection.update(docID, { $set: updateData });

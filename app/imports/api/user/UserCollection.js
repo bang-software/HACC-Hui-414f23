@@ -1,7 +1,6 @@
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { Meteor } from 'meteor/meteor';
-import _ from 'lodash';
 import { Participants } from './ParticipantCollection';
 import { Administrators } from './AdministratorCollection';
 
@@ -57,7 +56,13 @@ class UserCollection {
 
   getProfile(user) {
     // First, let's check to see if user is actually a profile (or looks like one). If so, just return it.
-    if (_.isObject(user) && _.has(user, 'firstName') && _.has(user, 'lastName') && _.has(user, 'role')) {
+    if (
+        typeof user === 'object' &&
+        user !== null &&
+        'firstName' in user &&
+        'lastName' in user &&
+        'role' in user
+    ) {
       return user;
     }
     const profile = this.hasProfile(user);

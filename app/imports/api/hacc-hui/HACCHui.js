@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { Challenges } from '../challenge/ChallengeCollection';
 import { ChallengeInterests } from '../challenge/ChallengeInterestCollection';
@@ -76,7 +75,7 @@ class HACCHuiClass {
     ];
     /** Maps collection name to the collection. */
     this.collectionAssociation = {};
-    _.forEach(this.collections, (collection) => {
+    this.collections.forEach((collection) => {
       this.collectionAssociation[collection.getCollectionName()] = collection;
     });
   }

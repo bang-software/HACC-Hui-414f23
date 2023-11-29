@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Administrators } from '../user/AdministratorCollection';
@@ -27,8 +26,8 @@ export const sendDM2AdministratorsMethod = new ValidatedMethod({
   validate: null,
   run({ message }) {
     console.log(`sendDM2Admininistrators ${message}`);
-    const administrators = _.map(Administrators.find({}).fetch(), (admin) => admin.username);
-    _.forEach(administrators, (username) => {
+    const administrators = Administrators.find({}).fetch().map((admin) => admin.username);
+    administrators.forEach((username) => {
       const { slackUser, dmChannel } = SlackUsers.findDoc({ username });
       const text = `<@${slackUser}> ${message}`;
       (async () => {

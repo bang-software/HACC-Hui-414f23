@@ -32,25 +32,25 @@ const MemberTeamCard = ({ team, teamParticipants }) => {
           <Col>
             <h6 className="mb-2 fw-bold">Challenges</h6>
             <ul>
-              {teamChallenges.map((skill) => <li key={skill}>{skill}</li>)}
+              {teamChallenges.map((skill, index) => <li key={index}>{skill}</li>)}
             </ul>
           </Col>
           <Col>
             <h6 className="mb-2 fw-bold">Skills</h6>
             <ul>
-              {teamSkills.map((skill) => <li key={skill}>{skill}</li>)}
+              {teamSkills.map((skill, index) => <li key={index}>{skill}</li>)}
             </ul>
           </Col>
           <Col>
             <h6 className="mb-2 fw-bold">Tools</h6>
             <ul>
-              {teamTools.map((skill) => <li key={skill}>{skill}</li>)}
+              {teamTools.map((skill, index) => <li key={index}>{skill}</li>)}
             </ul>
           </Col>
           <Col>
             <h6 className="mb-2 fw-bold">Members</h6>
             <ul>
-              {teamParticipants.map((participant) => <li key={participant}>
+              {teamParticipants.map((participant, index) => <li key={index}>
                 {participant.firstName} {participant.lastName}</li>)}
             </ul>
           </Col>

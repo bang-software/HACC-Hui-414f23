@@ -9,62 +9,57 @@ import { TeamInvitations } from '../../../api/team/TeamInvitationCollection';
 import YourTeamsCard from './YourTeamsCard';
 import MemberTeamCard from './MemberTeamCard';
 import { paleBlueStyle } from '../../styles';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
-import { Skills } from '../../../api/skill/SkillCollection';
-import { Tools } from '../../../api/tool/ToolCollection';
-import { TeamSkills } from '../../../api/team/TeamSkillCollection';
-import { TeamTools } from '../../../api/team/TeamToolCollection';
-import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 
 const YourTeamsWidget = () => {
+  // lodash _uniqBy method
+  const uniqBy = (arr, predicate) => {
+    if (!Array.isArray(arr)) { return []; }
 
-  const data = useTracker(() => {
-    const participant = Participants.findOne({ userID: Meteor.userId() });
-    const participantID = participant?._id;
-    const teams = Teams.find({ owner: participantID }).fetch();
-    const teamParticipantsArray = TeamParticipants.find({ participantID }).fetch();
-    const memberTeamsIDs = [...new Set(teamParticipantsArray.map(item => item.teamID))];
-    const memberTeams = memberTeamsIDs.map(id => Teams.findOne(id));
-    const allParticipants = Participants.find({}).fetch();
-    const teamInvitations = TeamInvitations.find({}).fetch();
+    const cb = typeof predicate === 'function' ? predicate : (o) => o[predicate];
 
-    const allChallenges = Challenges.find({}).fetch();
-    const allSkills = Skills.find({}).fetch();
-    const allTools = Tools.find({}).fetch();
-    const allTeamSkills = TeamSkills.find({}).fetch();
-    const allTeamTools = TeamTools.find({}).fetch();
-    const allTeamChallenges = TeamChallenges.find({}).fetch();
-    const allTeamParticipants = TeamParticipants.find({}).fetch();
+    const pickedObjects = arr.filter(item => item).reduce((map, item) => {
+      const key = cb(item);
+      if (!key) {
+        return map;
+      }
+      return map.has(key) ? map : map.set(key, item);
+      }, new Map()).values();
 
-    return {
-      participant,
-      teams,
-      memberTeams,
-      allParticipants,
-      teamParticipantsArray,
-      teamInvitations,
-      allChallenges,
-      allSkills,
-      allTools,
-      allTeamSkills,
-      allTeamTools,
-      allTeamChallenges,
-      allTeamParticipants,
-    };
-  });
-
-  const getTeamParticipants = (teamID) => {
-    const filteredParticipants = data.teamParticipantsArray.filter(tp => tp.teamID === teamID);
-    return filteredParticipants.map(fp => {
-      const participantDetail = data.allParticipants.find(p => p._id === fp.participantID);
-      return {
-        firstName: participantDetail.firstName,
-        lastName: participantDetail.lastName,
-      };
-    });
+    return [...pickedObjects];
   };
 
-  if (!data.participant?.isCompliant) {
+  const { participant, teams, memberTeams, participants, teamParticipants, teamInvitation } = useTracker(() => {
+    const part = Participants.findDoc({ userID: Meteor.userId() });
+    const participantID = part._id;
+    return {
+      participant: part,
+      teams: Teams.find({ owner: participantID }).fetch(),
+      memberTeams: uniqBy(TeamParticipants.find({ participantID }).fetch(), 'teamID').map((tp) => Teams.findDoc(tp.teamID)),
+      participants: Participants.find({}).fetch(),
+      teamParticipants: TeamParticipants.find({}).fetch(),
+      teamInvitation: TeamInvitations.find({}).fetch(),
+    };
+  }, []);
+
+  const allParticipants = participants;
+  const getTeamParticipants = (teamID, teamParticipantsGTP) => {
+    const data = [];
+    const filteredParticipants = teamParticipantsGTP.filter(p => p.teamID === teamID);
+    const participantsGTP = uniqBy(filteredParticipants, 'participantID');
+    for (let i = 0; i < participantsGTP.length; i++) {
+      for (let j = 0; j < allParticipants.length; j++) {
+        if (participantsGTP[i].participantID === allParticipants[j]._id) {
+          data.push({
+            firstName: allParticipants[j].firstName,
+            lastName: allParticipants[j].lastName,
+          });
+        }
+      }
+    }
+    return data;
+  };
+
+  if (!participant?.isCompliant) {
     return (
         <div className="text-center">
           <h2>
@@ -77,7 +72,7 @@ const YourTeamsWidget = () => {
     );
   }
 
-  if (data.teams.length + data.memberTeams.length === 0) {
+  if (teams.length + memberTeams.length === 0) {
     return (
         <div className="text-center">
           <h2>
@@ -94,20 +89,20 @@ const YourTeamsWidget = () => {
         <Row>
           <h2 className="text-center mb-3">Your Teams</h2>
         </Row>
-        {data.teams.length !== 0 && (
+        {teams.length !== 0 && (
             <Row>
               <Col>
                 <Card style={paleBlueStyle}>
                   <Card.Title><h4 className="card-header text-center">Owner</h4></Card.Title>
                   <Card.Body>
                     <ListGroup>
-                      {data.teams.map(team => (
+                      {teams.map(team => (
                           <ListGroup.Item key={team._id}>
                             <YourTeamsCard
                                 key={team._id}
                                 team={team}
-                                teamParticipants={getTeamParticipants(team._id)}
-                                teamInvitation={data.teamInvitations}/>
+                                teamParticipants={getTeamParticipants(team._id, teamParticipants)}
+                                teamInvitation={teamInvitation}/>
                           </ListGroup.Item>
                       ))}
                     </ListGroup>
@@ -116,16 +111,19 @@ const YourTeamsWidget = () => {
               </Col>
             </Row>
         )}
-        {data.memberTeams.length !== 0 && (
+        {memberTeams.length !== 0 && (
             <Row>
               <Col>
                 <Card>
                   <Card.Title><h4 className="card-header text-center">Member</h4></Card.Title>
                   <Card.Body>
                     <ListGroup>
-                      {data.memberTeams.map(team => (
+                      {memberTeams.map(team => (
                           <ListGroup.Item key={team._id}>
-                            <MemberTeamCard key={team._id} team={team} teamParticipants={getTeamParticipants(team._id)}/>
+                            <MemberTeamCard key={team._id}
+                                            team={team}
+                                            teamParticipants={getTeamParticipants(team._id, teamParticipants)}
+                            />
                           </ListGroup.Item>
                       ))}
                     </ListGroup>

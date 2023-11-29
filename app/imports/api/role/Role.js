@@ -1,5 +1,4 @@
 import { Roles } from 'meteor/alanning:roles';
-import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 
 /** @namespace api/role */
@@ -19,7 +18,7 @@ export const ROLE = {
  * @type {Array}
  * @memberOf api/role
  */
-export const ROLES = _.values(ROLE);
+export const ROLES = Object.values(ROLE);
 
 /**
 * Predicate for determining if a string is a defined ROLE.
@@ -28,7 +27,7 @@ export const ROLES = _.values(ROLE);
 * @memberOf api/role
 */
 export function isRole(role) {
-  return (typeof role) === 'string' && _.includes(_.values(ROLE), role);
+  return (typeof role) === 'string' && Object.values(ROLE).includes(role);
 }
 
 /**
@@ -49,6 +48,6 @@ export function assertRole(role) {
 // Initialize Roles to ROLENAMES by deleting all existing roles, then defining just those in ROLENAMES.
 if (Meteor.isServer) {
   if (Roles.getAllRoles().count() !== 2) {
-    _.values(ROLE).map((role) => Roles.createRole(role, { unlessExists: true }));
+    Object.values(ROLE).map((role) => Roles.createRole(role, { unlessExists: true }));
   }
 }

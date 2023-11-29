@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Form, FormControl, InputGroup, ListGroup, Row } from 'react-bootstrap';
-import { _ } from 'lodash';
 import { useTracker } from 'meteor/react-meteor-data';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import * as Icon from 'react-bootstrap-icons';
@@ -22,6 +21,23 @@ import { databaseFileDateFormat } from './DumpDatabase';
 import ListParticipantCardAdmin from '../../components/administrator/ListParticipantsCardAdmin';
 
 const ListParticipantsAdmin = () => {
+  // lodash _uniqBy method
+  const uniqBy = (arr, predicate) => {
+    if (!Array.isArray(arr)) { return []; }
+
+    const cb = typeof predicate === 'function' ? predicate : (o) => o[predicate];
+
+    const pickedObjects = arr.filter(item => item).reduce((map, item) => {
+      const key = cb(item);
+      if (!key) {
+        return map;
+      }
+      return map.has(key) ? map : map.set(key, item);
+    }, new Map()).values();
+
+    return [...pickedObjects];
+  };
+
   const {
     participantChallenges,
     participantSkills,
@@ -44,6 +60,16 @@ const ListParticipantsAdmin = () => {
     participants: Participants.find({}).fetch(),
   }));
 
+  const sortedParticipants = [...participants].sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
+
   const [searchS, setSearchS] = useState('');
   const [challengesS, setChallengesS] = useState([]);
   const [toolsS, setToolsS] = useState([]);
@@ -52,7 +78,7 @@ const ListParticipantsAdmin = () => {
   const [noTeamCheckboxS, setNoTeamCheckboxS] = useState(false);
   const [multipleTeamsCheckboxS, setMultipleTeamsCheckboxS] = useState(false);
   const [compliantCheckboxS, setCompliantCheckboxS] = useState(false);
-  const [resultS, setResultS] = useState(_.orderBy(participants, ['name'], ['asc']));
+  const [resultS, setResultS] = useState(sortedParticipants);
 
   const noParticipant = () => (
       <div id={PAGE_IDS.LIST_PARTICIPANTS_ADMIN} style={{ textAlign: 'center' }}>
@@ -80,7 +106,7 @@ const ListParticipantsAdmin = () => {
     const teamResults = filters.filterByTeam(teamsS, teams,
         teamParticipants, challengeResults);
     // const noTeamResults = filters.filterNoTeam(teamParticipants, teamResults);
-    const sorted = _.uniqBy(filters.sortBy(teamResults, 'participants'), 'username');
+    const sorted = uniqBy(filters.sortBy(teamResults, 'participants'), 'username');
     setResultS(sorted);
   };
 
@@ -153,7 +179,7 @@ const ListParticipantsAdmin = () => {
 
   function getParticipantTeams(participantID, teamParticipantsGPT) {
     const data = [];
-    const teamsGPT = _.filter(teamParticipantsGPT, { participantID: participantID });
+    const teamsGPT = teamParticipantsGPT.filter(p => p.participantID === participantID);
     for (let i = 0; i < teamsGPT.length; i++) {
       for (let j = 0; j < universalTeams.length; j++) {
         if (teams[i].teamID === universalTeams[j]._id) {
@@ -175,8 +201,9 @@ const ListParticipantsAdmin = () => {
 
   const handleMultipleTeams = () => {
     if (!multipleTeamsCheckboxS) {
-      const results = filters.filterMultipleTeams(resultS, participants);
-      const sorted = _.uniqBy(filters.sortBy(results, 'participants'), 'username');
+      const participantsHMT = resultS;
+      const results = filters.filterMultipleTeams(participantsHMT, participants);
+      const sorted = uniqBy(filters.sortBy(results, 'participants'), 'username');
       setResultS(sorted);
     } else {
       setResultS(participants);
@@ -186,8 +213,9 @@ const ListParticipantsAdmin = () => {
 
   const handleNoTeam = () => {
     if (!noTeamCheckboxS) {
-      const results = filters.filterNoTeam(teamParticipants, resultS);
-      const sorted = _.uniqBy(filters.sortBy(results, 'participants'), 'username');
+      const participantsHNT = resultS;
+      const results = filters.filterNoTeam(teamParticipants, participantsHNT);
+      const sorted = uniqBy(filters.sortBy(results, 'participants'), 'username');
       setResultS(sorted);
     } else {
       setResultS(participants);
@@ -197,8 +225,9 @@ const ListParticipantsAdmin = () => {
 
   const handleNotCompliant = () => {
     if (!compliantCheckboxS) {
-      const results = resultS.filter(p => !p.isCompliant);
-      const sorted = _.uniqBy(filters.sortBy(results, 'participants'), 'username');
+      const participantsHNC = resultS;
+      const results = participantsHNC.filter(p => !p.isCompliant);
+      const sorted = uniqBy(filters.sortBy(results, 'participants'), 'username');
       setResultS(sorted);
     } else {
       setResultS(participants);

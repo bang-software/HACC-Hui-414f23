@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
-import _ from 'lodash';
-import { ZipZap } from 'meteor/udondan:zipzap';
 import moment from 'moment';
+import { ZipZap } from 'meteor/udondan:zipzap';
 import { Button, Card, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
@@ -23,7 +22,7 @@ const getTeamMembers = (team) => {
     const gitHub = participant.gitHub;
     return `${fullName}, (${gitHub})`;
   });
-  return _.uniq(memberNames);
+  return [...new Set(memberNames)];
 };
 
 const ViewTeams = () => {

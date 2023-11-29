@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
-import _ from 'lodash';
 import BaseSlugCollection from '../base/BaseSlugCollection';
 import { Slugs } from '../slug/SlugCollection';
 import { ROLE } from '../role/Role';
@@ -76,12 +75,12 @@ class ParticipantCollection extends BaseSlugCollection {
       Slugs.updateEntityID(slugID, profileID);
       const { userID, password } = Users.define({ username, role });
       this._collection.update(profileID, { $set: { userID } });
-      _.forEach(challenges, (challenge) => ParticipantChallenges.define({ challenge, participant: username }));
-      _.forEach(interests, (interest) => ParticipantInterests.define({ interest, participant: username }));
-      _.forEach(skills, (skill) => {
+      challenges.forEach((challenge) => ParticipantChallenges.define({ challenge, participant: username }));
+      interests.forEach((interest) => ParticipantInterests.define({ interest, participant: username }));
+      skills.forEach((skill) => {
         ParticipantSkills.define({ skill, participant: username });
       });
-      _.forEach(tools, (tool) => {
+      tools.forEach((tool) => {
         ParticipantTools.define({ tool, participant: username });
       });
       return { profileID, password };
@@ -126,7 +125,7 @@ class ParticipantCollection extends BaseSlugCollection {
     if (demographicLevel) {
       updateData.demographicLevel = demographicLevel;
     }
-    if (_.isBoolean(lookingForTeam)) {
+    if (typeof lookingForTeam === 'boolean') {
       updateData.lookingForTeam = lookingForTeam;
     }
     if (linkedIn) {
@@ -144,34 +143,34 @@ class ParticipantCollection extends BaseSlugCollection {
     if (aboutMe) {
       updateData.aboutMe = aboutMe;
     }
-    if (_.isBoolean(isCompliant)) {
+    if (typeof isCompliant === 'boolean') {
       updateData.isCompliant = isCompliant;
     }
-    if (_.isBoolean(editedProfile)) {
+    if (typeof editedProfile === 'boolean') {
       updateData.editedProfile = editedProfile;
     }
-    if (_.isBoolean(minor)) {
+    if (typeof minor === 'boolean') {
       updateData.minor = minor;
     }
     this._collection.update(docID, { $set: updateData });
     const participant = this.findSlugByID(docID);
     if (challenges) {
       ParticipantChallenges.removeParticipant(participant);
-      _.forEach(challenges, (challenge) => ParticipantChallenges.define({ challenge, participant }));
+      challenges.forEach((challenge) => ParticipantChallenges.define({ challenge, participant }));
     }
     if (interests) {
       ParticipantInterests.removeParticipant(participant);
-      _.forEach(interests, (interest) => ParticipantInterests.define({ interest, participant }));
+      interests.forEach((interest) => ParticipantInterests.define({ interest, participant }));
     }
     if (skills) {
       ParticipantSkills.removeParticipant(participant);
-      _.forEach(skills, (skill) => {
+      skills.forEach((skill) => {
         ParticipantSkills.define({ skill, participant });
       });
     }
     if (tools) {
       ParticipantTools.removeParticipant(participant);
-      _.forEach(tools, (tool) => {
+      tools.forEach((tool) => {
         ParticipantTools.define({ tool, participant });
       });
     }
@@ -237,11 +236,11 @@ class ParticipantCollection extends BaseSlugCollection {
     } = this.findDoc(docID);
     const selector = { participantID: _id };
     const devChallenges = ParticipantChallenges.find(selector).fetch();
-    const challenges = _.map(devChallenges, (dC) => Challenges.findSlugByID(dC.challengeID));
+    const challenges = devChallenges.map((dC) => Challenges.findSlugByID(dC.challengeID));
     const devInterests = ParticipantInterests.find(selector).fetch();
-    const interests = _.map(devInterests, (dI) => Interests.findSlugByID(dI.interestID));
+    const interests = devInterests.map((dI) => Interests.findSlugByID(dI.interestID));
     const devSkills = ParticipantSkills.find(selector).fetch();
-    const skills = _.map(devSkills, (dS) => {
+    const skills = devSkills.map((dS) => {
       const skill = Skills.findSlugByID(dS.skillID);
       const skillLevel = dS.skillLevel;
       return {
@@ -250,7 +249,7 @@ class ParticipantCollection extends BaseSlugCollection {
       };
     });
     const devTools = ParticipantTools.find(selector).fetch();
-    const tools = _.map(devTools, (dT) => {
+    const tools = devTools.map((dT) => {
       const tool = Tools.findSlugByID(dT.toolID);
       const toolLevel = dT.toolLevel;
       return {
@@ -287,7 +286,7 @@ class ParticipantCollection extends BaseSlugCollection {
    */
   isDefined(name) {
     // console.log('isDefined', name);
-    if (_.isUndefined(name) || _.isNull(name)) {
+    if (name === undefined || name === null) {
       return false;
     }
     return (

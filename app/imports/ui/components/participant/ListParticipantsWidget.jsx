@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { Container, Row, Col, InputGroup, FormControl, Card, ListGroup } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
-import { _ } from 'lodash';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Teams } from '../../../api/team/TeamCollection';
 import { ParticipantChallenges } from '../../../api/user/ParticipantChallengeCollection';
@@ -48,12 +47,24 @@ const ListParticipantsWidget = () => {
     participants: Participants.find({}).fetch(),
   }));
 
+  const sortedParticipants = [...participants].sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
+
   const [searchS, setSearchS] = useState('');
   const [challengesS, setChallengesS] = useState([]);
   const [teamsS, setTeamS] = useState([]);
   const [toolsS, setToolsS] = useState([]);
   const [skillsS, setSkillsS] = useState([]);
-  const [resultS, setResultS] = useState(_.orderBy(participants, ['name'], ['asc']));
+  const [resultS, setResultS] = useState(sortedParticipants);
+
+  console.log(resultS);
 
   const sticky = {
     position1: '-webkit-sticky',

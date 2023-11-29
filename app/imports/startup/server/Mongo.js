@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import _ from 'lodash';
 import moment from 'moment';
 import { SyncedCron } from 'meteor/littledata:synced-cron';
 import { HACCHui } from '../../api/hacc-hui/HACCHui';
@@ -9,11 +8,11 @@ import { CanChangeChallenges } from '../../api/team/CanChangeChallengeCollection
 // global Assets
 
 function documentCounts() {
-  return _.map(HACCHui.collectionLoadSequence, (collection) => collection.count());
+  return HACCHui.collectionLoadSequence.map((collection) => collection.count());
 }
 
 function totalDocuments() {
-  return _.reduce(documentCounts(), (sum, count) => sum + count, 0);
+  return documentCounts().reduce((sum, count) => sum + count, 0);
 }
 
 /**
@@ -31,7 +30,7 @@ const loadFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
  * @memberOf startup/server
  */
 function getRestoreFileAge(loadFileName) {
-  const terms = _.words(loadFileName, /[^/. ]+/g);
+  const terms = loadFileName.match(/[^/. ]+/g) || [];
   const dateString = terms[terms.length - 2];
   return moment(dateString, loadFileDateFormat).fromNow();
 }
@@ -44,7 +43,7 @@ function getRestoreFileAge(loadFileName) {
  * @memberOf startup/server
  */
 export function getDefinitions(loadJSON, collection) {
-  const definitionObj = _.find(loadJSON.collections, (obj) => obj.name === collection);
+  const definitionObj = loadJSON.collections.find((obj) => obj.name === collection);
   return definitionObj ? definitionObj.contents : [];
 }
 
@@ -76,11 +75,11 @@ export function loadCollection(collection, loadJSON, consolep) {
  */
 function loadDatabase() {
   const canCreateTeams = CanCreateTeams.findOne();
-  if (_.isUndefined(canCreateTeams)) {
+  if (canCreateTeams === undefined) {
     CanCreateTeams.define({ canCreateTeams: true });
   }
   const canChangeChallenges = CanChangeChallenges.findOne();
-  if (_.isUndefined(canChangeChallenges)) {
+  if (canChangeChallenges === undefined) {
     CanChangeChallenges.define({ canChangeChallenges: true });
   }
   const loadFileName = Meteor.settings.databaseRestoreFileName;
@@ -90,10 +89,10 @@ function loadDatabase() {
     const loadJSON = JSON.parse(Assets.getText(loadFileName));
     // The list of collections, ordered so that they can be sequentially restored.
     const collectionList = HACCHui.collectionLoadSequence;
-    const loadNames = _.map(loadJSON.collections, (obj) => obj.name);
-    const collectionNames = _.map(collectionList, (collection) => collection.getCollectionName());
-    const extraRestoreNames = _.difference(loadNames, collectionNames);
-    const extraCollectionNames = _.difference(collectionNames, loadNames);
+    const loadNames = loadJSON.collections.map((obj) => obj.name);
+    const collectionNames = collectionList.map((collection) => collection.getCollectionName());
+    const extraRestoreNames = loadNames.filter(name => !collectionNames.includes(name));
+    const extraCollectionNames = collectionNames.filter(name => !loadNames.includes(name));
     if (extraRestoreNames.length) {
       console.log(`Error: Expected collections are missing from collection list: ${extraRestoreNames}`);
     }

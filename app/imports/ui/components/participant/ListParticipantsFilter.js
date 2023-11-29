@@ -1,5 +1,3 @@
-import { _ } from 'lodash';
-
 /**
  * Filters through the inputted data based on user input. If the search query is empty, it returns
  * the entire dataset.
@@ -39,7 +37,15 @@ export const filterBySearch = (data, searchQuery) => {
  */
 export const sortBy = (data, value) => {
   if (value === 'participants') {
-    return _.orderBy(data, ['name'], ['asc']);
+    return data.sort((a, b) => {
+      if (a.lastName < b.lastName) {
+        return -1;
+      }
+      if (a.lastName > b.lastName) {
+        return 1;
+      }
+      return 0;
+    });
   }
   return data;
 };
@@ -81,7 +87,7 @@ export const filterBySkills = (value, allSkills, participantSkill, participant) 
   }
 
   // Ensure there's no duplicate participantIDs
-  participantsWithSkill = _.uniq(participantsWithSkill);
+  participantsWithSkill = Array.from(new Set(participantsWithSkill));
 
   // Get the filtered participants
   const participants = [];
@@ -133,7 +139,7 @@ export const filterByTools = (value, allTools, participantTools, participant) =>
   }
 
   // Ensure there's no duplicate participantIDs
-  participantsWithTool = _.uniq(participantsWithTool);
+  participantsWithTool = Array.from(new Set(participantsWithTool));
 
   // Get the filtered participants
   const participants = [];
@@ -184,7 +190,7 @@ export const filterByChallenge = (value, allChallenges, participantChallenge, pa
   }
 
   // Ensure there's no duplicate teamIDs
-  participantsWithChallenge = _.uniq(participantsWithChallenge);
+  participantsWithChallenge = Array.from(new Set(participantsWithChallenge));
 
   // Get the filtered participants
   const participants = [];
@@ -235,7 +241,7 @@ export const filterByTeam = (value, allTeams, participantTeam, participant) => {
   }
 
   // Ensure there's no duplicate teamIDs
-  participantsWithTeam = _.uniq(participantsWithTeam);
+  participantsWithTeam = Array.from(new Set(participantsWithTeam));
 
   // Get the filtered participants
   const participants = [];
@@ -255,11 +261,11 @@ export const filterByTeam = (value, allTeams, participantTeam, participant) => {
  * @returns {Array} Returns an array that can be used by Bootstrap's dropdown
  */
 export const dropdownValues = (data, mapValue) => {
-  let values = _.map(data, mapValue);
-  const categories = _.flattenDeep(values);
-  values = _.uniq(categories);
+  let values = data.map((d) => d[mapValue]);
+  const categories = values.flat(Infinity);
+  values = Array.from(new Set(categories));
 
-  let info = [];
+  const info = [];
 
   for (let i = 0; i < values.length; i++) {
     info.push({
@@ -269,6 +275,15 @@ export const dropdownValues = (data, mapValue) => {
     });
   }
 
-  info = _.orderBy(info, ['text'], ['asc']);
+  info.sort((a, b) => {
+    console.log(a);
+    if (a.label < b.label) {
+      return -1;
+    }
+    if (a.label > b.label) {
+      return 1;
+    }
+    return 0;
+  });
   return info;
 };

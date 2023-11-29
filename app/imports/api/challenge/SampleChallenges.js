@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import _ from 'lodash';
 import { makeSampleInterestSlugArray } from '../interest/SampleInterests';
 import { Challenges } from './ChallengeCollection';
 
@@ -39,5 +38,5 @@ export const makeSampleChallengeArray = (num = 1) => {
  */
 export const makeSampleChallengeSlugArray = (num = 1) => {
   const ids = makeSampleChallengeArray(num);
-  return _.map(ids, (id) => Challenges.findSlugByID(id));
+  return ids.map((id) => Challenges.findSlugByID(id));
 };
