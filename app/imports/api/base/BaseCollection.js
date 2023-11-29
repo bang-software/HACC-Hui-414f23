@@ -63,6 +63,12 @@ class BaseCollection {
     return true;
   }
 
+  // eslint-disable-next-line consistent-return
+  removeAll() {
+    this._collection.remove({});
+    return true;
+  }
+
   /**
    * Runs find on this collection.
    * @see {@link http://docs.meteor.com/#/full/find|Meteor Docs on Mongo Find}
