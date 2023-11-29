@@ -9,7 +9,7 @@ class ViewTeamsPage {
   }
 
   async isDisplayed(testController) {
-    await testController.wait(10000).expect(this.pageSelector.exists).ok();
+    await testController.wait(1000).expect(this.pageSelector.exists).ok();
   }
 
   async isDownloaded(testController) {
