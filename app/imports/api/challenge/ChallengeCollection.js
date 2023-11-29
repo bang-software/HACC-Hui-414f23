@@ -78,6 +78,7 @@ class ChallengeCollection extends BaseSlugCollection {
     TeamChallenges.removeChallengeByID(challengeID);
     ChallengeInterests.removeChallengeByID(challengeID);
     ParticipantChallenges.removeChallengeByID(challengeID);
+    TeamChallenges.removeChallengeByID(challengeID);
     super.removeIt(challengeID);
   }
 
