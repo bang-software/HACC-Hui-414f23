@@ -1,6 +1,8 @@
 import SimpleSchema from 'simpl-schema';
 import BaseSlugCollection from '../base/BaseSlugCollection';
 import { slugify, Slugs } from '../slug/SlugCollection';
+import { TeamChallenges } from '../team/TeamChallengeCollection';
+import { ParticipantChallenges } from '../user/ParticipantChallengeCollection';
 
 /** @namespace api/challenge */
 
@@ -72,10 +74,13 @@ class ChallengeCollection extends BaseSlugCollection {
   }
 
   removeIt(docID) {
+    // TODO: (if this ever gets used) remove the teamChallenge and particiChallenge
     super.removeIt(docID);
   }
 
   removeAll() {
+    TeamChallenges.removeAll();
+    ParticipantChallenges.removeAll();
     super.removeAll();
   }
 

@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, SubmitField, TextField, LongTextField } from 'uniforms-bootstrap5';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
+import { Col, Container, Row } from 'react-bootstrap';
+import { AutoForm, ErrorsField, LongTextField, SubmitField, TextField } from 'uniforms-bootstrap5';
+import SimpleSchema from 'simpl-schema';
 import { useTracker } from 'meteor/react-meteor-data';
+import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import { Redirect, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
-import SimpleSchema from 'simpl-schema';
-import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 import { ROUTES } from '../../../startup/client/route-constants';
 
-const EditChallengeWidget = () => {
-
+const EditChallenge = () => {
   const [redirect, setRedirect] = useState(false);
   const schema = new SimpleSchema({
-    title: String,
-    description: String,
-    submissionDetail: String,
-    pitch: String,
+    title: String, description: String, submissionDetail: String, pitch: String,
   });
   const documentId = useParams();
   const { doc } = useTracker(() => {
@@ -36,15 +34,14 @@ const EditChallengeWidget = () => {
     const id = documentId._id;
     const updateData = { id, description, submissionDetail, pitch };
     const collectionName = Challenges.getCollectionName();
-    updateMethod.call({ collectionName: collectionName, updateData: updateData },
-        (error) => {
-          if (error) {
-            swal('Error', error.message, 'error');
-          } else {
-            swal('Success', 'Item edited successfully', 'success');
-            setRedirect(true);
-          }
-        });
+    updateMethod.call({ collectionName: collectionName, updateData: updateData }, (error) => {
+      if (error) {
+        swal('Error', error.message, 'error');
+      } else {
+        swal('Success', 'Item edited successfully', 'success');
+        setRedirect(true);
+      }
+    });
   };
 
   if (redirect) {
@@ -52,8 +49,7 @@ const EditChallengeWidget = () => {
   }
 
   const formSchema = new SimpleSchema2Bridge(schema);
-  return (
-      <Container>
+  return (<Container id={PAGE_IDS.EDIT_CHALLENGE_PAGE}>
         <Col>
           <Row className="title">
             <h2>Edit Challenge</h2>
@@ -70,8 +66,7 @@ const EditChallengeWidget = () => {
             </Row>
           </AutoForm>
         </Col>
-      </Container>
-    );
+      </Container>);
 };
 
-export default EditChallengeWidget;
+export default withAllSubscriptions(EditChallenge);

@@ -8,7 +8,7 @@ class SuggestionsListAdminPage {
   }
 
   async isDisplayed(testController) {
-    await testController.wait(15000).expect(this.pageSelector.exists).ok();
+    await testController.wait(1000).expect(this.pageSelector.exists).ok();
   }
 }
 

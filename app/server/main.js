@@ -19,6 +19,9 @@ import { check } from 'meteor/check';
 import { Challenges } from '../imports/api/challenge/ChallengeCollection';
 import { Skills } from '../imports/api/skill/SkillCollection';
 import { Tools } from '../imports/api/tool/ToolCollection';
+import { Users } from '../imports/api/user/UserCollection';
+import { Teams } from '../imports/api/team/TeamCollection';
+import {Participants} from "../imports/api/user/ParticipantCollection";
 
 function getCollectionByName(name) {
     // Mapping of collection names to their corresponding collection instances
@@ -26,6 +29,9 @@ function getCollectionByName(name) {
         Challenges: Challenges,
         Skills: Skills,
         Tools: Tools,
+        Users: Users,
+        Teams: Teams,
+        Participants: Participants,
     };
 
     return collections[name];

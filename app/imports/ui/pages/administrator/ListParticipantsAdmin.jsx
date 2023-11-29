@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, InputGroup, FormControl, Card, ListGroup, Form, Button } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, FormControl, InputGroup, ListGroup, Row } from 'react-bootstrap';
 import { useTracker } from 'meteor/react-meteor-data';
 import { ZipZap } from 'meteor/udondan:zipzap';
-import moment from 'moment';
 import * as Icon from 'react-bootstrap-icons';
+import moment from 'moment';
 import Select from 'react-select';
-import { Teams } from '../../../api/team/TeamCollection';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { ParticipantChallenges } from '../../../api/user/ParticipantChallengeCollection';
 import { ParticipantSkills } from '../../../api/user/ParticipantSkillCollection';
 import { ParticipantTools } from '../../../api/user/ParticipantToolCollection';
-import { Skills } from '../../../api/skill/SkillCollection';
-import { Tools } from '../../../api/tool/ToolCollection';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
-import { Participants } from '../../../api/user/ParticipantCollection';
+import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
-import { databaseFileDateFormat } from '../../pages/administrator/DumpDatabase';
-import ListParticipantCardAdmin from './ListParticipantsCardAdmin';
-import * as filters from './ListParticipantsFilterAdmin.js';
+import { Skills } from '../../../api/skill/SkillCollection';
+import { Challenges } from '../../../api/challenge/ChallengeCollection';
+import { Tools } from '../../../api/tool/ToolCollection';
+import { Participants } from '../../../api/user/ParticipantCollection';
+import * as filters from '../../components/administrator/ListParticipantsFilterAdmin';
+import { databaseFileDateFormat } from './DumpDatabase';
+import ListParticipantCardAdmin from '../../components/administrator/ListParticipantsCardAdmin';
 
-const ListParticipantsWidgetAdmin = () => {
+const ListParticipantsAdmin = () => {
   // lodash _uniqBy method
   const uniqBy = (arr, predicate) => {
     if (!Array.isArray(arr)) { return []; }
@@ -35,6 +37,7 @@ const ListParticipantsWidgetAdmin = () => {
 
     return [...pickedObjects];
   };
+
   const {
     participantChallenges,
     participantSkills,
@@ -78,7 +81,7 @@ const ListParticipantsWidgetAdmin = () => {
   const [resultS, setResultS] = useState(sortedParticipants);
 
   const noParticipant = () => (
-      <div style={{ textAlign: 'center' }}>
+      <div id={PAGE_IDS.LIST_PARTICIPANTS_ADMIN} style={{ textAlign: 'center' }}>
         <h2>
           <Icon.PersonCircle/>
           There are no participants at the moment. Please check back later.
@@ -191,8 +194,7 @@ const ListParticipantsWidgetAdmin = () => {
     const zip = new ZipZap();
     const dir = 'hacchui-participants';
     const fileName = `${dir}/${moment().format(databaseFileDateFormat)}-participants.txt`;
-    const participantsHD = resultS;
-    const emails = participantsHD.map(p => p.username);
+    const emails = resultS.map(p => p.username);
     zip.file(fileName, emails.join('\n'));
     zip.saveAs(`${dir}.zip`);
   };
@@ -206,8 +208,7 @@ const ListParticipantsWidgetAdmin = () => {
     } else {
       setResultS(participants);
     }
-    const checked = multipleTeamsCheckboxS;
-    setMultipleTeamsCheckboxS(!checked);
+    setMultipleTeamsCheckboxS(!multipleTeamsCheckboxS);
   };
 
   const handleNoTeam = () => {
@@ -219,8 +220,7 @@ const ListParticipantsWidgetAdmin = () => {
     } else {
       setResultS(participants);
     }
-    const checked = noTeamCheckboxS;
-    setNoTeamCheckboxS(!checked);
+    setNoTeamCheckboxS(!noTeamCheckboxS);
   };
 
   const handleNotCompliant = () => {
@@ -232,8 +232,7 @@ const ListParticipantsWidgetAdmin = () => {
     } else {
       setResultS(participants);
     }
-    const checked = compliantCheckboxS;
-    setCompliantCheckboxS(!checked);
+    setCompliantCheckboxS(!compliantCheckboxS);
   };
 
   const filterStyle = {
@@ -246,7 +245,7 @@ const ListParticipantsWidgetAdmin = () => {
 
   const participantList = () => (
       <div style={{ paddingBottom: '50px' }}>
-        <Container>
+        <Container id={PAGE_IDS.LIST_PARTICIPANTS_ADMIN}>
           <Row>
             <Col>
               <div style={{
@@ -268,10 +267,10 @@ const ListParticipantsWidgetAdmin = () => {
             <Col md={2} style={filterStyle}>
               <Card>
                 <Card.Body style={sticky}>
-                    <h4 className="fw-bold"> Filtered Participants </h4>
-                    <h5 className="text-muted">
-                      Total Participants: {resultS.length}
-                    </h5>
+                  <h4 className="fw-bold"> Filtered Participants </h4>
+                  <h5 className="text-muted">
+                    Total Participants: {resultS.length}
+                  </h5>
                   <Form>
                     <Form.Check onChange={handleNoTeam} label="No Team"/>
                     <Form.Check onChange={handleMultipleTeams} label="Multiple Teams"/>
@@ -344,4 +343,4 @@ const ListParticipantsWidgetAdmin = () => {
   return participants.length === 0 ? noParticipant() : participantList();
 };
 
-export default ListParticipantsWidgetAdmin;
+export default withAllSubscriptions(ListParticipantsAdmin);
