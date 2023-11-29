@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { _ } from 'lodash';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 import { Teams } from '../../../api/team/TeamCollection';
@@ -12,14 +11,30 @@ import MemberTeamCard from './MemberTeamCard';
 import { paleBlueStyle } from '../../styles';
 
 const YourTeamsWidget = () => {
+  // lodash _uniqBy method
+  const uniqBy = (arr, predicate) => {
+    if (!Array.isArray(arr)) { return []; }
+
+    const cb = typeof predicate === 'function' ? predicate : (o) => o[predicate];
+
+    const pickedObjects = arr.filter(item => item).reduce((map, item) => {
+      const key = cb(item);
+      if (!key) {
+        return map;
+      }
+      return map.has(key) ? map : map.set(key, item);
+      }, new Map()).values();
+
+    return [...pickedObjects];
+  };
+
   const { participant, teams, memberTeams, participants, teamParticipants, teamInvitation } = useTracker(() => {
     const part = Participants.findDoc({ userID: Meteor.userId() });
     const participantID = part._id;
     return {
       participant: part,
       teams: Teams.find({ owner: participantID }).fetch(),
-      memberTeams: _.map(_.uniqBy(TeamParticipants.find({ participantID }).fetch(), 'teamID'),
-          (tp) => Teams.findDoc(tp.teamID)),
+      memberTeams: uniqBy(TeamParticipants.find({ participantID }).fetch(), 'teamID').map((tp) => Teams.findDoc(tp.teamID)),
       participants: Participants.find({}).fetch(),
       teamParticipants: TeamParticipants.find({}).fetch(),
       teamInvitation: TeamInvitations.find({}).fetch(),
@@ -29,7 +44,8 @@ const YourTeamsWidget = () => {
   const allParticipants = participants;
   const getTeamParticipants = (teamID, teamParticipantsGTP) => {
     const data = [];
-    const participantsGTP = _.uniqBy(_.filter(teamParticipantsGTP, { teamID: teamID }), 'participantID');
+    const filteredParticipants = teamParticipantsGTP.filter(p => p.teamID === teamID);
+    const participantsGTP = uniqBy(filteredParticipants, 'participantID');
     for (let i = 0; i < participantsGTP.length; i++) {
       for (let j = 0; j < allParticipants.length; j++) {
         if (participantsGTP[i].participantID === allParticipants[j]._id) {
