@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, SubmitField, TextField, LongTextField } from 'uniforms-bootstrap5';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import { useTracker } from 'meteor/react-meteor-data';
-import { Redirect, useParams } from 'react-router-dom';
-import swal from 'sweetalert';
+import { Col, Container, Row } from 'react-bootstrap';
+import { AutoForm, ErrorsField, LongTextField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
-import { updateMethod } from '../../../api/base/BaseCollection.methods';
+import { Redirect, useParams } from 'react-router-dom';
+import { useTracker } from 'meteor/react-meteor-data';
+import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
+import swal from 'sweetalert';
 import { Tools } from '../../../api/tool/ToolCollection';
+import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { ROUTES } from '../../../startup/client/route-constants';
 
-const EditToolWidget = () => {
+const EditTool = () => {
 
   const [redirect, setRedirect] = useState(false);
   const schema = new SimpleSchema({
@@ -53,7 +55,7 @@ const EditToolWidget = () => {
 
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
-      <Container>
+      <Container id={PAGE_IDS.EDIT_TOOL_PAGE}>
         <Col>
           <Row className='title'>
             <h2>Edit Tool</h2>
@@ -72,7 +74,7 @@ const EditToolWidget = () => {
           </AutoForm>
         </Col>
       </Container>
-    );
+  );
 };
 
-export default EditToolWidget;
+export default withAllSubscriptions(EditTool);

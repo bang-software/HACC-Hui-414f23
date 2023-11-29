@@ -7,7 +7,6 @@ import { removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { Tools } from '../../../api/tool/ToolCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 
-/** Renders a single row in the table. See pages/ManageHaccWidget.jsx. */
 const ToolAdminWidget = ({ tool }) => {
   const removeItem = (docID) => {
     swal({

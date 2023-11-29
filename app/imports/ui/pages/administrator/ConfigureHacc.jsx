@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
-import { FaSortUp, FaSortDown } from 'react-icons/fa';
-import { Table, Container, Button, Form, Row, Col, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { useTracker } from 'meteor/react-meteor-data';
+import { Button, Col, Container, Form, Nav, Row, Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { FaSortDown, FaSortUp } from 'react-icons/fa';
+import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
+import { CanChangeChallenges } from '../../../api/team/CanChangeChallengeCollection';
+import { updateMethod } from '../../../api/base/BaseCollection.methods';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Skills } from '../../../api/skill/SkillCollection';
 import { Tools } from '../../../api/tool/ToolCollection';
-import { ROUTES } from '../../../startup/client/route-constants';
-import SkillAdminWidget from './SkillAdminWidget';
-import ChallengeAdminWidget from './ChallengeAdminWidget';
-import ToolAdminWidget from './ToolAdminWidget';
-import { updateMethod } from '../../../api/base/BaseCollection.methods';
-import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
-import { CanChangeChallenges } from '../../../api/team/CanChangeChallengeCollection';
-import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import { ROUTES } from '../../../startup/client/route-constants';
+import ChallengeAdminWidget from '../../components/administrator/ChallengeAdminWidget';
+import SkillAdminWidget from '../../components/administrator/SkillAdminWidget';
+import ToolAdminWidget from '../../components/administrator/ToolAdminWidget';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 
-/**
- * Renders the Page for Managing HACC. **deprecated**
- * @memberOf ui/pages
- */
-const ManageHaccWidget = () => {
+const ConfigureHacc = () => {
   const [selectedSection, setSelectedSection] = useState('challenges');
   const handleSectionChange = (section) => {
     setSelectedSection(section);
@@ -35,11 +32,7 @@ const ManageHaccWidget = () => {
       id: doc._id, canCreateTeams: !canCreateTeams,
     };
     const collectionName = CanCreateTeams.getCollectionName();
-    updateMethod.call({ collectionName, updateData }, (error) => {
-      if (error) {
-        console.error(error);
-      }
-    });
+    updateMethod.call({ collectionName, updateData });
     setCanCreateTeams(!canCreateTeams);
   };
 
@@ -49,11 +42,7 @@ const ManageHaccWidget = () => {
       id: doc._id, canChangeChallenges: !canChangeChallenges,
     };
     const collectionName = CanChangeChallenges.getCollectionName();
-    updateMethod.call({ collectionName, updateData }, (error) => {
-      if (error) {
-        console.error(error);
-      }
-    });
+    updateMethod.call({ collectionName, updateData });
     setCanChangeChallenges(!canChangeChallenges);
   };
 
@@ -138,7 +127,7 @@ const ManageHaccWidget = () => {
   );
   const ManageHaccChallengeList = () => (
       <div>
-        <div className="centerText d-flex justify-content-center">
+        <div className="centerText">
           <Col>
           <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton mx-3">
             <Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>
@@ -296,4 +285,4 @@ const ManageHaccWidget = () => {
   );
 };
 
-export default ManageHaccWidget;
+export default withAllSubscriptions(ConfigureHacc);

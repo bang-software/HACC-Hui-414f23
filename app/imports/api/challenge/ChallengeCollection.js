@@ -2,9 +2,6 @@ import SimpleSchema from 'simpl-schema';
 import BaseSlugCollection from '../base/BaseSlugCollection';
 import { slugify, Slugs } from '../slug/SlugCollection';
 import { TeamChallenges } from '../team/TeamChallengeCollection';
-import { TeamParticipants } from '../team/TeamParticipantCollection';
-import { TeamSkills } from '../team/TeamSkillCollection';
-import { TeamTools } from '../team/TeamToolCollection';
 import { ChallengeInterests } from './ChallengeInterestCollection';
 import { ParticipantChallenges } from '../user/ParticipantChallengeCollection';
 
@@ -85,6 +82,8 @@ class ChallengeCollection extends BaseSlugCollection {
   }
 
   removeAll() {
+    TeamChallenges.removeAll();
+    ParticipantChallenges.removeAll();
     super.removeAll();
   }
 

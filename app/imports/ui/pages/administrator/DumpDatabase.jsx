@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Form, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import moment from 'moment';
 import swal from 'sweetalert';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Meteor } from 'meteor/meteor';
 import { dumpDatabaseMethod, dumpTeamCSVMethod, removeItMethod } from '../../../api/base/BaseCollection.methods';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { Teams } from '../../../api/team/TeamCollection';
 import { Challenges } from '../../../api/challenge/ChallengeCollection';
 import { Participants } from '../../../api/user/ParticipantCollection';
+import ResetDatabaseConfirmation from '../../components/administrator/ResetDatabaseConfirmation';
 import DeleteConfirmation from '../../components/administrator/DeleteConfirmation';
 
 export const databaseFileDateFormat = 'YYYY-MM-DD-HH-mm-ss';
@@ -20,14 +20,11 @@ const DumpDatabase = () => {
     allChallenges,
     allParticipants,
     allTeams,
-  } = useTracker(() => {
-    const userId = Meteor.userId();
-    return {
+  } = useTracker(() => ({
       allChallenges: Challenges.find({}).fetch(),
       allParticipants: Participants.find({}).fetch(),
       allTeams: Teams.find({}).fetch(),
-    };
-  }, []);
+    }), []);
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedTeam, setSelectedTeam] = useState('');
   const [selectedChallenge, setSelectedChallenge] = useState('');
@@ -220,6 +217,10 @@ const DumpDatabase = () => {
             <DeleteConfirmation deleteFunction={resetHACC}
                                 description={'All teams, challenges, participants, and their associated Meteor accounts'}
                                 buttonLabel={'Reset HACC'}/>
+          </Col>
+          <Col>
+            <DeleteConfirmation collection={Challenges} name={'Challenges'} />
+            <ResetDatabaseConfirmation />
           </Col>
         </Row>
       </div>
