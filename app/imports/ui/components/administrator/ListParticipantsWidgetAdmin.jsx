@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, InputGroup, FormControl, Card, ListGroup, Form, Button } from 'react-bootstrap';
-import { _ } from 'lodash';
 import { useTracker } from 'meteor/react-meteor-data';
 import { ZipZap } from 'meteor/udondan:zipzap';
 import moment from 'moment';
@@ -20,6 +19,22 @@ import ListParticipantCardAdmin from './ListParticipantsCardAdmin';
 import * as filters from './ListParticipantsFilterAdmin.js';
 
 const ListParticipantsWidgetAdmin = () => {
+  // lodash _uniqBy method
+  const uniqBy = (arr, predicate) => {
+    if (!Array.isArray(arr)) { return []; }
+
+    const cb = typeof predicate === 'function' ? predicate : (o) => o[predicate];
+
+    const pickedObjects = arr.filter(item => item).reduce((map, item) => {
+      const key = cb(item);
+      if (!key) {
+        return map;
+      }
+      return map.has(key) ? map : map.set(key, item);
+    }, new Map()).values();
+
+    return [...pickedObjects];
+  };
   const {
     participantChallenges,
     participantSkills,
@@ -88,7 +103,7 @@ const ListParticipantsWidgetAdmin = () => {
     const teamResults = filters.filterByTeam(teamsS, teams,
         teamParticipants, challengeResults);
     // const noTeamResults = filters.filterNoTeam(teamParticipants, teamResults);
-    const sorted = _.uniqBy(filters.sortBy(teamResults, 'participants'), 'username');
+    const sorted = uniqBy(filters.sortBy(teamResults, 'participants'), 'username');
     setResultS(sorted);
   };
 
@@ -161,7 +176,7 @@ const ListParticipantsWidgetAdmin = () => {
 
   function getParticipantTeams(participantID, teamParticipantsGPT) {
     const data = [];
-    const teamsGPT = teamParticipantsGPT.filter(p => p.participantID === participantID );
+    const teamsGPT = teamParticipantsGPT.filter(p => p.participantID === participantID);
     for (let i = 0; i < teamsGPT.length; i++) {
       for (let j = 0; j < universalTeams.length; j++) {
         if (teams[i].teamID === universalTeams[j]._id) {
@@ -186,7 +201,7 @@ const ListParticipantsWidgetAdmin = () => {
     if (!multipleTeamsCheckboxS) {
       const participantsHMT = resultS;
       const results = filters.filterMultipleTeams(participantsHMT, participants);
-      const sorted = _.uniqBy(filters.sortBy(results, 'participants'), 'username');
+      const sorted = uniqBy(filters.sortBy(results, 'participants'), 'username');
       setResultS(sorted);
     } else {
       setResultS(participants);
@@ -199,7 +214,7 @@ const ListParticipantsWidgetAdmin = () => {
     if (!noTeamCheckboxS) {
       const participantsHNT = resultS;
       const results = filters.filterNoTeam(teamParticipants, participantsHNT);
-      const sorted = _.uniqBy(filters.sortBy(results, 'participants'), 'username');
+      const sorted = uniqBy(filters.sortBy(results, 'participants'), 'username');
       setResultS(sorted);
     } else {
       setResultS(participants);
@@ -212,7 +227,7 @@ const ListParticipantsWidgetAdmin = () => {
     if (!compliantCheckboxS) {
       const participantsHNC = resultS;
       const results = participantsHNC.filter(p => !p.isCompliant);
-      const sorted = _.uniqBy(filters.sortBy(results, 'participants'), 'username');
+      const sorted = uniqBy(filters.sortBy(results, 'participants'), 'username');
       setResultS(sorted);
     } else {
       setResultS(participants);

@@ -30,6 +30,23 @@ export const filterBySearch = (data, searchQuery) => {
   return list;
 };
 
+// lodash _uniqBy method
+const uniqBy = (arr, predicate) => {
+  if (!Array.isArray(arr)) { return []; }
+
+  const cb = typeof predicate === 'function' ? predicate : (o) => o[predicate];
+
+  const pickedObjects = arr.filter(item => item).reduce((map, item) => {
+    const key = cb(item);
+    if (!key) {
+      return map;
+    }
+    return map.has(key) ? map : map.set(key, item);
+  }, new Map()).values();
+
+  return [...pickedObjects];
+};
+
 /**
  *
  * @param data The data we want to sort
@@ -80,7 +97,7 @@ export const filterBySkills = (value, allSkills, participantSkill, participant) 
   }
 
   // Ensure there's no duplicate participantIDs
-  participantsWithSkill = _.uniq(participantsWithSkill);
+  participantsWithSkill = Array.from(new Set(participantsWithSkill));
 
   // Get the filtered participants
   const participants = [];
@@ -132,7 +149,7 @@ export const filterByTools = (value, allTools, participantTools, participant) =>
   }
 
   // Ensure there's no duplicate participantIDs
-  participantsWithTool = _.uniq(participantsWithTool);
+  participantsWithTool = Array.from(new Set(participantsWithTool));
 
   // Get the filtered participants
   const participants = [];
@@ -183,7 +200,7 @@ export const filterByChallenge = (value, allChallenges, participantChallenge, pa
   }
 
   // Ensure there's no duplicate teamIDs
-  participantsWithChallenge = _.uniq(participantsWithChallenge);
+  participantsWithChallenge = Array.from(new Set(participantsWithChallenge));
 
   // Get the filtered participants
   const participants = [];
@@ -211,7 +228,8 @@ export const filterNoTeam = (teamParticipants, allParticipants) => {
 export const filterMultipleTeams = (teamParticipants, allParticipants) => {
   const retVal = [];
   allParticipants.forEach((p, i) => {
-    const teams = _.uniqBy(_.filter(teamParticipants, { participantID: p._id }), 'teamID');
+    const filteredParticipants = teamParticipants.filter(participant => participant.participantID === p._id);
+    const teams = uniqBy(filteredParticipants, 'teamID');
     if (teams.length > 1) {
       retVal.push(allParticipants[i]);
     }
@@ -242,7 +260,7 @@ export const filterByTeam = (value, allTeams, teamParticipants, allParticipants)
     }
   }
   // Ensure there's no duplicate participantIDs
-  teamsWithParticipants = _.uniq(teamsWithParticipants);
+  teamsWithParticipants = Array.from(new Set(teamsWithParticipants));
 
   // Get the filtered participants
   const participants = [];
@@ -262,9 +280,9 @@ export const filterByTeam = (value, allTeams, teamParticipants, allParticipants)
  * @returns {Array} Returns an array that can be used by Bootstrap's dropdown
  */
 export const dropdownValues = (data, mapValue) => {
-  let values = _.map(data, mapValue);
+  let values = data.map((d) => d[mapValue]);
   const categories = _.flattenDeep(values);
-  values = _.uniq(categories);
+  values = Array.from(new Set(categories));
 
   let info = [];
 

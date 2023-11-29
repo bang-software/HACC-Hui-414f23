@@ -81,7 +81,7 @@ export const filterBySkills = (value, allSkills, participantSkill, participant) 
   }
 
   // Ensure there's no duplicate participantIDs
-  participantsWithSkill = _.uniq(participantsWithSkill);
+  participantsWithSkill = Array.from(new Set(participantsWithSkill));
 
   // Get the filtered participants
   const participants = [];
@@ -133,7 +133,7 @@ export const filterByTools = (value, allTools, participantTools, participant) =>
   }
 
   // Ensure there's no duplicate participantIDs
-  participantsWithTool = _.uniq(participantsWithTool);
+  participantsWithTool = Array.from(new Set(participantsWithTool));
 
   // Get the filtered participants
   const participants = [];
@@ -184,7 +184,7 @@ export const filterByChallenge = (value, allChallenges, participantChallenge, pa
   }
 
   // Ensure there's no duplicate teamIDs
-  participantsWithChallenge = _.uniq(participantsWithChallenge);
+  participantsWithChallenge = Array.from(new Set(participantsWithChallenge));
 
   // Get the filtered participants
   const participants = [];
@@ -235,7 +235,7 @@ export const filterByTeam = (value, allTeams, participantTeam, participant) => {
   }
 
   // Ensure there's no duplicate teamIDs
-  participantsWithTeam = _.uniq(participantsWithTeam);
+  participantsWithTeam = Array.from(new Set(participantsWithTeam));
 
   // Get the filtered participants
   const participants = [];
@@ -255,9 +255,9 @@ export const filterByTeam = (value, allTeams, participantTeam, participant) => {
  * @returns {Array} Returns an array that can be used by Bootstrap's dropdown
  */
 export const dropdownValues = (data, mapValue) => {
-  let values = _.map(data, mapValue);
+  let values = data.map((d) => d[mapValue]);
   const categories = _.flattenDeep(values);
-  values = _.uniq(categories);
+  values = Array.from(new Set(categories));
 
   let info = [];
 
