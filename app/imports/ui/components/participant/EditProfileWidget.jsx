@@ -131,7 +131,6 @@ const EditProfileWidget = () => {
       updateData.aboutMe = data.aboutMe;
     }
     updateData.editedProfile = true;
-    // console.log(collectionName, updateData);
     updateMethod.call({ collectionName, updateData }, (error) => {
       if (error) {
         console.error(error);

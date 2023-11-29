@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, SubmitField, TextField, LongTextField } from 'uniforms-bootstrap5';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import { useTracker } from 'meteor/react-meteor-data';
-import { Redirect, useParams } from 'react-router-dom';
-import swal from 'sweetalert';
+import { Col, Container, Row } from 'react-bootstrap';
+import { AutoForm, ErrorsField, LongTextField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import SimpleSchema from 'simpl-schema';
+import { Redirect, useParams } from 'react-router-dom';
+import { useTracker } from 'meteor/react-meteor-data';
+import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
+import swal from 'sweetalert';
 import { updateMethod } from '../../../api/base/BaseCollection.methods';
-import { Skills } from '../../../api/skill/SkillCollection';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
+import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { ROUTES } from '../../../startup/client/route-constants';
+import { Skills } from '../../../api/skill/SkillCollection';
 
-const EditSkillWidget = () => {
-
+const EditSkill = () => {
   const [redirect, setRedirect] = useState(false);
   const schema = new SimpleSchema({
     name: String,
@@ -54,7 +55,7 @@ const EditSkillWidget = () => {
 
   const formSchema = new SimpleSchema2Bridge(schema);
   return (
-      <Container>
+      <Container id={PAGE_IDS.EDIT_SKILL_PAGE}>
         <Col>
           <Row className="title">
             <h2>Edit Skill</h2>
@@ -76,4 +77,4 @@ const EditSkillWidget = () => {
   );
 };
 
-export default EditSkillWidget;
+export default withAllSubscriptions(EditSkill);
