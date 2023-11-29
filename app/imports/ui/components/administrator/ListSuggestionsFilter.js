@@ -1,5 +1,3 @@
-import { _ } from 'lodash';
-
 /**
  * Filters through the inputted data based on user input. If the search query is empty, it returns
  * the entire dataset.
@@ -13,7 +11,6 @@ export const filterBySearch = (data, searchQuery) => {
   }
   const list = [];
   for (let i = 0; i < data.length; i++) {
-    console.log(data[i]);
     const suggestionName = data[i].name;
     const suggestionDescription = data[i].description;
     const nameLowercase = suggestionName.toString().toLowerCase();
@@ -40,7 +37,7 @@ export const filterBySearch = (data, searchQuery) => {
  */
 export const sortBy = (data, value) => {
   if (value === 'names') {
-    return _.orderBy(data, ['name'], ['asc']);
+    return data.sort((a, b) => a.name.localeCompare(b.name));
   }
   return data;
 };
@@ -48,11 +45,9 @@ export const sortBy = (data, value) => {
 /**
  * Filters through the data based on the user selection. By default, if no option is selected it
  * returns the original data
- * @param value The inputs given
- * @param allSkills All the available skills
- * @param devSkill Each devs' skills
- * @param dev The devs
  * @returns {[]|*} Returns the filtered array
+ * @param suggestions
+ * @param type
  */
 export const typeResults = (suggestions, type) => {
 
@@ -74,28 +69,4 @@ export const typeResults = (suggestions, type) => {
   }
 
   return validSuggestions;
-};
-
-/**
- * Supplies all the possible values to make it work with Bootstrap's dropdown
- * @param data The values
- * @returns {Array} Returns an array that can be used by Bootstrap's dropdown
- */
-export const dropdownValues = (data, mapValue) => {
-  let values = _.map(data, mapValue);
-  const categories = _.flattenDeep(values);
-  values = _.uniq(categories);
-
-  let info = [];
-
-  for (let i = 0; i < values.length; i++) {
-    info.push({
-      key: values[i],
-      text: values[i],
-      value: values[i],
-    });
-  }
-
-  info = _.orderBy(info, ['text'], ['asc']);
-  return info;
 };
