@@ -43,6 +43,10 @@ class UserInteractionCollection extends BaseCollection {
     this._collection.remove({ username });
   }
 
+  removeAll() {
+    super.removeAll();
+  }
+
   dumpOne(docID) {
     this.assertDefined(docID);
     const { username, type, typeData, timestamp } = this.findDoc(docID);
