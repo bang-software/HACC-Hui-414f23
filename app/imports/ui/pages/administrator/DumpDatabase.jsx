@@ -130,8 +130,8 @@ const DumpDatabase = () => {
 
   return (
       <div id={PAGE_IDS.DUMP_DATABASE}>
-        <Row>
-          <Col>
+        <Row >
+          <Col lg="2">
             <Button variant="success"
                     id={COMPONENT_IDS.DUMP_DATABASE}
                     onClick={handleClick}
@@ -139,6 +139,8 @@ const DumpDatabase = () => {
             >
               Dump the Database
             </Button>
+          </Col>
+          <Col lg="2">
             <Button variant="success"
                     id={COMPONENT_IDS.DUMP_TEAM}
                     onClick={handleDumpTeamCSV}
@@ -146,55 +148,75 @@ const DumpDatabase = () => {
               Dump the Teams
             </Button>
           </Col>
-          <Col>
-              <Form.Select onChange={(e) => setSelectedUser(e.target.value)} className="mt-3">
-                <option>Select a user</option>
-                {allParticipants.map((participant) => <option key={participant._id} value={participant._id}>
-                  {participant.username}
-                </option>)}
-              </Form.Select>
+        </Row>
+        <Row>
+          <Col lg="2">
+            <Form.Select onChange={(e) => setSelectedUser(e.target.value)} className="mt-3 ms-3">
+              <option>Select a user</option>
+              {allParticipants.map((participant) => <option key={participant._id} value={participant._id}>
+                {participant.username}
+              </option>)}
+            </Form.Select>
+          </Col>
+          <Col lg="2">
             <DeleteConfirmation deleteFunction={() => deleteUser(selectedUser)}
                                 description={selectedUser === '' ? 'nothing' : Participants.findDoc({
                                   _id: selectedUser,
                                 }).username}
                                 buttonLabel={'Delete User'}/>
+          </Col>
+          <Col lg="2">
             <DeleteConfirmation deleteFunction={deleteAllUsers}
                                 description={'All users'}
                                 buttonLabel={'Delete All Users'}/>
           </Col>
-          <Col>
-            <Form.Select onChange={(e) => setSelectedTeam(e.target.value)} className="mt-3">
+        </Row>
+        <Row>
+          <Col lg="2">
+            <Form.Select onChange={(e) => setSelectedTeam(e.target.value)} className="mt-3 ms-3">
               <option>Select a team</option>
               {allTeams.map((team) => <option key={team._id} value={team._id}>
                 {team.name}
               </option>)}
             </Form.Select>
+          </Col>
+          <Col lg="2">
             <DeleteConfirmation deleteFunction={() => deleteTeam(selectedTeam)}
                                 description={selectedTeam === '' ? 'nothing' : Teams.findDoc({
                                   _id: selectedTeam,
                                 }).name}
                                 buttonLabel={'Delete Team'}/>
+          </Col>
+          <Col lg="2">
             <DeleteConfirmation deleteFunction={deleteAllTeams}
                                 description={'All teams'}
                                 buttonLabel={'Delete All Teams'}/>
           </Col>
-          <Col>
-            <Form.Select onChange={(e) => setSelectedChallenge(e.target.value)} className="mt-3">
+        </Row>
+        <Row>
+          <Col lg="2">
+            <Form.Select onChange={(e) => setSelectedChallenge(e.target.value)} className="mt-3 ms-3">
               <option>Select a challenge</option>
               {allChallenges.map((challenge) => <option key={challenge._id} value={challenge._id}>
                 {challenge.title}
               </option>)}
             </Form.Select>
+          </Col>
+          <Col lg="2">
             <DeleteConfirmation deleteFunction={() => deleteChallenge(selectedChallenge)}
                                 description={selectedChallenge === '' ? 'nothing' : Challenges.findDoc({
                                   _id: selectedChallenge,
                                 }).title}
                                 buttonLabel={'Delete Challenge'}/>
+          </Col>
+          <Col lg="2">
             <DeleteConfirmation deleteFunction={deleteAllChallenges}
                                 description={'All challenges'}
                                 buttonLabel={'Delete All Challenges'}/>
           </Col>
-          <Col>
+        </Row>
+        <Row>
+          <Col lg="2">
             <DeleteConfirmation deleteFunction={resetHACC}
                                 description={'All teams, challenges, participants, and their associated Meteor accounts'}
                                 buttonLabel={'Reset HACC'}/>

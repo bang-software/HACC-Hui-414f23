@@ -26,14 +26,14 @@ const DeleteConfirmation = ({ buttonLabel, description, deleteFunction }) => {
 
   return (
     <>
-      <Button onClick={handleShowConfirm} variant="danger" size="md" className="mt-3 me-3">{buttonLabel}</Button>
+      <Button onClick={handleShowConfirm} variant="danger" size="md" className="mt-3 ms-3">{buttonLabel}</Button>
       <Modal show={showConfirm} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>{'Warning'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p className="text-muted">This is a permanent action.</p>
-          <p className="font-weight-bold">The data below will be reset:</p>
+          <p className="font-weight-bold">The data below will be deleted:</p>
           <div className="alert alert-warning" role="alert">
             <p>
               {description}
