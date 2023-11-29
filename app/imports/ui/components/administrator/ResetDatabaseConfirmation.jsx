@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
-import BaseSlugCollection from '../../../api/base/BaseSlugCollection';
 /**
  * @type {React.FC<{ collection: BaseCollection, name: { string } }>}
  */
