@@ -15,6 +15,7 @@ import { CanCreateTeams } from '../../../api/team/CanCreateTeamCollection';
 import { CanChangeChallenges } from '../../../api/team/CanChangeChallengeCollection';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
 import { COMPONENT_IDS } from '../../testIDs/componentIDs';
+import DeleteConfirmation from './DeleteConfirmation';
 
 /**
  * Renders the Page for Managing HACC. **deprecated**
@@ -138,9 +139,12 @@ const ManageHaccWidget = () => {
   );
   const ManageHaccChallengeList = () => (
       <div>
-        <div className="centerText">
-          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton">
+        <div className="centerText d-flex justify-content-center">
+          <Col>
+          <Button id={COMPONENT_IDS.HACC_WIDGET_ADD_CHALLENGE_BUTTON} className="addbutton mx-3">
             <Link to={ROUTES.ADD_CHALLENGE} style={{ color: 'white' }}>Add Challenge</Link></Button>
+          <DeleteConfirmation collection={Challenges} name={'Challenges'} />
+          </Col>
         </div>
         <Table>
           <thead>
