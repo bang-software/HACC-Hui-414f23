@@ -66,8 +66,7 @@ class TeamChallengeCollection extends BaseCollection {
    * Removes all the pairs with the given challenge.
    * @param challenge {String} challenge slug or ID.
    */
-  removeChallenge(challenge) {
-    const challengeID = Challenges.getID(challenge);
+  removeChallengeByID(challengeID) {
     this._collection.remove({ challengeID });
   }
 

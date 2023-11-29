@@ -61,8 +61,7 @@ class ParticipantChallengeCollection extends BaseCollection {
    * @param challenge {String} the challenge slug or ID.
    * @throws {Meteor.Error} if challenge is not defined.
    */
-  removeChallenge(challenge) {
-    const challengeID = Challenges.getID(challenge);
+  removeChallengeByID(challengeID) {
     this._collection.remove({ challengeID });
   }
 

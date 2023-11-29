@@ -63,8 +63,7 @@ class ChallengeInterestCollection extends BaseCollection {
    * Removes all the Challenge-Interest pairs for the given challenge.
    * @param challenge {string} the challenge slug or ID.
    */
-  removeChallenge(challenge) {
-    const challengeID = Challenges.getID(challenge);
+  removeChallengeByID(challengeID) {
     this._collection.remove({ challengeID });
   }
 
