@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Container, Card, Spinner, Row, Col, Form } from 'react-bootstrap';
-import { useTracker } from 'meteor/react-meteor-data';
-import { Challenges } from '../../../api/challenge/ChallengeCollection';
-import { Skills } from '../../../api/skill/SkillCollection';
-import { Tools } from '../../../api/tool/ToolCollection';
+import { Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { Participants } from '../../../api/user/ParticipantCollection';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamSkills } from '../../../api/team/TeamSkillCollection';
@@ -14,44 +10,17 @@ import { TeamChallenges } from '../../../api/team/TeamChallengeCollection';
 import { ParticipantSkills } from '../../../api/user/ParticipantSkillCollection';
 import ListTeamsWidget from '../../components/participant/ListTeamsWidget';
 import { ParticipantTools } from '../../../api/user/ParticipantToolCollection';
-import { WantsToJoin } from '../../../api/team/WantToJoinCollection';
 import { paleBlueStyle } from '../../styles';
 import { PAGE_IDS } from '../../testIDs/pageIDs';
+import withAllSubscriptions from '../../layouts/AllSubscriptionsHOC';
 
 /** Renders a table containing all of the Book documents. Use <BookItem> to render each row. */
 const BestTeam = () => {
-  const {
-    ready,
-  } = useTracker(() => {
-    const subscriptionChallenges = Challenges.subscribe();
-    const subscriptionSkills = Skills.subscribe();
-    const subscriptionTools = Tools.subscribe();
-    const subscriptionDevelopers = Participants.subscribe();
-    const subscriptionTeams = Teams.subscribe();
-    const subscriptionDeveloperChallenges = ParticipantChallenges.subscribe();
-    const subscriptionTeamChallenges = TeamChallenges.subscribe();
-    const subscriptionDeveloperSkill = ParticipantSkills.subscribe();
-    const subscriptionDeveloperTools = ParticipantTools.subscribe();
-    const subscriptionTeamSkill = TeamSkills.subscribe();
-    const subscriptionTeamTool = TeamTools.subscribe();
-    const subscriptionWantToJoin = WantsToJoin.subscribe();
-    return {
-      ready:
-          subscriptionChallenges.ready() && subscriptionSkills.ready() && subscriptionTools.ready()
-          && subscriptionDevelopers.ready() && subscriptionTeams.ready() && subscriptionDeveloperChallenges.ready()
-          && subscriptionTeamChallenges.ready() && subscriptionDeveloperSkill.ready() && subscriptionTeamSkill.ready()
-          && subscriptionTeamTool.ready() && subscriptionDeveloperTools.ready() && subscriptionWantToJoin.ready(),
-    };
-  });
-
   const [select, setSelect] = useState('default');
 
   const getDeveloper = () => Participants.findOne({ username: Meteor.user().username });
 
-  const getAllOpenTeams = () => {
-    const teamsGAPT = Teams.find({ open: true }).fetch();
-    return teamsGAPT;
-  };
+  const getAllOpenTeams = () => Teams.find({ open: true }).fetch();
 
   const byAtoZ = () => {
     const allTeams = getAllOpenTeams();
@@ -214,10 +183,7 @@ const BestTeam = () => {
     );
   };
 
-  return (ready) ? renderPage() :
-      <Spinner animation="border" role="status">
-        <span className="sr-only">Getting data...</span>
-      </Spinner>;
+  return renderPage();
 };
 
-export default BestTeam;
+export default withAllSubscriptions(BestTeam);
