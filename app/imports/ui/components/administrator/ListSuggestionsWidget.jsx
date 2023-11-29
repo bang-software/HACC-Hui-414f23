@@ -15,29 +15,26 @@ const ListSuggestionsWidget = () => {
   const [search, setSearch] = useState('');
   const [type, setType] = useState([]);
   const [result, setResult] = useState([...suggestions].sort((a, b) => a.name.localeCompare(b.name)));
-
-  useEffect(() => {
-    setResult([...suggestions].sort((a, b) => a.name.localeCompare(b.name)));
-  }, [suggestions]);
+  const [selectedType, setSelectedType] = useState('All');
 
   const setFilters = () => {
     const searchResults = filters.filterBySearch(suggestions, search);
     const typeResults = filters.typeResults(searchResults, type);
     const sorted = filters.sortBy(typeResults, 'names');
-    setResult(sorted);
+    setResult([...sorted]);
   };
+
+  useEffect(() => {
+    setFilters();
+  }, [suggestions, search, type]);
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
-    setFilters();
   };
-
-  const [selectedType, setSelectedType] = useState('All'); // State to store the selected type for display
 
   const getType = (value) => {
     setType(value);
-    setSelectedType(value); // Update the selected type for display
-    setFilters();
+    setSelectedType(value);
   };
 
   const typeOptions = ['All', 'Tool', 'Skill'];
