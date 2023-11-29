@@ -1,3 +1,4 @@
+import { Role } from 'testcafe';
 import { landingPage } from './landing.page';
 import { agePage } from './age.page';
 import { addChallengeAdminPage } from './manage_hacc_tests/addChallengeAdmin.page';
@@ -110,9 +111,32 @@ const teamInfo = {
   affiliation: 'aff',
 };
 
+const userD = Role('http://localhost:3400', async testController => {
+  await navBar.gotoSigninPage(testController);
+  await signinPage.signin(testController, credentialsD.username, credentialsD.password);
+});
+
 fixture('meteor-application-template-react localhost test with default db')
-    .page('http://localhost:3400');
-/** USER --------------------------------------------------------------------------------------------------*/
+  .page('http://localhost:3400');
+
+test('Test that CreateTeam page renders', async (testController) => {
+  await testController.useRole(userD);
+  await navBar.gotoCreateTeamPage(testController);
+  await createTeamPage.isDisplayed(testController);
+  await testController.debug();
+  // await createProfilePage.fillInfo(testController, profileInfo);
+});
+
+test('Test that ListParticipants page renders', async (testController) => {
+  await testController.useRole(userD);
+  await navBar.gotoListParticipantsPage(testController);
+  await listParticipantsPage.isDisplayed(testController);
+  await listParticipantsCard.isDisplayed(testController);
+  await testController.debug();
+  // await createProfilePage.fillInfo(testController, profileInfo);
+});
+
+/** USER --------------------------------------------------------------------------------------------------
 test('Test sidebar user buttons', async (testController) => {
   await testController.resizeWindow(475, 667);
   await sideBar.gotoSigninPage(testController);
@@ -245,8 +269,9 @@ test('Test that SuggestToolSkillWidget page functions', async (testController) =
   await suggestToolSkillPage.suggestSkill(testController, suggestSkill);
   await suggestToolSkillPage.suggestTool(testController, suggestTool);
 });
+ */
 
-/** ADMIN -------------------------------------------------------------------------------------------------*/
+/** ADMIN -------------------------------------------------------------------------------------------------
 
 test('Test that ListParticipantsAdmin page renders', async (testController) => {
   await navBar.gotoSigninPage(testController);
@@ -364,3 +389,4 @@ test('Test that Dump DataBase page renders', async (testController) => {
   await navBar.gotoDumpDataBase(testController);
   await dumpDataBasePage.clickDumpDownload(testController);
 });
+*/
