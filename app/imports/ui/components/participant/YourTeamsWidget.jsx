@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { _ } from 'lodash';
-import { withTracker } from 'meteor/react-meteor-';
+import { useTracker } from 'meteor/react-meteor-data';
 import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
 import { Teams } from '../../../api/team/TeamCollection';
 import { TeamParticipants } from '../../../api/team/TeamParticipantCollection';
@@ -11,26 +11,38 @@ import YourTeamsCard from './YourTeamsCard';
 import MemberTeamCard from './MemberTeamCard';
 import { paleBlueStyle } from '../../styles';
 
-// eslint-disable-next-line react/prop-types
-const YourTeamsWidget = ({ participant, teams, memberTeams, participants, teamParticipants, teamInvitation }) => {
-
-    const allParticipants = participants;
-    const getTeamParticipants = (teamID, teamParticipantsGTP) => {
-        const data = [];
-        const participantsGTP = _.uniqBy(_.filter(teamParticipantsGTP, { teamID: teamID }), 'participantID');
-        for (let i = 0; i < participantsGTP.length; i++) {
-            for (let j = 0; j < allParticipants.length; j++) {
-                if (participantsGTP[i].participantID === allParticipants[j]._id) {
-                    data.push({
-                        firstName: allParticipants[j].firstName,
-                        lastName: allParticipants[j].lastName,
-                    });
-                }
-            }
-        }
-        return data;
+const YourTeamsWidget = () => {
+  const { participant, teams, memberTeams, participants, teamParticipants, teamInvitation } = useTracker(() => {
+    const part = Participants.findDoc({ userID: Meteor.userId() });
+    const participantID = part._id;
+    return {
+      participant: part,
+      teams: Teams.find({ owner: participantID }).fetch(),
+      memberTeams: _.map(_.uniqBy(TeamParticipants.find({ participantID }).fetch(), 'teamID'),
+          (tp) => Teams.findDoc(tp.teamID)),
+      participants: Participants.find({}).fetch(),
+      teamParticipants: TeamParticipants.find({}).fetch(),
+      teamInvitation: TeamInvitations.find({}).fetch(),
     };
-// eslint-disable-next-line react/prop-types
+  }, []);
+
+  const allParticipants = participants;
+  const getTeamParticipants = (teamID, teamParticipantsGTP) => {
+    const data = [];
+    const participantsGTP = _.uniqBy(_.filter(teamParticipantsGTP, { teamID: teamID }), 'participantID');
+    for (let i = 0; i < participantsGTP.length; i++) {
+      for (let j = 0; j < allParticipants.length; j++) {
+        if (participantsGTP[i].participantID === allParticipants[j]._id) {
+          data.push({
+            firstName: allParticipants[j].firstName,
+            lastName: allParticipants[j].lastName,
+          });
+        }
+      }
+    }
+    return data;
+  };
+
   if (!participant?.isCompliant) {
     return (
         <div className="text-center">
@@ -43,7 +55,7 @@ const YourTeamsWidget = ({ participant, teams, memberTeams, participants, teamPa
         </div>
     );
   }
-// eslint-disable-next-line react/prop-types
+
   if (teams.length + memberTeams.length === 0) {
     return (
         <div className="text-center">
@@ -61,7 +73,6 @@ const YourTeamsWidget = ({ participant, teams, memberTeams, participants, teamPa
         <Row>
           <h2 className="text-center mb-3">Your Teams</h2>
         </Row>
-          {/* eslint-disable-next-line react/prop-types */}
         {teams.length !== 0 && (
             <Row>
               <Col>
@@ -69,7 +80,6 @@ const YourTeamsWidget = ({ participant, teams, memberTeams, participants, teamPa
                   <Card.Title><h4 className="card-header text-center">Owner</h4></Card.Title>
                   <Card.Body>
                     <ListGroup>
-                        {/* eslint-disable-next-line react/prop-types */}
                       {teams.map(team => (
                           <ListGroup.Item key={team._id}>
                             <YourTeamsCard
@@ -85,7 +95,6 @@ const YourTeamsWidget = ({ participant, teams, memberTeams, participants, teamPa
               </Col>
             </Row>
         )}
-          {/* eslint-disable-next-line react/prop-types */}
         {memberTeams.length !== 0 && (
             <Row>
               <Col>
@@ -93,7 +102,6 @@ const YourTeamsWidget = ({ participant, teams, memberTeams, participants, teamPa
                   <Card.Title><h4 className="card-header text-center">Member</h4></Card.Title>
                   <Card.Body>
                     <ListGroup>
-                        {/* eslint-disable-next-line react/prop-types */}
                       {memberTeams.map(team => (
                           <ListGroup.Item key={team._id}>
                             <MemberTeamCard key={team._id}
@@ -112,21 +120,4 @@ const YourTeamsWidget = ({ participant, teams, memberTeams, participants, teamPa
   );
 };
 
-export default withTracker(() => {
-  const participant = Participants.findDoc({ userID: Meteor.userId() });
-  const participantID = participant._id;
-  const teams = Teams.find({ owner: participantID }).fetch();
-  const memberTeams = _.map(_.uniqBy(TeamParticipants.find({ participantID }).fetch(), 'teamID'),
-      (tp) => Teams.findDoc(tp.teamID));
-  const participants = Participants.find({}).fetch();
-  const teamParticipants = TeamParticipants.find({}).fetch();
-  const teamInvitation = TeamInvitations.find({}).fetch();
-  return {
-    participant,
-    teams,
-    memberTeams,
-    participants,
-    teamParticipants,
-    teamInvitation,
-  };
-})(YourTeamsWidget);
+export default YourTeamsWidget;

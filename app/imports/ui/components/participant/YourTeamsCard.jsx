@@ -31,11 +31,7 @@ const schema = new SimpleSchema({
 
 });
 
-const YourTeamsCard = ({
-                        team,
-                        teamParticipants,
-                        teamInvitation,
-                       }) => {
+const YourTeamsCard = ({ team, teamParticipants, teamInvitation }) => {
   const [open, setOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState('');
 
@@ -156,7 +152,7 @@ const YourTeamsCard = ({
           </Col>
           <Col>
             <h4>Members</h4>
-            {teamParticipants?.map((participant) => <p key={participant}>
+            {teamParticipants?.map((participant, index) => <p key={index}>
               {participant.firstName} {participant.lastName}</p>)}
           </Col>
         </Row>
