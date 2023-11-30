@@ -189,11 +189,9 @@ class ParticipantCollection extends BaseSlugCollection {
       remove: () => true,
       fetch: [],
     });
-    Meteor.users.remove({ _id: userID }, function (error, result) {
+    Meteor.users.remove({ _id: userID }, function (error) {
       if (error) {
-        console.log('Error removing user: ', error);
-      } else {
-        console.log(`Number of users removed: ${result}`);
+        console.error('Error removing user: ', error);
       }
     });
     ParticipantChallenges.removeParticipant(username);
